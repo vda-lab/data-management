@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" rdbms">
+<title>Normal forms | Data Management</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-custom.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="data-management" href="http://localhost:4000/feed.xml">
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Data Management</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/vda-lab/data-management" target="_blank" rel="noopener">GitHub</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="rdbms_landing_page.html">Relational databases and SQL</a></li>
+                        
+                        
+                        
+                        <li><a href="vegalite_landing_page.html">Vega-lite</a></li>
+                        
+                        
+                        
+                        <li><a href="vega_landing_page.html">Vega</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Normal forms">{title}</a></li>',
+                    noResultsText: '',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">Relational databases and SQL </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="Data collection" href="#">Data collection</a>
+      <ul>
+          
+          
+          
+          <li><a title="Clinical trials" href="rdbms-clinical-trials.html">Clinical trials</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Epidemiological studies" href="rdbms-epidemiological-studies.html">Epidemiological studies</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="DNA sequencing and genotyping" href="rdbms-dna-sequencing-and-genotyping.html">DNA sequencing and genotyping</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Relational databases" href="#">Relational databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Introduction" href="rdbms-intro.html">Introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="SQLite" href="rdbms-sqlite.html">SQLite</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Database schema normalisation" href="#">Database schema normalisation</a>
+      <ul>
+          
+          
+          
+          <li><a title="Database schema" href="rdbms-database-schema.html">Database schema</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="A student database" href="rdbms-a-student-database.html">A student database</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="A genotype database" href="rdbms-a-genotype-database.html">A genotype database</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="Normal forms" href="rdbms-normal-forms.html">Normal forms</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Types of relationships" href="rdbms-types-of-relationships.html">Types of relationships</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Other best practices" href="rdbms-other-best-practices.html">Other best practices</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Referential integrity" href="rdbms-referential-integrity.html">Referential integrity</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Indices" href="rdbms-indices.html">Indices</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Conclusion - key concepts" href="rdbms-conclusion-key-concepts.html">Conclusion - key concepts</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="SQL - Structured Query Language" href="#">SQL - Structured Query Language</a>
+      <ul>
+          
+          
+          
+          <li><a title="Getting data in" href="rdbms-getting-data-in.html">Getting data in</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Getting data out" href="rdbms-getting-data-out.html">Getting data out</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Updating and deleting data" href="rdbms-updating-and-deleting-data.html">Updating and deleting data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Additional functions" href="rdbms-additional-functions.html">Additional functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Public bioinformatics databases" href="rdbms-public-bioinformatics-databases.html">Public bioinformatics databases</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Views" href="rdbms-views.html">Views</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Normalisation homework" href="rdbms-normalisation-homework.html">Normalisation homework</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Drawbacks of relational databases" href="#">Drawbacks of relational databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Drawbacks of relational databases" href="rdbms-drawbacks-of-rdbms.html">Drawbacks of relational databases</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block: -->
+         <!-- <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p> -->
+
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">Normal forms</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <p>There are some good practices in developing relational database schemes which make it easier to work with the data afterwards. Some of these practices are represented in the “normal forms”.</p>
+
+<h2 id="first-normal-form">First normal form</h2>
+
+<p>To get to the first normal form:</p>
+
+<ul>
+  <li><strong>Eliminate duplicative columns</strong> from the same table, i.e. convert from wide format to long format (see in the above example).</li>
+</ul>
+
+<p>The columns rs123451, rs98765 and rs28465 are duplicates; they describe exactly the same type of thing (albeit different instances) and we need to eliminate these. And we can do that by creating new records (rows) for each SNP. In addition, each row should have a <strong>unique key</strong>. Best practices tell us to use autoincrementing integers, the <strong>primary key should contain no information in itself</strong>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">individual</th>
+      <th style="text-align: left">ethnicity</th>
+      <th style="text-align: left">snp</th>
+      <th style="text-align: left">genotype</th>
+      <th style="text-align: left">genotype_amb</th>
+      <th style="text-align: left">chromosome</th>
+      <th style="text-align: left">position</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">A/A</td>
+      <td style="text-align: left">A</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">A/G</td>
+      <td style="text-align: left">R</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">G/T</td>
+      <td style="text-align: left">K</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">A/C</td>
+      <td style="text-align: left">M</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">G/G</td>
+      <td style="text-align: left">G</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">G/G</td>
+      <td style="text-align: left">G</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Create the table in the same way as above using the DB Browser with the following columns:</p>
+<ul>
+  <li><code class="highlighter-rouge">individual</code> <code class="highlighter-rouge">TEXT</code></li>
+  <li><code class="highlighter-rouge">ethnicity</code> <code class="highlighter-rouge">TEXT</code></li>
+  <li><code class="highlighter-rouge">snp</code> <code class="highlighter-rouge">TEXT</code></li>
+  <li><code class="highlighter-rouge">genotype</code> <code class="highlighter-rouge">TEXT</code></li>
+  <li><code class="highlighter-rouge">genotype_amb</code> <code class="highlighter-rouge">STRING</code></li>
+  <li><code class="highlighter-rouge">chromosome</code> <code class="highlighter-rouge">TEXT</code></li>
+  <li><code class="highlighter-rouge">position</code> <code class="highlighter-rouge">INTEGER</code></li>
+</ul>
+
+<p>… or use the command line:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">DROP</span> <span class="k">TABLE</span> <span class="n">genotypes</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">id</span> <span class="n">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span> <span class="n">individual</span> <span class="n">STRING</span><span class="p">,</span> <span class="n">ethnicity</span> <span class="n">STRING</span><span class="p">,</span> <span class="n">snp</span> <span class="n">STRING</span><span class="p">,</span> <span class="n">genotype</span> <span class="n">STRING</span><span class="p">,</span> <span class="n">genotype_amb</span> <span class="n">STRING</span><span class="p">,</span> <span class="n">chromosome</span> <span class="n">STRING</span><span class="p">,</span> <span class="k">position</span> <span class="n">INTEGER</span><span class="p">);</span></code></pre></figure>
+
+<p>Note that in this case we <em>do</em> have to define the <code class="highlighter-rouge">id</code> column ourselves, whereas the DB Browser creates a <code class="highlighter-rouge">rowid</code> column automatically.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">ethnicity</span><span class="p">,</span> <span class="n">snp</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">,</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">position</span><span class="p">)</span>
+                    <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'individual_A'</span><span class="p">,</span><span class="s1">'caucasian'</span><span class="p">,</span><span class="s1">'rs12345'</span><span class="p">,</span><span class="s1">'A/A'</span><span class="p">,</span><span class="s1">'A'</span><span class="p">,</span><span class="s1">'1'</span><span class="p">,</span><span class="mi">12345</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">ethnicity</span><span class="p">,</span> <span class="n">snp</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">,</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">position</span><span class="p">)</span>
+                    <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'individual_A'</span><span class="p">,</span><span class="s1">'caucasian'</span><span class="p">,</span><span class="s1">'rs98765'</span><span class="p">,</span><span class="s1">'A/G'</span><span class="p">,</span><span class="s1">'R'</span><span class="p">,</span><span class="s1">'1'</span><span class="p">,</span><span class="mi">98765</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">ethnicity</span><span class="p">,</span> <span class="n">snp</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">,</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">position</span><span class="p">)</span>
+                    <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'individual_A'</span><span class="p">,</span><span class="s1">'caucasian'</span><span class="p">,</span><span class="s1">'rs28465'</span><span class="p">,</span><span class="s1">'G/T'</span><span class="p">,</span><span class="s1">'K'</span><span class="p">,</span><span class="s1">'1'</span><span class="p">,</span><span class="mi">28465</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">ethnicity</span><span class="p">,</span> <span class="n">snp</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">,</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">position</span><span class="p">)</span>
+                    <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'individual_B'</span><span class="p">,</span><span class="s1">'caucasian'</span><span class="p">,</span><span class="s1">'rs12345'</span><span class="p">,</span><span class="s1">'A/C'</span><span class="p">,</span><span class="s1">'M'</span><span class="p">,</span><span class="s1">'1'</span><span class="p">,</span><span class="mi">12345</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">ethnicity</span><span class="p">,</span> <span class="n">snp</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">,</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">position</span><span class="p">)</span>
+                       <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'individual_B'</span><span class="p">,</span><span class="s1">'caucasian'</span><span class="p">,</span><span class="s1">'rs98765'</span><span class="p">,</span><span class="s1">'G/G'</span><span class="p">,</span><span class="s1">'G'</span><span class="p">,</span><span class="s1">'1'</span><span class="p">,</span><span class="mi">98765</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">ethnicity</span><span class="p">,</span> <span class="n">snp</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">,</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">position</span><span class="p">)</span>
+                    <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'individual_B'</span><span class="p">,</span><span class="s1">'caucasian'</span><span class="p">,</span><span class="s1">'rs28465'</span><span class="p">,</span><span class="s1">'G/G'</span><span class="p">,</span><span class="s1">'G'</span><span class="p">,</span><span class="s1">'1'</span><span class="p">,</span><span class="mi">28465</span><span class="p">);</span></code></pre></figure>
+
+<p>The fact that <code class="highlighter-rouge">id</code> is defined as INTEGER PRIMARY KEY makes it increment automatically if not defined specifically. So loading data without explicitly specifying the value for id automatically takes care of everything.
+The same goes for <code class="highlighter-rouge">rowid</code>. <em>In the explanations and code below, replace <code class="highlighter-rouge">id</code> with <code class="highlighter-rouge">rowid</code> if you used the DB Browser instead of the command line to create the tables.</em></p>
+
+<h2 id="second-normal-form">Second normal form</h2>
+
+<p>There is <strong>still a lot of duplication</strong> in this data. In record 1 we see that individual_A is of Caucasian ethnicity; a piece of information that is duplicated in records 2 and 3. The same goes for the positions of the SNPs. In records 1 and 4 we can see that the SNP rs12345 is located on chromosome 1 at position 12345. But what if afterwards we find an error in our data, and rs12345 is actually on chromosome 2 instead of 1? In a table as the one above we would have to look up all these records and change the value from 1 to 2. Enter the second normal form:</p>
+
+<ul>
+  <li><strong>Remove subsets of data that apply to multiple rows</strong> of a table and place them in separate tables.</li>
+  <li><strong>Create relationships between these new tables</strong> and their predecessors through the use of <strong>foreign keys</strong>.</li>
+</ul>
+
+<p>So how could we do that for the table above? Each row contains <strong>3 different types of things</strong>: information about an individual (i.c. name and ethnicity), a SNP (i.c. the accession number, chromosome and position), and a genotype linking those two together (the genotype column, and the column containing the IUPAC ambiguity code for that genotype). To get to the second normal form, we need to put each of these in a separate table:</p>
+
+<ul>
+  <li>The name of each table should be <strong>plural</strong> (not mandatory, but good practice).</li>
+  <li>Each table should have a <strong>primary key</strong>, ideally named <code class="highlighter-rouge">id</code>. Different tables can contain columns that have the same name; column names should be unique within a table, but can occur across tables.</li>
+  <li>The individual column is renamed to name, and snp to accession.</li>
+  <li>In the genotypes table, individuals and SNPs are linked by referring to their primary keys (as used in the individuals and snps tables). Again best practice: if a <strong>foreign key</strong> refers to the id column in the individuals table, it should be named <strong>individual_id</strong> (note the singular).</li>
+  <li>The foreign keys individual_id and snp_id in the genotypes table must be of the same type as the id columns in the individuals and snps tables, respectively.</li>
+</ul>
+
+<p><img src="/assets/primary_foreign_keys.png" alt="primary and foreign keys" /></p>
+
+<p>The <code class="highlighter-rouge">individuals</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">ethnicity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="highlighter-rouge">snps</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">accession</th>
+      <th style="text-align: left">chromosome</th>
+      <th style="text-align: left">position</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="highlighter-rouge">genotypes</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">individual_id</th>
+      <th style="text-align: left">snp_id</th>
+      <th style="text-align: left">genotype</th>
+      <th style="text-align: left">genotype_amb</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/A</td>
+      <td style="text-align: left">A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">A/G</td>
+      <td style="text-align: left">R</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">G/T</td>
+      <td style="text-align: left">K</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/C</td>
+      <td style="text-align: left">M</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">G/G</td>
+      <td style="text-align: left">G</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">G/G</td>
+      <td style="text-align: left">G</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>So the <code class="highlighter-rouge">snp_id</code> <em>foreign key</em> <code class="highlighter-rouge">2</code> in row number 2 in the <code class="highlighter-rouge">genotypes</code> table links this record to the row with <code class="highlighter-rouge">id</code> <em>primary key</em> <code class="highlighter-rouge">2</code> in the <code class="highlighter-rouge">snps</code> table.</p>
+
+<h3 id="types-of-table-relationships">Types of table relationships</h3>
+<p>So how do you know in which table to create the foreign keys? Should there be a <code class="highlighter-rouge">snp_id</code> in the <code class="highlighter-rouge">genotypes</code> table? Or a <code class="highlighter-rouge">genotype_id</code> in the <code class="highlighter-rouge">snps</code> table? That all depends on the <strong>type of relationship</strong> between two tables. This type can be:</p>
+
+<ul>
+  <li><strong>one-to-one</strong>, for example an single ISBN number can be linked to a single book and vice versa.</li>
+  <li><strong>one-to-many</strong>, for example a single company will have many employees, but a single employee will work only for a single company</li>
+  <li><strong>many-to-many</strong>, for example a single book can have multiple authors and a single author can have written multiple books</li>
+</ul>
+
+<p>One-to-many is obviously the same as many-to-one but looking at it from the other direction…</p>
+
+<p>When you have a <em>one-to-one relationship</em>, you can actually merge that information into the same table so in the end you won’t even need a foreign key. In the book example mentioned above, you’d just add the ISBN number to the books table.<br />
+When you have a <em>one-to-many relationship</em>, you’d add the foreign key to the “many” table. In the example below a <em>single company</em> will have <em>many employees</em>, so you add the foreign key in the employees table.</p>
+
+<p>The <code class="highlighter-rouge">companies</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">company_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">Big company 1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">Big company 2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">Big company 3</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="highlighter-rouge">employees</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">address</th>
+      <th style="text-align: left">company_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">John Jones</td>
+      <td style="text-align: left">some_address, some_city</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">Jim James</td>
+      <td style="text-align: left">another_address, some_city</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">Fred Fredricks</td>
+      <td style="text-align: left">yet_another_address, another_city</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>When you have a <em>many-to-many relationship</em> you’d typically extract that information into a new table. For the books/authors example, you’d have a single table for the books, a single table for the authors, and a separate table that links the two together. That “linking” table can also contain information that is specific for that relationship, but it does not have to. An example is the <code class="highlighter-rouge">genotypes</code> table above. There are many SNPs for a single individual, and a single SNP is measured for many individuals. That’s why we created a separate table called <code class="highlighter-rouge">genotypes</code>, which in this case has additional columns that denote the value for a single individual for a single SNP. For the books/authors example, this would be:</p>
+
+<p>The <code class="highlighter-rouge">books</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">title</th>
+      <th style="text-align: left">ISBN13</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</td>
+      <td style="text-align: left">9780060853983</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">Going Postal (Discworld #33)</td>
+      <td style="text-align: left">9780060502935</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">Small Gods (Discworld #13)</td>
+      <td style="text-align: left">9780552152976</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">The Stupidest Angel: A Heartwarming Tale of Christmas Terror</td>
+      <td style="text-align: left">9780060842352</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="highlighter-rouge">authors</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">Terry Pratchett</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">Christopher Moore</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">Neil Gaiman</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="highlighter-rouge">author2book</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">author_id</th>
+      <th style="text-align: left">book_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">3</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">4</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The information in these tables says that:</p>
+
+<ul>
+  <li>Terry Pratchett and Neil Gaiman co-wrote “Good Omens”</li>
+  <li>Terry Pratchett wrote “Going Postal” and “Small Gods” by himself</li>
+  <li>Christopher Moore was the single authors of “The Stupidest Angel”</li>
+</ul>
+
+<p>Now back to our individuals and their genotypes…</p>
+
+<p>To generate the <code class="highlighter-rouge">individuals</code>, <code class="highlighter-rouge">snps</code> and <code class="highlighter-rouge">genotypes</code> tables of the second normal form, use the DB Browser again or do this command line. You can get the information you need to create the individual columns from the piece of code below, taking into account:</p>
+<ul>
+  <li>that you do not have to create the <code class="highlighter-rouge">id</code> column</li>
+  <li>that you will have to select <code class="highlighter-rouge">TEXT</code> in the dropdown box instead of <code class="highlighter-rouge">STRING</code></li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">DROP</span> <span class="k">TABLE</span> <span class="n">individuals</span><span class="p">;</span>
+<span class="k">DROP</span> <span class="k">TABLE</span> <span class="n">snps</span><span class="p">;</span>
+<span class="k">DROP</span> <span class="k">TABLE</span> <span class="n">genotypes</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">individuals</span> <span class="p">(</span><span class="n">id</span> <span class="n">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span> <span class="n">name</span> <span class="n">STRING</span><span class="p">,</span> <span class="n">ethnicity</span> <span class="n">STRING</span><span class="p">);</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">snps</span> <span class="p">(</span><span class="n">id</span> <span class="n">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span> <span class="n">accession</span> <span class="n">STRING</span><span class="p">,</span> <span class="n">chromosome</span> <span class="n">STRING</span><span class="p">,</span> <span class="k">position</span> <span class="n">INTEGER</span><span class="p">);</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">id</span> <span class="n">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span> <span class="n">individual_id</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="n">snp_id</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="n">genotype</span> <span class="n">STRING</span><span class="p">,</span> <span class="n">genotype_amb</span> <span class="n">STRING</span><span class="p">);</span></code></pre></figure>
+
+<p>To then load the data:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">individuals</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ethnicity</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'individual_A'</span><span class="p">,</span><span class="s1">'caucasian'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">individuals</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ethnicity</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'individual_B'</span><span class="p">,</span><span class="s1">'caucasian'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">snps</span> <span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">position</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'rs12345'</span><span class="p">,</span><span class="s1">'1'</span><span class="p">,</span><span class="mi">12345</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">snps</span> <span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">position</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'rs98765'</span><span class="p">,</span><span class="s1">'1'</span><span class="p">,</span><span class="mi">98765</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">snps</span> <span class="p">(</span><span class="n">accession</span><span class="p">,</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">position</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'rs28465'</span><span class="p">,</span><span class="s1">'5'</span><span class="p">,</span><span class="mi">28465</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual_id</span><span class="p">,</span> <span class="n">snp_id</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">'A/A'</span><span class="p">,</span><span class="s1">'A'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual_id</span><span class="p">,</span> <span class="n">snp_id</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">'A/G'</span><span class="p">,</span><span class="s1">'R'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual_id</span><span class="p">,</span> <span class="n">snp_id</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="s1">'G/T'</span><span class="p">,</span><span class="s1">'K'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual_id</span><span class="p">,</span> <span class="n">snp_id</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">'A/C'</span><span class="p">,</span><span class="s1">'M'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual_id</span><span class="p">,</span> <span class="n">snp_id</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">'G/G'</span><span class="p">,</span><span class="s1">'G'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">genotypes</span> <span class="p">(</span><span class="n">individual_id</span><span class="p">,</span> <span class="n">snp_id</span><span class="p">,</span> <span class="n">genotype</span><span class="p">,</span> <span class="n">genotype_amb</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="s1">'G/G'</span><span class="p">,</span><span class="s1">'G'</span><span class="p">);</span></code></pre></figure>
+
+<h2 id="third-normal-form">Third normal form</h2>
+
+<p>In the third normal form, we try to <strong>eliminate unnecessary data</strong> from our database; data that could be <strong>calculated</strong> based on other things that are present. In our example table genotypes, the <code class="highlighter-rouge">genotype</code> and <code class="highlighter-rouge">genotype_amb</code> columns basically contain the same information, just using a different encoding. We could (should) therefore remove one of these. This is similar to having a column with country names (e.g. ‘Belgium’) and one with country codes (e.g. ‘Bel’) in the individuals table: you’d want to remove one of those.</p>
+
+<p>Our final <code class="highlighter-rouge">individuals</code> table would look like this:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">ethnicity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="highlighter-rouge">snps</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">accession</th>
+      <th style="text-align: left">chromosome</th>
+      <th style="text-align: left">position</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="highlighter-rouge">genotypes</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">individual_id</th>
+      <th style="text-align: left">snp_id</th>
+      <th style="text-align: left">genotype_amb</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">R</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">K</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">M</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">G</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">G</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>To know what your database schema looks like, you can issue the <code class="highlighter-rouge">.schema</code> command in sqlite3. <code class="highlighter-rouge">.tables</code> gives you a list of the tables that are defined. If you’re using the DB Browser tool, click on <code class="highlighter-rouge">Database Structure</code>.</p>
+
+<div class="seriesContext">
+    <a>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <a href="rdbms-types-of-relationships.html"><button type="button" class="btn btn-primary">Next: Types of relationships</button></a>
+        
+    </a>
+</div>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 Visual Data Analysis Lab. All rights reserved. <br />
+ Site last generated: Jan 19, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

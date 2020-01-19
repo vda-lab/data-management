@@ -1,64 +1,30 @@
 ---
-title: "Data Visualisation in Data Science"
+title: "Data Management"
 keywords: homepage
 permalink: index.html
 ---
-![]({{ site.baseurl }}/assets/stad_airquality.jpeg)
-
-Welcome to this set of tutorials for data visualisation. These were created to serve as teaching material for the EBI workshop [Data Visualisation for Biology: A Practical Workshop on Design, Techniques and Tools](https://www.ebi.ac.uk/training/events/2020/data-visualisation-biology-practical-workshop-design-techniques-and-tools-1) as well as the course material for the Data Visualisation for Data Science courses at [UHasselt](https://www.uhasselt.be/studiegids?n=4&a=2019&i=4142) and [KU Leuven](https://onderwijsaanbod.kuleuven.be/syllabi/e/G0R72AE.htm#activetab=doelstellingen_idm480336).
-
-The contents of these tutorials is licensed as CC-BY: feel free to copy/remix/tweak/... it, but please credit your source.
+Welcome to the course material for the Software and Data Management course at UHasselt. The contents of this post is licensed as CC-BY: feel free to copy/remix/tweak/... it, but please credit your source.
 
 ![CC-BY]({{ site.baseurl }}/assets/ccby.png)
 
-In these tutorial, we will work in different phases, looking at vega-lite, vega, and Holoviz. We'll start with vega-lite and vega in the [online editor](https://vega.github.io/editor/) that they provide, and move on to using HoloViz at a later stage.
+**For a particular year's practicalities, see [http://vda-lab.be/teaching]({{ site.baseurl }}/teaching)**
 
-This tutorial is based on material provided on the vega-lite, vega and holoviz websites, as well as teaching material collected by Ryo Sakai.
+*(Part of the content of this lecture is taken from the database lectures from the yearly Programming for Biology course at CSHL, and the EasySoft tutorial at http://bit.ly/x2yNDb, as well as from course slides created by Leandro Garcia Barrado)*
 
-## Preamble
-### What are vega-lite and vega?
-You might have heard of [D3](http://d3js.org) as a library to create interactive data visualisations. Indeed, this library is considered the standard in the field. Unfortunately, it does have quite a steep learning curve which makes it not ideal if you have to learn it in 2-3 days without a background in javascript programming. In this course, we'll use vega and vega-lite instead. Both are so-called _declarative_ languages, where you tell the computer _what_ you need, not _how_ to do it. Vega and vega-lite are expressed in _JSON_ ("javascript object notation").
+Data management is critical in any science, including biology. In this course, we will focus on relational (SQL) databases (RDBMS) as these are the most common. If time permits we might venture into the world of NoSQL databases (*e.g.* MongoDB, ArangoDB, neo4j) to allow storing of huge datasets.
 
-This image by [Eric Marty](https://blog.ericmarty.com/the-d3-/-vega-stack) provides a good overview how the different parts are related:
+For relational databases, I will discuss the basic concepts (tables, tuples, columns, queries) and explain the different normalisations for data. There will also be an introduction on writing SQL queries. Document-oriented and other NoSQL databases (such as MongoDB) can often also be accessed through either an interactive shell and/or APIs (application programming interfaces) in languages such as perl, ruby, java, clojure, ...
 
-<img src="{{ site.baseurl }}/assets/d3-vega-vegalite-stack.png" />
+So what will we cover here?
 
-To give you an idea, here's a small vega-lite script that shows a barchart.
+## What is "data management"?
+Data management encompasses 3 parts:
+1. _What data do we need and how are we going to collect it?_ In a clinical trial, for example, data to be collected is described in the protocol and entered into the Case Report Form (CRF); in an epidemiological study, data can however come from very different sources. In a DNA sequencing setting, the DNA sequences generates the raw data in a standardised format.
+1. _How to store it on a computer in an efficient way?_ This is about database design and database normalisation. That is described further in this post.
+1. _How to retrieve information from DBMS in a reliable way?_ We access the data using the Structured Query Language (SQL), which is the topic of the next post.
 
-```json
-{
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {
-    "values": [
-      {"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43}
-    ]
-  },
-  "mark": "bar",
-  "encoding": {
-    "x": {"field": "b", "type": "quantitative"},
-    "y": {"field": "a", "type": "ordinal"}
-  }
-}
-```
+## The actual content
 
-The resulting barchart:
-
-<img src="{{ site.baseurl }}/assets/vegalite-barchart.png" width="300px"/>
-
-### JSON
-Let's first have a look at the JSON format:
-
-- strings are put between double quotes `"`
-- numbers are _not_ put between quotes
-- lists (aka arrays) are put between square brackets `[]`
-- objects (aka hashes, aka dictionaries, aka key-value pairs) are put between curly brackets `{}`, and key and value are separated with a colon `:`
-
-Also, these objects can be nested. In the example above, the whole thing is a single JSON object, consisting of key-value pairs (keys being `"$schema"`, `"data"`, `"mark"` and `"encoding"`). The `"data"` key itself holds an object `{ "values": [ ... ]}`. The `"values"` key in its place is an array of objects again.
-
-Different elements in a JSON object or array have to be separated by a comma `,`.
-
-## The actual tutorials
-
-* [Vega-Lite]({{ site.baseurl }}/vegalite_landing_page.html)
-* [Vega]({{ site.baseurl }}/vega_landing_page.html)
-* [Holoviz]({{ site.baseurl }}/holoviz_landing_page.html)
+* [Relational databases]({{ site.baseurl }}/rdbms_landing_page.html)
+* [NoSQL]()
+* [Lambda Architecture]()

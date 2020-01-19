@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+
+
+  
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-a-genotype-database.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-a-scatterplot-matrix.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-a-student-database.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-additional-functions.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-advanced-interaction.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-advanced-transforms.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-axes.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-brushing-and-linking.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-brushing-and-linking.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-changing-colour.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-changing-the-data.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-clinical-trials.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-colour-scales.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-combining-event-streams.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-composing-plots.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-composing-plots.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-conclusion-key-concepts.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-simple-scatterplot.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-data-independent-marks.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-data-transformations.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-database-schema.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-debugging.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-dna-sequencing-and-genotyping.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-drawbacks-of-rdbms.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-enter-update-exit.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-epidemiological-studies.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-event-streams.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-facetting.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-focus-and-context-plots.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-force-directed-networks.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-further-exercises.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-further-exercises.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-getting-data-in.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-getting-data-out.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/index.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-indices.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-interaction.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-intro.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-legends.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-loading-external-data.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-normal-forms.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-normalisation-homework.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-other-best-practices.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-placing-views-side-by-side.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-public-bioinformatics-databases.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms_landing_page.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-referential-integrity.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-scales-overview.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-selecting-datapoints.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-setting-colour-and-shape.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-signals.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-simple-interaction.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-simplest-barchart.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-sql-intro.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-sqlite.html</loc>
+  </url>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-tooltips.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-transforms.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-types-of-relationships.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-updating-and-deleting-data.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-using-widgets-for-selection.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega-using-widgets-to-send-signals.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vega_landing_page.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-vegalite-online-editor.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite_landing_page.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/rdbms-views.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-where-next.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/vegalite-zooming-and-panning.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/assets/css/style.css</loc>
+  </url>
+  
+  
+</urlset>

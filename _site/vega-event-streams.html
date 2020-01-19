@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" vega">
+<title>Event streams | Data Management</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-custom.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="data-management" href="http://localhost:4000/feed.xml">
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Data Management</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/vda-lab/data-management" target="_blank" rel="noopener">GitHub</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="rdbms_landing_page.html">Relational databases and SQL</a></li>
+                        
+                        
+                        
+                        <li><a href="vegalite_landing_page.html">Vega-lite</a></li>
+                        
+                        
+                        
+                        <li><a href="vega_landing_page.html">Vega</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Event streams">{title}</a></li>',
+                    noResultsText: '',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">Vega tutorial </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="Creating static images" href="#">Creating static images</a>
+      <ul>
+          
+          
+          
+          <li><a title="A simple scatterplot" href="vega-simple-scatterplot.html">A simple scatterplot</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Changing colour" href="vega-changing-colour.html">Changing colour</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Data-independent-marks" href="vega-data-independent-marks.html">Data-independent-marks</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Scales" href="#">Scales</a>
+      <ul>
+          
+          
+          
+          <li><a title="Overview" href="vega-scales-overview.html">Overview</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Colour scales" href="vega-colour-scales.html">Colour scales</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Enter - Update - Exit" href="#">Enter - Update - Exit</a>
+      <ul>
+          
+          
+          
+          <li><a title="Enter - Update - Exit" href="vega-enter-update-exit.html">Enter - Update - Exit</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Axes" href="#">Axes</a>
+      <ul>
+          
+          
+          
+          <li><a title="Axes" href="vega-axes.html">Axes</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Legends" href="#">Legends</a>
+      <ul>
+          
+          
+          
+          <li><a title="Legends" href="vega-legends.html">Legends</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Loading external data" href="#">Loading external data</a>
+      <ul>
+          
+          
+          
+          <li><a title="Loading external data" href="vega-loading-external-data.html">Loading external data</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Transforms" href="#">Transforms</a>
+      <ul>
+          
+          
+          
+          <li><a title="Transforms" href="vega-transforms.html">Transforms</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Interaction" href="#">Interaction</a>
+      <ul>
+          
+          
+          
+          <li><a title="Simple interaction" href="vega-simple-interaction.html">Simple interaction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Advanced interaction" href="vega-advanced-interaction.html">Advanced interaction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Event streams" href="vega-event-streams.html">Event streams</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Combining event streams" href="vega-combining-event-streams.html">Combining event streams</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Signals" href="vega-signals.html">Signals</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Using widgets to send signals" href="vega-using-widgets-to-send-signals.html">Using widgets to send signals</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Composing plots" href="#">Composing plots</a>
+      <ul>
+          
+          
+          
+          <li><a title="Composing plots" href="vega-composing-plots.html">Composing plots</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Advanced transforms" href="#">Advanced transforms</a>
+      <ul>
+          
+          
+          
+          <li><a title="Advanced transforms" href="vega-advanced-transforms.html">Advanced transforms</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Force-directed networks" href="vega-force-directed-networks.html">Force-directed networks</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Brushing and linking" href="#">Brushing and linking</a>
+      <ul>
+          
+          
+          
+          <li><a title="Brushing and linking" href="vega-brushing-and-linking.html">Brushing and linking</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Debugging" href="#">Debugging</a>
+      <ul>
+          
+          
+          
+          <li><a title="Debugging" href="vega-debugging.html">Debugging</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Further exercises" href="#">Further exercises</a>
+      <ul>
+          
+          
+          
+          <li><a title="Further exercises" href="vega-further-exercises.html">Further exercises</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block: -->
+         <!-- <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p> -->
+
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">Event streams</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <p>As per the <a href="https://vega.github.io/vega/docs/event-streams/">documentation</a>: “Event streams are the primary means of modelling user input to enable dynamic, interactive visualisations. Event streams capture a <strong>sequence of input events</strong> such as mouse click, touch movement, timer ticks, or signal updates. When events that match a stream definition occur, they <strong>cause any corresponding signal event handlers to evaluate</strong>, potentially updating a signal value.”</p>
+
+<p>Events are not described in their separate section in the vega specification, but within the signals that get triggered when an event happens. For example, the following code makes a signal <code class="highlighter-rouge">mouseX</code> available which is updated every time the mouse is moved. This signal is then used in the <code class="highlighter-rouge">marks</code> section to display that position.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span><span class="w">
+</span><span class="s2">"signals"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mouseX"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"on"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="s2">"events"</span><span class="p">:</span><span class="s2">"mousemove"</span><span class="p">,</span><span class="w"> </span><span class="s2">"update"</span><span class="p">:</span><span class="w"> </span><span class="s2">"event.x"</span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">],</span><span class="w">
+</span><span class="err">...</span><span class="w">
+</span><span class="s2">"marks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"encode"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"enter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"x"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">},</span><span class="w">
+        </span><span class="s2">"y"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"update"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"signal"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mouseX"</span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span><span class="err">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Move your mouse over the plot below:</p>
+
+<div id="vis4"></div>
+<script type="text/javascript">
+  var yourVlSpec = {
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "width": 400,
+    "height": 200,
+    "padding": 5,
+
+    "data": [
+      {
+        "name": "cars",
+        "url": "https://raw.githubusercontent.com/vega/vega/master/docs/data/cars.json"
+      }
+    ],
+
+    "signals": [
+      {
+        "name": "mouseX",
+        "on": [
+          {"events":"mousemove", "update": "event.x"}
+        ]
+      }
+    ],
+
+    "scales": [
+      {
+        "name": "xscale",
+        "domain": {"data": "cars", "field": "Acceleration"},
+        "range": "width"
+      },
+      {
+        "name": "yscale",
+        "domain": {"data": "cars", "field": "Miles_per_Gallon"},
+        "range": "height"
+      }
+    ],
+    "axes": [
+      {"orient": "bottom", "scale": "xscale", "grid": true},
+      {"orient": "left", "scale": "yscale", "grid": true}
+    ],
+    "marks": [
+      {
+        "type": "symbol",
+        "from": {"data":"cars"},
+        "encode": {
+          "enter": {
+            "x": {"scale": "xscale", "field": "Acceleration"},
+            "y": {"scale": "yscale", "field": "Miles_per_Gallon"},
+          }
+        }
+      },
+      {
+        "type": "text",
+        "encode": {
+          "enter": {
+            "x": {"value": 10},
+            "y": {"value": 10},
+            "fontSize": {"value": 42}
+          },
+          "update": {
+            "text": {"signal": "mouseX"}
+          }
+        }
+      }
+    ]
+  };
+  vegaEmbed('#vis4', yourVlSpec);
+</script>
+
+<!--
+<img src="/assets/vega-noscaleinversion.png" width="50%"/>
+-->
+
+<p>Note that now we have seen 3 different ways to define the value to use for setting parameters:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">"value"</code>, e.g. <code class="highlighter-rouge">"x": {"value": 10}</code> for fixed values</li>
+  <li><code class="highlighter-rouge">"field"</code>, e.g. <code class="highlighter-rouge">"x": {"field": "Acceleration"}</code> for values that are dependent on the dataset</li>
+  <li><code class="highlighter-rouge">"signal"</code>, e.g. <code class="highlighter-rouge">"x": {"signal": "mouseX"}</code> for values that can change over time</li>
+</ul>
+
+<p>Notice in this code that we put the <code class="highlighter-rouge">"text"</code> part within <code class="highlighter-rouge">"update"</code> and not within <code class="highlighter-rouge">"enter"</code>. This is because what is defined in <code class="highlighter-rouge">"enter"</code> is only read once. Any parameters that do not change can be put there, though.</p>
+
+<p>Event types that you can use include <code class="highlighter-rouge">click</code>, <code class="highlighter-rouge">cblclick</code>, <code class="highlighter-rouge">dragenter</code>, <code class="highlighter-rouge">dragleave</code>, <code class="highlighter-rouge">mousedown</code>, <code class="highlighter-rouge">mouseup</code>, <code class="highlighter-rouge">mousemove</code>, etc. For the full list, see <a href="https://vega.github.io/vega/docs/event-streams/">https://vega.github.io/vega/docs/event-streams/</a>.</p>
+
+<p>These event types can be applied to different <em>sources</em>: the screen (e.g. a <code class="highlighter-rouge">mousemove</code> on the screen), any mark (e.g. <code class="highlighter-rouge">rect:click</code>), or a particular mark (e.g. <code class="highlighter-rouge">@mymark:dragenter</code>). Some more examples of event types applied to different sources (again from the documentation):</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Event</th>
+      <th style="text-align: left">What it does</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">mousedown</code></td>
+      <td style="text-align: left">capture all mousedown events, regardless of source</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">*:mousedown</code></td>
+      <td style="text-align: left">mousedown events on marks, but not the view itself</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">rect:mousedown</code></td>
+      <td style="text-align: left">mousedown events on any rect marks</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">@foo:mousedown</code></td>
+      <td style="text-align: left">mousedown events on marks named ‘foo’</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">window:mousemove</code></td>
+      <td style="text-align: left">capture mousemove events from the browser window</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">timer{1000}</code></td>
+      <td style="text-align: left">capture a timer tick every 1000 ms</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">mousemove[event.buttons]</code></td>
+      <td style="text-align: left">mousemove events with any mouse button pressed</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="highlighter-rouge">click[event.shiftKey]</code></td>
+      <td style="text-align: left">click events with the shift key pressed</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If you know CSS, this syntax will be particularly familiar to you.</p>
+
+<div class="seriesContext">
+    <a>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <a href="vega-combining-event-streams.html"><button type="button" class="btn btn-primary">Next: Combining event streams</button></a>
+        
+    </a>
+</div>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 Visual Data Analysis Lab. All rights reserved. <br />
+ Site last generated: Jan 19, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

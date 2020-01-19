@@ -5,15 +5,15 @@ entries:
   levels: one
   folders:
 
-  - title: Tutorials
+  - title: Contents
     output: web
     folderitems:
+    - title: Relational databases
+      url: /rdbms_landing_page.html
+      output: web
     - title: Vega-Lite
       url: /vegalite_landing_page.html
       output: web
     - title: Vega
       url: /vega_landing_page.html
-      output: web
-    - title: HoloViz
-      url: /holoviz_landing_page.html
       output: web

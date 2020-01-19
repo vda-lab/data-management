@@ -4,17 +4,17 @@ topnav:
 - title: Topnav
   items:
     - title: GitHub
-      external_url: https://github.com/vda-lab/visualisation-tutorial
+      external_url: https://github.com/vda-lab/data-management
 
 #Topnav dropdowns
 topnav_dropdowns:
 - title: Topnav dropdowns
   folders:
-    - title: Tutorials
+    - title: Contents
       folderitems:
+        - title: Relational databases and SQL
+          url: /rdbms_landing_page.html
         - title: Vega-lite
           url: /vegalite_landing_page.html
         - title: Vega
           url: /vega_landing_page.html
-        - title: HoloViz
-          url: /holoviz_landing_page.html

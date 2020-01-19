@@ -1,12 +1,12 @@
-repository: vda-lab/visualisation-tutorial
+repository: vda-lab/data-management
 
 output: web
 # this property is useful for conditional filtering of content that is separate from the PDF.
 
-topnav_title: Data Visualisation in Data Science
+topnav_title: Data Management
 # this appears on the top navigation bar next to the home button
 
-site_title: Data Visualisation in Data Science
+site_title: Data Management
 # this appears in the html browser tab for the site title (seen mostly by search engines, not users)
 
 company_name: Visual Data Analysis Lab
@@ -33,7 +33,7 @@ exclude:
   - vendor
 # these are the files and directories that jekyll will exclude from the build
 
-feedback_subject_line: Data Visualisation Tutorial
+feedback_subject_line: Data Management
 
 feedback_email: jan.aerts@uhasselt.be
 # used as a contact email for the Feedback link in the top navigation bar
@@ -104,7 +104,7 @@ sidebars:
 - vegalite_sidebar
 - vega_sidebar
 
-description: "Data visualisation tutorial, focussing on vega, vega-lite and holoviz"
+description: "Data Management course material"
 # the description is used in the feed.xml file
 
 # needed for sitemap.xml file only

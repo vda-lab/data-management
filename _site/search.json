@@ -1,0 +1,794 @@
+[
+
+
+
+
+{
+"title": "A genotype database",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-a-genotype-database.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "A scatterplot matrix",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-a-scatterplot-matrix.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "A student database",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-a-student-database.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Additional functions",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-additional-functions.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Advanced interaction",
+"tags": "",
+"keywords": "vega",
+"url": "vega-advanced-interaction.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Advanced transforms",
+"tags": "",
+"keywords": "vega",
+"url": "vega-advanced-transforms.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Axes",
+"tags": "",
+"keywords": "vega",
+"url": "vega-axes.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Brushing and linking",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-brushing-and-linking.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Brushing and linking",
+"tags": "",
+"keywords": "vega",
+"url": "vega-brushing-and-linking.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Changing colour",
+"tags": "",
+"keywords": "vega",
+"url": "vega-changing-colour.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Changing the data",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-changing-the-data.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Data in clinical trials",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-clinical-trials.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Colour-scales",
+"tags": "",
+"keywords": "vega",
+"url": "vega-colour-scales.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Combining event streams",
+"tags": "",
+"keywords": "vega",
+"url": "vega-combining-event-streams.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Composing plots",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-composing-plots.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Composing plots",
+"tags": "",
+"keywords": "vega",
+"url": "vega-composing-plots.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Conclusion - key concepts",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-conclusion-key-concepts.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "A simple scatterplot",
+"tags": "",
+"keywords": "vega",
+"url": "vega-simple-scatterplot.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Data-independent marks",
+"tags": "",
+"keywords": "vega",
+"url": "vega-data-independent-marks.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Data transformations",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-data-transformations.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Database schema",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-database-schema.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Debugging and building complex visualisations",
+"tags": "",
+"keywords": "vega",
+"url": "vega-debugging.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Data in DNA sequencing and genotyping",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-dna-sequencing-and-genotyping.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Drawbacks of relational databases",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-drawbacks-of-rdbms.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Enter - Update - Exit",
+"tags": "",
+"keywords": "vega",
+"url": "vega-enter-update-exit.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Data in epidemiological studies",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-epidemiological-studies.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Event streams",
+"tags": "",
+"keywords": "vega",
+"url": "vega-event-streams.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Facetting",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-facetting.html",
+"summary": ""
+}
+,
+
+
+
+
+
+{
+"title": "Focus and context plots",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-focus-and-context-plots.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Force-directed-networks",
+"tags": "",
+"keywords": "vega",
+"url": "vega-force-directed-networks.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Further exercises",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-further-exercises.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Further exercises",
+"tags": "",
+"keywords": "vega",
+"url": "vega-further-exercises.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Getting data in",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-getting-data-in.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Getting data out",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-getting-data-out.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Data Management",
+"tags": "",
+"keywords": "homepage",
+"url": "index.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Indices",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-indices.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Interaction",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-interaction.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Introduction to relational database management systems",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-intro.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Legends",
+"tags": "",
+"keywords": "vega",
+"url": "vega-legends.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Loading external data",
+"tags": "",
+"keywords": "vega",
+"url": "vega-loading-external-data.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Normal forms",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-normal-forms.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Normalisation homework",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-normalisation-homework.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Other best practices",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-other-best-practices.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Placing views side-by-side",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-placing-views-side-by-side.html",
+"summary": ""
+}
+,
+
+
+
+
+
+{
+"title": "Public bioinformatics databases",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-public-bioinformatics-databases.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Relational databases and SQL",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms_landing_page.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Referential integrity",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-referential-integrity.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Scales overview",
+"tags": "",
+"keywords": "vega",
+"url": "vega-scales-overview.html",
+"summary": ""
+}
+,
+
+
+
+
+
+{
+"title": "Selecting datapoints",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-selecting-datapoints.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Setting colour and shape",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-setting-colour-and-shape.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Signals",
+"tags": "",
+"keywords": "vega",
+"url": "vega-signals.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Simple interaction",
+"tags": "",
+"keywords": "vega",
+"url": "vega-simple-interaction.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "The simplest barchart",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-simplest-barchart.html",
+"summary": ""
+}
+,
+
+
+
+
+
+{
+"title": "SQL - Structured Query Language",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-sql-intro.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "SQLite",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-sqlite.html",
+"summary": ""
+}
+,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+"title": "Tooltips",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-tooltips.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Transforms",
+"tags": "",
+"keywords": "vega",
+"url": "vega-transforms.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Types of relationships",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-types-of-relationships.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Updating and deleting data",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-updating-and-deleting-data.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Using widgets for selection",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-using-widgets-for-selection.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Using widgets to send signals",
+"tags": "",
+"keywords": "vega",
+"url": "vega-using-widgets-to-send-signals.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Vega",
+"tags": "",
+"keywords": "vega",
+"url": "vega_landing_page.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Vega-Lite online editor",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-vegalite-online-editor.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Vega-Lite",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite_landing_page.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Views",
+"tags": "",
+"keywords": "rdbms",
+"url": "rdbms-views.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Where next?",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-where-next.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Zooming and panning",
+"tags": "",
+"keywords": "vegalite",
+"url": "vegalite-zooming-and-panning.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "",
+"tags": "",
+"keywords": "",
+"url": "assetscssstyle.css",
+"summary": ""
+}
+
+
+
+
+
+
+]

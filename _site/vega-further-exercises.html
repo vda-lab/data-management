@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" vega">
+<title>Further exercises | Data Management</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-custom.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="data-management" href="http://localhost:4000/feed.xml">
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Data Management</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/vda-lab/data-management" target="_blank" rel="noopener">GitHub</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="rdbms_landing_page.html">Relational databases and SQL</a></li>
+                        
+                        
+                        
+                        <li><a href="vegalite_landing_page.html">Vega-lite</a></li>
+                        
+                        
+                        
+                        <li><a href="vega_landing_page.html">Vega</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Further exercises">{title}</a></li>',
+                    noResultsText: '',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">Vega tutorial </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="Creating static images" href="#">Creating static images</a>
+      <ul>
+          
+          
+          
+          <li><a title="A simple scatterplot" href="vega-simple-scatterplot.html">A simple scatterplot</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Changing colour" href="vega-changing-colour.html">Changing colour</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Data-independent-marks" href="vega-data-independent-marks.html">Data-independent-marks</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Scales" href="#">Scales</a>
+      <ul>
+          
+          
+          
+          <li><a title="Overview" href="vega-scales-overview.html">Overview</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Colour scales" href="vega-colour-scales.html">Colour scales</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Enter - Update - Exit" href="#">Enter - Update - Exit</a>
+      <ul>
+          
+          
+          
+          <li><a title="Enter - Update - Exit" href="vega-enter-update-exit.html">Enter - Update - Exit</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Axes" href="#">Axes</a>
+      <ul>
+          
+          
+          
+          <li><a title="Axes" href="vega-axes.html">Axes</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Legends" href="#">Legends</a>
+      <ul>
+          
+          
+          
+          <li><a title="Legends" href="vega-legends.html">Legends</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Loading external data" href="#">Loading external data</a>
+      <ul>
+          
+          
+          
+          <li><a title="Loading external data" href="vega-loading-external-data.html">Loading external data</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Transforms" href="#">Transforms</a>
+      <ul>
+          
+          
+          
+          <li><a title="Transforms" href="vega-transforms.html">Transforms</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Interaction" href="#">Interaction</a>
+      <ul>
+          
+          
+          
+          <li><a title="Simple interaction" href="vega-simple-interaction.html">Simple interaction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Advanced interaction" href="vega-advanced-interaction.html">Advanced interaction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Event streams" href="vega-event-streams.html">Event streams</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Combining event streams" href="vega-combining-event-streams.html">Combining event streams</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Signals" href="vega-signals.html">Signals</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Using widgets to send signals" href="vega-using-widgets-to-send-signals.html">Using widgets to send signals</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Composing plots" href="#">Composing plots</a>
+      <ul>
+          
+          
+          
+          <li><a title="Composing plots" href="vega-composing-plots.html">Composing plots</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Advanced transforms" href="#">Advanced transforms</a>
+      <ul>
+          
+          
+          
+          <li><a title="Advanced transforms" href="vega-advanced-transforms.html">Advanced transforms</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Force-directed networks" href="vega-force-directed-networks.html">Force-directed networks</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Brushing and linking" href="#">Brushing and linking</a>
+      <ul>
+          
+          
+          
+          <li><a title="Brushing and linking" href="vega-brushing-and-linking.html">Brushing and linking</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Debugging" href="#">Debugging</a>
+      <ul>
+          
+          
+          
+          <li><a title="Debugging" href="vega-debugging.html">Debugging</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Further exercises" href="#">Further exercises</a>
+      <ul>
+          
+          
+          
+          <li><a title="Further exercises" href="vega-further-exercises.html">Further exercises</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block: -->
+         <!-- <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p> -->
+
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">Further exercises</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <p><strong>TODO</strong>:</p>
+
+<ul>
+  <li>sequence logo</li>
+  <li>genome annotations</li>
+</ul>
+
+<p>For the exercises below and similar to the further exercises for vega-lite, we will use the New York City citibike data available from <a href="https://www.citibikenyc.com/system-data">https://www.citibikenyc.com/system-data</a>. Some great <a href="https://juanfrans.com/projects/citibikeRebalancing.html">visuals by Juan Francisco Saldarriaga</a> can inspire you.</p>
+
+<p><img src="/assets/citibike_linegraph.png" /></p>
+
+<p>We made a (small) part of the data available <a href="https://raw.githubusercontent.com/vda-lab/vda-lab.github.io/master/assets/station_366.json">here</a>. It concerns trip data from November 2011, where the trip started or ended in station nr 336. The fields in each record (with example data) look like this:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"tripduration"</span><span class="p">:</span><span class="w"> </span><span class="mi">1217</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"starttime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-11-01 06:03:28.5390"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"stoptime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-11-01 06:23:45.9810"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"startstation_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3236</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"startstation_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"W 42 St &amp; Dyer Ave"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"startstation_latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">40.75898481399634</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"startstation_longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">-73.99379968643188</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"endstation_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">336</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"endstation_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sullivan St &amp; Washington Sq"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"endstation_latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">40.73047747</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"endstation_longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">-73.99906065</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"bikeid"</span><span class="p">:</span><span class="w"> </span><span class="mi">41025</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"usertype"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Subscriber"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"birthyear"</span><span class="p">:</span><span class="w"> </span><span class="mi">1964</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"gender"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<p class="exercise"><strong>Exercise</strong> - Make a plot similar to the Citibike Station Dial shown <a href="https://juanfrans.com/projects/citibikeRebalancing.html">here</a> for station 336.</p>
+
+<p><img src="/assets/vega-citibike-dial.png" width="200px" />
+<img src="/assets/vega-citibike-destinations-origins.png" width="200px" /></p>
+
+<p>A possible output made with vega (interactive):</p>
+
+<div id="vis7"></div>
+<script type="text/javascript">
+  var yourVlSpec = {
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "width": 400,
+    "height": 400,
+    "data": [
+      {
+        "name": "table",
+        "url": "https://raw.githubusercontent.com/vda-lab/vda-lab.github.io/master/assets/station_366.json",
+        "transform": [
+          {
+            "type": "formula",
+            "as": "hour",
+            "expr": "hours(datum.starttime)"
+          },
+          {
+            "type": "formula",
+            "as": "from-or-to",
+            "expr": "datum.endstation_id == 336 ? 1 : -1"
+          },
+          {
+            "type": "aggregate",
+            "fields": ["from-or-to"],
+            "ops": ["sum"],
+            "groupby": ["hour"],
+            "as": ["balance"]
+          },
+          {
+            "type": "formula",
+            "as": "abs_balance",
+            "expr": "abs(datum.balance)"
+          },
+          {
+            "type": "formula",
+            "as": "hour_plus1",
+            "expr": "datum.hour + 1"
+          },
+          {
+            "type": "formula",
+            "as": "half_width",
+            "expr": "width/2"
+          },
+          {
+            "type": "formula",
+            "as": "half_height",
+            "expr": "height/2"
+          },
+          {
+            "type": "formula",
+            "as": "hour_plus1",
+            "expr": "datum.hour + 1"
+          },
+          {
+            "type": "formula",
+            "as": "tooltip_text",
+            "expr": "'Hour: ' + toString(datum.hour) + ' ; Balance: ' + toString(datum.balance)"
+          },
+          {
+            "type": "formula",
+            "as": "slice_angle",
+            "expr": "(2*PI)/24"
+          },
+          {
+            "type": "formula",
+            "as": "text_x",
+            "expr": "200+100*cos(datum.slice_angle*datum.hour_plus1 - PI/2 - (datum.slice_angle/2))"
+          },
+          {
+            "type": "formula",
+            "as": "text_y",
+            "expr": "200+100*sin(datum.slice_angle*datum.hour_plus1 - PI/2 - (datum.slice_angle/2))"
+          }
+        ]
+      }
+    ],
+    "scales": [
+      {
+        "name": "rScale",
+        "type": "linear",
+        "domain": {"data": "table", "field": "abs_balance"},
+        "range": [20,180]
+      },
+      {
+        "name": "thetaScale",
+        "type": "linear",
+        "domain": {"data": "table", "field": "hour"},
+        "range": [0, 6]
+      },
+      {
+        "name": "opacityScale",
+        "type": "linear",
+        "domain": {"data": "table", "field": "abs_balance"},
+        "range": [0.8, 0.8]
+      },
+      {
+        "name": "colourScale",
+        "type": "linear",
+        "domain": {"data": "table", "field": "balance"},
+        "range": {"scheme": "redyellowgreen"}
+      }
+    ],
+    "marks": [
+      {
+        "type": "arc",
+        "from": {"data":"table"},
+        "encode": {
+          "enter": {
+            "startAngle": {"field": "hour", "scale": "thetaScale"},
+            "endAngle": {"field": "hour_plus1", "scale": "thetaScale"},
+            "innerRadius": {"value": 20},
+            "outerRadius": {"field": "abs_balance", "scale": "rScale"},
+            "x": {"field": "half_width"},
+            "y": {"field": "half_height"},
+            "tooltip": {"field": "tooltip_text"}
+          },
+          "update": {
+            "fill": {"field": "balance", "scale": "colourScale"},
+            "fillOpacity": {"field": "abs_balance", "scale": "opacityScale"}
+          },
+          "hover": {
+            "fill": {"value": "blue"},
+            "fillOpacity": {"value": 1}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "from": {"data": "table"},
+        "encode": {
+          "enter": {
+            "text": {"field": "hour_plus1"},
+            "x": {"field": "text_x"},
+            "y": {"field": "text_y"},
+            "align": {"value":"center"},
+            "baseline": {"value": "middle"},
+            "fontSize": {"value": 10},
+            "fill": {"value": "black"}
+          }
+        }
+      },
+      {
+        "type": "rule",
+        "encode": {
+          "enter": {
+            "x": {"value": 200},
+            "y": {"value": 20},
+            "x2": {"value": 200},
+            "y2": {"value": 380},
+            "stroke": {"value": "lightgrey"}
+          }
+        }
+      },
+      {
+        "type": "rule",
+        "encode": {
+          "enter": {
+            "x": {"value": 20},
+            "y": {"value": 200},
+            "x2": {"value": 380},
+            "y2": {"value": 200},
+            "stroke": {"value": "lightgrey"}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "encode": {
+          "enter": {
+            "text": {"value": ["Balance in bike","pickup/dropoff","for station 336"]},
+            "x": {"value": 20},
+            "y": {"value": 20},
+            "align": {"value":"left"},
+            "baseline": {"value": "middle"},
+            "fontSize": {"value": 20}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "encode": {
+          "enter": {
+            "text": {"value": ["green = more pickups than dropoffs","red = more dropoffs than pickups"]},
+            "x": {"value": 220},
+            "y": {"value": 380},
+            "align": {"value":"left"},
+            "baseline": {"value": "middle"},
+            "fontSize": {"value": 10}
+          }
+        }
+      }
+    ]
+  };
+  vegaEmbed('#vis7', yourVlSpec);
+</script>
+
+<!--
+<img src="/assets/vega-citibike-dial-custom.png" width="300px" />
+-->
+
+<div class="seriesContext">
+    <a>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </a>
+</div>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 Visual Data Analysis Lab. All rights reserved. <br />
+ Site last generated: Jan 19, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>
