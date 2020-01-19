@@ -1,0 +1,54 @@
+entries:
+- title: sidebar
+  product: HoloViz tutorial
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: /titlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+  - title: Setting things up
+    output: web, pdf
+    folderitems:
+    - title: Installation and jupyter notebook
+      url: /holoviz-installation-and-jupyter-notebook.html
+      output: web, pdf
+    - title: A minimal vega plot in jupyter notebook
+      url: /holoviz-minimal-vega-plot-in-jupyter-notebook.html
+      output: web, pdf
+    - title: Splitting the specification
+      url: /holoviz-splitting-the-specification.html
+      output: web, pdf
+  - title: Panels
+    output: web, pdf
+    folderitems:
+    - title: What is panel?
+      url: /holoviz-what-is-panel.html
+      output: web, pdf
+    - title: Panel layout
+      url: /holoviz-panel-layout.html
+      output: web, pdf
+    - title: Panel is reactive
+      url: /holoviz-panel-is-reactive.html
+      output: web, pdf
+    - title: Panel and Vega
+      url: /holoviz-panel-and-vega.html
+      output: web, pdf
+    - title: Sharing dashboards
+      url: /holoviz-sharing-dashboards.html
+      output: web, pdf
+    - title: Linking widgets to visuals
+      url: /holoviz-linking-widgets-to-visuals.html
+      output: web, pdf
+    - title: Linking and brushing between panes
+      url: /holoviz-linking-and-brushing-between-panes.html
+      output: web, pdf
