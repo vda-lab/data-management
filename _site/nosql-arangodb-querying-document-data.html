@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" nosql">
+<title>Querying document data | Data Management</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-custom.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="data-management" href="http://localhost:4000/feed.xml">
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Data Management</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/vda-lab/data-management" target="_blank" rel="noopener">GitHub</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="rdbms_landing_page.html">Relational databases and SQL</a></li>
+                        
+                        
+                        
+                        <li><a href="nosql_landing_page.html">NoSQL</a></li>
+                        
+                        
+                        
+                        <li><a href="lambda_landing_page.html">Lambda architecture</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Querying document data">{title}</a></li>',
+                    noResultsText: '',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">NoSQL databases </li>
+  
+  
+  
+      
+  
+  <li>
+      <a title="Issues with relational databases" href="#">Issues with relational databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Querying scalability" href="nosql-querying-scalability-joins.html">Querying scalability</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Writing scalability" href="nosql-writing-scalability.html">Writing scalability</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Relational data" href="nosql-relational-data.html">Relational data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="The end of SQL?" href="nosql-the-end-of-sql.html">The end of SQL?</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Intermezzo - JSON" href="#">Intermezzo - JSON</a>
+      <ul>
+          
+          
+          
+          <li><a title="Intermezzo - JSON" href="nosql-intermezzo-json.html">Intermezzo - JSON</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Key/value stores" href="#">Key/value stores</a>
+      <ul>
+          
+          
+          
+          <li><a title="Key/value stores" href="nosql-keyvalue-stores.html">Key/value stores</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Document-oriented databases" href="#">Document-oriented databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Introduction" href="nosql-document-databases-introduction.html">Introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Joining vs embedding" href="nosql-joining-vs-embedding.html">Joining vs embedding</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Difference with key/value stores" href="nosql-difference-with-keyvalue-stores.html">Difference with key/value stores</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Data modelling" href="nosql-document-databases-data-modelling.html">Data modelling</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Implementations" href="nosql-document-databases-implementations.html">Implementations</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+      
+  
+  <li>
+      <a title="ArangoDB" href="#">ArangoDB</a>
+      <ul>
+          
+          
+          
+          <li><a title="A multi-model database" href="nosql-arangodb-multimodel-database.html">A multi-model database</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Starting with ArangoDB" href="nosql-starting-with-arangodb.html">Starting with ArangoDB</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Loading data" href="nosql-arangodb-loading-data.html">Loading data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Querying key/value data" href="nosql-arangodb-querying-keyvalue-data.html">Querying key/value data</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="Querying document data" href="nosql-arangodb-querying-document-data.html">Querying document data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Querying graph data" href="nosql-arangodb-querying-graph-data.html">Querying graph data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Improving performance" href="nosql-arangodb-improving-performance.html">Improving performance</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="ArangoDB APIs" href="#">ArangoDB APIs</a>
+      <ul>
+          
+          
+          
+          <li><a title="APIs" href="nosql-arangodb-apis.html">APIs</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="ArangoDB and R" href="nosql-arangodb-and-r.html">ArangoDB and R</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="ArangoDB and python" href="nosql-arangodb-and-python.html">ArangoDB and python</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block: -->
+         <!-- <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p> -->
+
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">Querying document data</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <p>Having stored our data in the <code class="highlighter-rouge">airports</code> and <code class="highlighter-rouge">flights</code> collections, we can query these in the <code class="highlighter-rouge">Query</code> section. An overview of the possible high-level operations can be found here: <a href="https://www.arangodb.com/docs/stable/aql/operations.html">https://www.arangodb.com/docs/stable/aql/operations.html</a>. From that website:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">FOR</code>: Iterate over a collection or View, all elements of an array or traverse a graph</li>
+  <li><code class="highlighter-rouge">RETURN</code>: Produce the result of a query.</li>
+  <li><code class="highlighter-rouge">FILTER</code>: Restrict the results to elements that match arbitrary logical conditions.</li>
+  <li><code class="highlighter-rouge">SEARCH</code>: Query the (full-text) index of an ArangoSearch View</li>
+  <li><code class="highlighter-rouge">SORT</code>: Force a sort of the array of already produced intermediate results.</li>
+  <li><code class="highlighter-rouge">LIMIT</code>: Reduce the number of elements in the result to at most the specified number, optionally skip elements (pagination).</li>
+  <li><code class="highlighter-rouge">LET</code>: Assign an arbitrary value to a variable.</li>
+  <li><code class="highlighter-rouge">COLLECT</code>: Group an array by one or multiple group criteria. Can also count and aggregate.</li>
+</ul>
+
+<p>We’ll go over some of these below.</p>
+
+<p>Note: When in the following section I write something like “equivalent in SQL” with an actual SQL query, this will actually be hypothetical. In other words: you cannot run that actual query on the ArangoDB database as that would not work. It <em>would</em> work if you’d first make an SQL database (e.g. using sqlite as seen in the previous session) and created the necessary tables and rows…</p>
+
+<h2 id="returning-a-result"><code class="highlighter-rouge">RETURN</code>ing a result</h2>
+<p>The most straightforward way to get a document is to select it by key. When doing this, you have to prepend the key with the name of the collection:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">RETURN</span> <span class="n">DOCUMENT</span><span class="p">(</span><span class="nv">"airports/JFK"</span><span class="p">)</span></code></pre></figure>
+
+<p>The above basically treats the ArangoDB database as a key/value store.</p>
+
+<p>You can also get multiple documents if you provide an array of keys instead of a single one:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">RETURN</span> <span class="n">DOCUMENT</span><span class="p">([</span><span class="nv">"airports/JFK"</span><span class="p">,</span><span class="nv">"airports/03D"</span><span class="p">])</span></code></pre></figure>
+
+<p>Notice the square brackets around the keys!</p>
+
+<h2 id="for-looping-over-all-documents"><code class="highlighter-rouge">FOR</code>: Looping over all documents</h2>
+<p>Remember that in SQL, a query looked like this:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">state</span>
+<span class="k">FROM</span> <span class="n">airports</span>
+<span class="k">WHERE</span> <span class="n">lat</span> <span class="o">&gt;</span> <span class="mi">35</span><span class="p">;</span></code></pre></figure>
+
+<p>SQL is a <em>declarative</em> language, which means that you tell the RDBMS <em>what</em> you want, not <em>how</em> to get it. This is not exactly true for AQL, which does need you to specify that you want to loop over all documents. The same query as the SQL one above in AQL would be:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="n">lat</span> <span class="o">&gt;</span> <span class="mi">35</span>
+  <span class="k">RETURN</span> <span class="n">a</span></code></pre></figure>
+
+<p>Similarly, the minimal SQL query is:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">airports</span><span class="p">;</span></code></pre></figure>
+
+<p>, whereas the minimal AQL query is:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="k">RETURN</span> <span class="n">a</span></code></pre></figure>
+
+<p>You can nest <code class="highlighter-rouge">FOR</code> statements, in which case you’ll get the cross project:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+  <span class="k">FOR</span> <span class="n">b</span> <span class="k">IN</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">]</span>
+    <span class="k">RETURN</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span></code></pre></figure>
+
+<p>This will return:</p>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">1  10
+2  10
+3  10
+1  20
+2  20
+3  20
+1  30
+2  30
+3  30</code></pre></figure>
+
+<p>If you don’t want to return the whole document, you can specify this in the <code class="highlighter-rouge">RETURN</code> statement. This is called a <em>projection</em>. For example:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="k">RETURN</span> <span class="n">a</span><span class="p">.</span><span class="n">name</span></code></pre></figure>
+
+<p>or</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="k">RETURN</span> <span class="err">{</span> <span class="nv">"name"</span><span class="p">:</span> <span class="n">a</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="nv">"state"</span><span class="p">:</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="err">}</span></code></pre></figure>
+
+<p>This is equivalent to specifying the column names in an SQL query:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">name</span><span class="p">,</span> <span class="k">state</span>
+<span class="k">FROM</span> <span class="n">airports</span><span class="p">;</span></code></pre></figure>
+
+<h2 id="returning-only-distinct-results">Returning only <code class="highlighter-rouge">DISTINCT</code> results</h2>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="k">RETURN</span> <span class="k">DISTINCT</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span></code></pre></figure>
+
+<h2 id="filtering-documents"><code class="highlighter-rouge">FILTER</code>ing documents</h2>
+<p>Data can be filtered using <code class="highlighter-rouge">FILTER</code>:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+  <span class="k">RETURN</span> <span class="n">a</span></code></pre></figure>
+
+<p>To combine different filters, you can use <code class="highlighter-rouge">AND</code> and <code class="highlighter-rouge">OR</code>:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+  <span class="k">AND</span> <span class="n">a</span><span class="p">.</span><span class="n">vip</span> <span class="o">==</span> <span class="k">true</span>
+  <span class="k">RETURN</span> <span class="n">a</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+  <span class="k">OR</span> <span class="n">a</span><span class="p">.</span><span class="n">vip</span> <span class="o">==</span> <span class="k">true</span>
+  <span class="k">RETURN</span> <span class="n">a</span></code></pre></figure>
+
+<p>It is often recommended to use parentheses to clarify the order of the filters:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="p">(</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span> <span class="k">OR</span> <span class="n">a</span><span class="p">.</span><span class="n">vip</span> <span class="o">==</span> <span class="k">true</span> <span class="p">)</span>
+  <span class="k">RETURN</span> <span class="n">a</span></code></pre></figure>
+
+<p>Instead of <code class="highlighter-rouge">AND</code>, you can also apply multiple filters consecutively:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="n">vip</span> <span class="o">==</span> <span class="k">true</span>
+  <span class="k">RETURN</span> <span class="n">a</span></code></pre></figure>
+
+<h2 id="sorting-the-results"><code class="highlighter-rouge">SORT</code>ing the results</h2>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">SORT</span> <span class="n">a</span><span class="p">.</span><span class="n">lat</span>
+  <span class="k">RETURN</span> <span class="p">[</span> <span class="n">a</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">lat</span> <span class="p">]</span></code></pre></figure>
+
+<p>As in SQL, AQL allows you do sort in descending order:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">SORT</span> <span class="n">a</span><span class="p">.</span><span class="n">lat</span> <span class="k">DESC</span>
+  <span class="k">RETURN</span> <span class="p">[</span> <span class="n">a</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">lat</span> <span class="p">]</span></code></pre></figure>
+
+<h2 id="combining-different-filters-limits-etc">Combining different filters, limits, etc</h2>
+<p>Remember that in SQL, you can combine different filters, sortings etc.</p>
+
+<p>In SQL:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">airports</span>
+<span class="k">WHERE</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">=</span> <span class="s1">'CA'</span>
+<span class="k">AND</span> <span class="n">a</span><span class="p">.</span><span class="n">lat</span> <span class="o">&gt;</span> <span class="mi">20</span>
+<span class="k">AND</span> <span class="n">vip</span> <span class="o">=</span> <span class="k">true</span>
+<span class="n">SORT</span> <span class="k">BY</span> <span class="n">lat</span>
+<span class="k">LIMIT</span> <span class="mi">15</span><span class="p">;</span></code></pre></figure>
+
+<p>In AQL, the different filters, sorts, limits, etc are applied top to bottom. This means that the following two do not necessarily give the same results:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="n">vip</span> <span class="o">==</span> <span class="k">true</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+  <span class="k">LIMIT</span> <span class="mi">5</span>
+  <span class="k">RETURN</span> <span class="n">a</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="n">vip</span> <span class="o">==</span> <span class="k">true</span>
+  <span class="k">LIMIT</span> <span class="mi">5</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+  <span class="k">RETURN</span> <span class="n">a</span></code></pre></figure>
+
+<h2 id="functions-in-arangodb">Functions in ArangoDB</h2>
+<p>ArangoDB includes a large collections of functions that can be run at different levels, e.g. to analyse the underlying database, to calculate aggregates like minimum and maximum from an array, to calculating the geographical distance between two locations on a map, to concatenate strings, etc. For a full list of functions see <a href="https://www.arangodb.com/docs/stable/aql/functions.html">https://www.arangodb.com/docs/stable/aql/functions.html</a>.</p>
+
+<p>Let’s have a look at some of these.</p>
+
+<h3 id="concat-and-concat_separator"><code class="highlighter-rouge">CONCAT</code> and <code class="highlighter-rouge">CONCAT_SEPARATOR</code></h3>
+<p>Using <code class="highlighter-rouge">CONCAT</code> and <code class="highlighter-rouge">CONCAT_SEPARATOR</code> we can return whole strings instead of just arrays and documents.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+  <span class="k">LIMIT</span> <span class="mi">10</span>
+  <span class="k">RETURN</span> <span class="p">[</span><span class="n">f</span><span class="p">.</span><span class="n">FlightNum</span><span class="p">,</span> <span class="n">f</span><span class="p">.</span><span class="n">_from</span><span class="p">,</span> <span class="n">f</span><span class="p">.</span><span class="n">_to</span><span class="p">]</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+  <span class="k">LIMIT</span> <span class="mi">10</span>
+  <span class="k">RETURN</span> <span class="n">CONCAT</span><span class="p">(</span><span class="nv">"Flight "</span><span class="p">,</span> <span class="n">f</span><span class="p">.</span><span class="n">FlightNum</span><span class="p">,</span> <span class="nv">" departs from "</span><span class="p">,</span> <span class="n">f</span><span class="p">.</span><span class="n">_from</span><span class="p">,</span> <span class="nv">" and goes to "</span><span class="p">,</span> <span class="n">f</span><span class="p">.</span><span class="n">_to</span><span class="p">,</span> <span class="nv">"."</span><span class="p">)</span></code></pre></figure>
+
+<p>returns</p>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">[
+"Flight 579 departs from airports/ATL and goes to airports/CHS.",
+"Flight 2895 departs from airports/CLE and goes to airports/SAT.",
+"Flight 7185 departs from airports/IAD and goes to airports/CLE.",
+"Flight 859 departs from airports/JFK and goes to airports/PBI.",
+"Flight 5169 departs from airports/CVG and goes to airports/MHT.",
+"Flight 9 departs from airports/JFK and goes to airports/SFO.",
+"Flight 1831 departs from airports/MIA and goes to airports/TPA.",
+"Flight 5448 departs from airports/CVG and goes to airports/GSO.",
+"Flight 878 departs from airports/FLL and goes to airports/JFK.",
+"Flight 680 departs from airports/TPA and goes to airports/PBI."
+]</code></pre></figure>
+
+<p>Something similar can be done with providing a separator. This can be useful when you’re creating a comma-separated file.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+  <span class="k">LIMIT</span> <span class="mi">10</span>
+  <span class="k">RETURN</span> <span class="n">CONCAT_SEPARATOR</span><span class="p">(</span><span class="s1">' -&gt; '</span><span class="p">,</span> <span class="n">f</span><span class="p">.</span><span class="n">_from</span><span class="p">,</span> <span class="n">f</span><span class="p">.</span><span class="n">_to</span><span class="p">)</span></code></pre></figure>
+
+<p>returns</p>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">[
+"airports/ATL -&gt; airports/CHS",
+"airports/CLE -&gt; airports/SAT",
+"airports/IAD -&gt; airports/CLE",
+"airports/JFK -&gt; airports/PBI",
+"airports/CVG -&gt; airports/MHT",
+"airports/JFK -&gt; airports/SFO",
+"airports/MIA -&gt; airports/TPA",
+"airports/CVG -&gt; airports/GSO",
+"airports/FLL -&gt; airports/JFK",
+"airports/TPA -&gt; airports/PBI"
+]</code></pre></figure>
+
+<h3 id="min-and-max"><code class="highlighter-rouge">MIN</code> and <code class="highlighter-rouge">MAX</code></h3>
+<p>These functions do what you expect them to do. See later in this post when we’re looking at <a href="#aggregation">aggregation</a>.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">RETURN</span> <span class="k">MAX</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span></code></pre></figure>
+
+<h2 id="subqueries">Subqueries</h2>
+<p>Remember that in SQL, we can replace the table mentioned in the <code class="highlighter-rouge">FROM</code> clause with a whole SQL statement, something like this:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">FROM</span> <span class="p">(</span>
+  <span class="k">SELECT</span> <span class="n">name</span> <span class="k">FROM</span> <span class="n">airports</span>
+  <span class="k">WHERE</span> <span class="k">state</span> <span class="o">=</span> <span class="s1">'TX'</span><span class="p">);</span></code></pre></figure>
+
+<p>We can do something similar with AQL. For argument’s sake, let’s wrap a simple query into another one which just returns the result of the inner query:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">s</span> <span class="k">IN</span> <span class="p">(</span>
+    <span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+        <span class="n">COLLECT</span> <span class="k">state</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="k">WITH</span> <span class="k">COUNT</span> <span class="k">INTO</span> <span class="n">nrAirports</span>
+        <span class="n">SORT</span> <span class="n">nrAirports</span> <span class="k">DESC</span>
+        <span class="k">RETURN</span> <span class="err">{</span>
+            <span class="nv">"state"</span> <span class="p">:</span> <span class="k">state</span><span class="p">,</span>
+            <span class="nv">"nrAirports"</span> <span class="p">:</span> <span class="n">nrAirports</span>
+        <span class="err">}</span>
+    <span class="p">)</span>
+<span class="k">RETURN</span> <span class="n">s</span></code></pre></figure>
+
+<p>This is exactly the same as if we would have run only the inner query. An AQL query similar to the SQL query above:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">airport</span> <span class="k">IN</span> <span class="p">(</span>
+    <span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+        <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="nv">"TX"</span>
+        <span class="k">RETURN</span> <span class="n">a</span>
+    <span class="p">)</span>
+    <span class="n">COLLECT</span> <span class="k">WITH</span> <span class="k">COUNT</span> <span class="k">INTO</span> <span class="k">c</span>
+    <span class="k">RETURN</span> <span class="k">c</span></code></pre></figure>
+
+<h2 id="joining-collections">Joining collections</h2>
+<p>It is simple enough to combine different collections, just by nesting <code class="highlighter-rouge">FOR</code> loops but making sure that there exits a <code class="highlighter-rouge">FILTER</code> in the inner loop to match up IDs. For example, to list all destination airports and distances for flights where the departure airport lies in California:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+  <span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+    <span class="n">FILTER</span> <span class="n">f</span><span class="p">.</span><span class="n">_from</span> <span class="o">==</span> <span class="n">a</span><span class="p">.</span><span class="n">_id</span>
+    <span class="k">RETURN</span> <span class="k">DISTINCT</span> <span class="err">{</span><span class="n">departure</span><span class="p">:</span> <span class="n">a</span><span class="p">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">arrival</span><span class="p">:</span> <span class="n">f</span><span class="p">.</span><span class="n">_to</span><span class="p">,</span> <span class="n">distance</span><span class="p">:</span> <span class="n">f</span><span class="p">.</span><span class="n">Distance</span><span class="err">}</span></code></pre></figure>
+
+<p>Gives:</p>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">airports/ACV  airports/SFO  250
+airports/ACV  airports/SMF  207
+airports/ACV  airports/CEC  56
+...</code></pre></figure>
+
+<p>(Remember from above that using links in a document setting consitute a code smell. If you’re doing this a lot, check if your data should be modelled as a graph. Further down when we’re talking about ArangoDB as a graph database we’ll write a version of this same query that uses a graph approach.)</p>
+
+<p>What if we want to show the departure and arrival airports full names instead of their codes, and have an additional filter on the arrival airport? To do this, we need an additional join with the airports table:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a1</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a1</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+  <span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+    <span class="n">FILTER</span> <span class="n">f</span><span class="p">.</span><span class="n">_from</span> <span class="o">==</span> <span class="n">a1</span><span class="p">.</span><span class="n">_id</span>
+    <span class="k">FOR</span> <span class="n">a2</span> <span class="k">in</span> <span class="n">airports</span>
+      <span class="n">FILTER</span> <span class="n">a2</span><span class="p">.</span><span class="n">_id</span> <span class="o">==</span> <span class="n">f</span><span class="p">.</span><span class="n">_to</span>
+      <span class="n">FILTER</span> <span class="n">a2</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+      <span class="k">RETURN</span> <span class="k">DISTINCT</span> <span class="err">{</span>
+        <span class="n">departure</span><span class="p">:</span> <span class="n">a1</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">arrival</span><span class="p">:</span> <span class="n">a2</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">distance</span><span class="p">:</span> <span class="n">f</span><span class="p">.</span><span class="n">Distance</span> <span class="err">}</span></code></pre></figure>
+
+<p>This will return something like the following:</p>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">Arcata  San Francisco International  250
+Arcata  Sacramento International     207
+Arcata  Jack McNamara                 56
+...</code></pre></figure>
+
+<p>The above joins are inner joins, which means that we will only find the departure airports for which such arrival airports exist (see the SQL session). What if we want to list the airports in California that do not have any flights to other airports in California? In this case, put the second <code class="highlighter-rouge">FOR</code> loop within the <code class="highlighter-rouge">RETURN</code> statement:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a1</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">FILTER</span> <span class="n">a1</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+  <span class="k">RETURN</span> <span class="err">{</span>
+    <span class="n">departure</span><span class="p">:</span> <span class="n">a1</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">arrival</span><span class="p">:</span> <span class="p">(</span>
+        <span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+            <span class="n">FILTER</span> <span class="n">f</span><span class="p">.</span><span class="n">_from</span> <span class="o">==</span> <span class="n">a1</span><span class="p">.</span><span class="n">_id</span>
+            <span class="k">FOR</span> <span class="n">a2</span> <span class="k">in</span> <span class="n">airports</span>
+                <span class="n">FILTER</span> <span class="n">a2</span><span class="p">.</span><span class="n">_id</span> <span class="o">==</span> <span class="n">f</span><span class="p">.</span><span class="n">_to</span>
+                <span class="n">FILTER</span> <span class="n">a2</span><span class="p">.</span><span class="k">state</span> <span class="o">==</span> <span class="s1">'CA'</span>
+                <span class="k">RETURN</span> <span class="k">DISTINCT</span> <span class="n">a2</span><span class="p">.</span><span class="n">name</span>
+                <span class="p">)</span><span class="err">}</span></code></pre></figure>
+
+<p>This returns:</p>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">...
+Buchanan         []
+Jack McNamara    ["San Francisco International","Arcata"]
+Chico Municipal  ["San Francisco International"]
+Camarillo        []
+...</code></pre></figure>
+
+<p>You’ll see that e.g. Buchanan and Camarillo are also listed, which was not the case before.</p>
+
+<h2 id="grouping">Grouping</h2>
+<p>To group results, AQL provides the <code class="highlighter-rouge">COLLECT</code> keyword. Note that this does grouping, but no aggregation. With <code class="highlighter-rouge">COLLECT</code> you create a new variable that will be used for the grouping.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">COLLECT</span> <span class="k">state</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="k">INTO</span> <span class="n">airportsByState</span>
+  <span class="k">RETURN</span> <span class="err">{</span>
+    <span class="nv">"state"</span> <span class="p">:</span> <span class="k">state</span><span class="p">,</span>
+    <span class="nv">"airports"</span> <span class="p">:</span> <span class="n">airportsByState</span>
+  <span class="err">}</span></code></pre></figure>
+
+<p>This code goes through each airport, and <em>collects</em> the state that it’s in. It’ll return a list of states with for each the list of their airports:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"airports"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"a"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0AK"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"airports/0AK"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"_rev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"_ZYukZZy--e"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pilot Station"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pilot Station"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AK"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USA"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"lat"</span><span class="p">:</span><span class="w"> </span><span class="mf">61.93396417</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"long"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pilot Station"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"vip"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"a"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15Z"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"airports/15Z"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"_rev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"_ZYukZa---I"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"McCarthy 2"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"McCarthy"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AK"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USA"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"lat"</span><span class="p">:</span><span class="w"> </span><span class="mf">61.43706083</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"long"</span><span class="p">:</span><span class="w"> </span><span class="s2">"McCarthy 2"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"vip"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="err">...</span></code></pre></figure>
+
+<p>The <code class="highlighter-rouge">a</code> in the output above refers to the <code class="highlighter-rouge">FOR a IN airports</code>. Using <code class="highlighter-rouge">FOR x IN airports</code> would have used <code class="highlighter-rouge">x</code> for each of the subdocuments above.</p>
+
+<p>This output is however not ideal… We basically just want to have the airport codes instead of the complete document.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">COLLECT</span> <span class="k">state</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="k">INTO</span> <span class="n">airportsByState</span>
+  <span class="k">RETURN</span> <span class="err">{</span>
+    <span class="nv">"state"</span> <span class="p">:</span> <span class="k">state</span><span class="p">,</span>
+    <span class="nv">"airports"</span> <span class="p">:</span> <span class="n">airportsByState</span><span class="p">[</span><span class="o">*</span><span class="p">].</span><span class="n">a</span><span class="p">.</span><span class="n">_id</span>
+  <span class="err">}</span></code></pre></figure>
+
+<p>This results in:</p>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">state  airports
+AK     ["airports/0AK","airports/15Z","airports/16A","airports/17Z", ...]
+AL     ["airports/02A","airports/06A","airports/08A","airports/09A", ...]
+...</code></pre></figure>
+
+<p>What is this <code class="highlighter-rouge">[*].a._id</code>? If we look at the output from the previous query, we get the full document for each airport, and the form of the output is:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"airports"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"a"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">,</span><span class="w"> </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"airports/0AK"</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"a"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">,</span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"airports/15Z"</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="err">...</span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span></code></pre></figure>
+
+<p>The <code class="highlighter-rouge">[*].a._id</code> means “for each of these (<code class="highlighter-rouge">*</code>), return the value for <code class="highlighter-rouge">a._id</code>”. This is very helpful if you want to extract a certain key from an array of documents.</p>
+
+<p><code class="highlighter-rouge">COLLECT</code> can be combined with the <code class="highlighter-rouge">WITH COUNT</code> pragma to return the number of items, for example:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+  <span class="n">COLLECT</span> <span class="k">state</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="k">state</span> <span class="k">WITH</span> <span class="k">COUNT</span> <span class="k">INTO</span> <span class="n">nrAirports</span>
+  <span class="n">SORT</span> <span class="n">nrAirports</span> <span class="k">DESC</span>
+  <span class="k">RETURN</span> <span class="err">{</span>
+    <span class="nv">"state"</span> <span class="p">:</span> <span class="k">state</span><span class="p">,</span>
+    <span class="nv">"nrAirports"</span> <span class="p">:</span> <span class="n">nrAirports</span>
+  <span class="err">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">AK  263
+TX  209
+CA  205
+...</code></pre></figure>
+
+<p>The above corresponds to the following in SQL:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">state</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span> <span class="n">airports</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="k">state</span><span class="p">;</span></code></pre></figure>
+
+<p>Another example: how many flights does each carrier have?</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+    <span class="n">COLLECT</span> <span class="n">carrier</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">UniqueCarrier</span> <span class="k">WITH</span> <span class="k">COUNT</span> <span class="k">INTO</span> <span class="k">c</span>
+    <span class="n">SORT</span> <span class="k">c</span> <span class="k">DESC</span>
+    <span class="k">LIMIT</span> <span class="mi">3</span>
+    <span class="k">RETURN</span> <span class="err">{</span>
+        <span class="n">carrier</span><span class="p">:</span> <span class="n">carrier</span><span class="p">,</span>
+        <span class="n">nrFlights</span><span class="p">:</span> <span class="k">c</span>
+    <span class="err">}</span></code></pre></figure>
+
+<p>The answer:</p>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">carrier  nrFlights
+WN       48065
+AA       24797
+OO       22509</code></pre></figure>
+
+<p>Apparently SouthWest Airlines (<code class="highlighter-rouge">WN</code>) has many more domestic flights than any other airline, including American Airlines (<code class="highlighter-rouge">AA</code>) and … (I don’t know what the OO stands for…)</p>
+
+<h2 id="aggregation">Aggregation</h2>
+<p>We can go further and make calculations as well. Note that we can only use <code class="highlighter-rouge">AGGREGATE</code> when we have run <code class="highlighter-rouge">COLLECT</code> before. When using <code class="highlighter-rouge">AGGREGATE</code> we create a new variable and assign it a value using one of the functions that we saw <a href="#functions-in-arangodb">here</a>.</p>
+
+<p>What is the average flight distance?</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+    <span class="n">COLLECT</span> <span class="k">AGGREGATE</span>
+    <span class="n">avg_length</span> <span class="o">=</span> <span class="k">AVG</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">Distance</span><span class="p">)</span>
+    <span class="k">RETURN</span> <span class="n">avg_length</span></code></pre></figure>
+
+<p>The answer is 729.93 kilometers.</p>
+
+<p>What is the shortest flight for each day of the week?</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+  <span class="n">COLLECT</span> <span class="n">dayOfWeek</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="n">DayOfWeek</span>
+  <span class="k">AGGREGATE</span> <span class="n">minDistance</span> <span class="o">=</span> <span class="k">MIN</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">Distance</span><span class="p">)</span>
+  <span class="k">RETURN</span> <span class="err">{</span>
+    <span class="nv">"dow"</span> <span class="p">:</span> <span class="n">dayOfWeek</span><span class="p">,</span>
+    <span class="nv">"minDistance"</span><span class="p">:</span> <span class="n">minDistance</span>
+  <span class="err">}</span></code></pre></figure>
+
+<p>Based on this query, we see that there is actually a flight on Wednesday that is shorter than any other flight.</p>
+
+<figure class="highlight"><pre><code class="language-csv" data-lang="csv">dow  minDistance
+1    31
+2    30
+3    24
+4    31
+5    31
+6    31
+7    30</code></pre></figure>
+
+<p>OK, now we’re obviously interested in what those shortest flights are. Given what we have seen above, this will give us a map with those flights. For a geographical query, ArangoDB uses OpenStreetMap to visualise the returned points:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+  <span class="n">SORT</span> <span class="n">f</span><span class="p">.</span><span class="n">Distance</span>
+  <span class="k">LIMIT</span> <span class="mi">3</span>
+  <span class="n">LET</span> <span class="n">myAirports</span> <span class="o">=</span> <span class="p">[</span><span class="n">DOCUMENT</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">_from</span><span class="p">),</span> <span class="n">DOCUMENT</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">_to</span><span class="p">)]</span>
+  <span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">myAirports</span>
+    <span class="k">RETURN</span> <span class="n">GEO_POINT</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">long</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">lat</span><span class="p">)</span></code></pre></figure>
+
+<p>Here we used the <code class="highlighter-rouge">LET</code> operation (see above “Querying document data”) for creating an array with two documents that we can loop over in the next lines using <code class="highlighter-rouge">FOR</code>.</p>
+
+<p><img src="/assets/arangodb-shortflights.png" alt="short flights" /></p>
+
+<p>Intermezzo: now we’re curious: what actually are the names of the airports with the shortest flight? (They should be included in the picture above, right?)</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">FOR</span> <span class="n">f</span> <span class="k">IN</span> <span class="n">flights</span>
+    <span class="n">SORT</span> <span class="n">f</span><span class="p">.</span><span class="n">Distance</span>
+    <span class="k">LIMIT</span> <span class="mi">1</span>
+    <span class="n">LET</span> <span class="k">from</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+        <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="n">_id</span> <span class="o">==</span> <span class="n">f</span><span class="p">.</span><span class="n">_from</span>
+        <span class="k">RETURN</span> <span class="n">a</span><span class="p">.</span><span class="n">name</span> <span class="p">)</span>
+    <span class="n">LET</span> <span class="k">to</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="k">FOR</span> <span class="n">a</span> <span class="k">IN</span> <span class="n">airports</span>
+        <span class="n">FILTER</span> <span class="n">a</span><span class="p">.</span><span class="n">_id</span> <span class="o">==</span> <span class="n">f</span><span class="p">.</span><span class="n">_to</span>
+        <span class="k">RETURN</span> <span class="n">a</span><span class="p">.</span><span class="n">name</span> <span class="p">)</span>
+    <span class="k">RETURN</span> <span class="p">[</span><span class="k">from</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="k">to</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">f</span><span class="p">.</span><span class="n">Distance</span><span class="p">]</span></code></pre></figure>
+
+<p>Result:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">[</span><span class="w">
+  </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"Washington Dulles International"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Ronald Reagan Washington National"</span><span class="p">,</span><span class="w">
+    </span><span class="mi">24</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">]</span></code></pre></figure>
+
+<div class="seriesContext">
+    <a>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <a href="nosql-arangodb-querying-graph-data.html"><button type="button" class="btn btn-primary">Next: Querying graph data</button></a>
+        
+    </a>
+</div>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2020 Visual Data Analysis Lab. All rights reserved. <br />
+ Site last generated: Jan 20, 2020 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

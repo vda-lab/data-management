@@ -48,10 +48,10 @@
 
 
 {
-"title": "Advanced interaction",
+"title": "ArangoDB and python",
 "tags": "",
-"keywords": "vega",
-"url": "vega-advanced-interaction.html",
+"keywords": "nosql",
+"url": "nosql-arangodb-and-python.html",
 "summary": ""
 }
 ,
@@ -59,10 +59,10 @@
 
 
 {
-"title": "Advanced transforms",
+"title": "ArangoDB and R",
 "tags": "",
-"keywords": "vega",
-"url": "vega-advanced-transforms.html",
+"keywords": "nosql",
+"url": "nosql-arangodb-and-r.html",
 "summary": ""
 }
 ,
@@ -70,10 +70,76 @@
 
 
 {
-"title": "Axes",
+"title": "APIs",
 "tags": "",
-"keywords": "vega",
-"url": "vega-axes.html",
+"keywords": "nosql",
+"url": "nosql-arangodb-apis.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Improving performance",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-arangodb-improving-performance.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Loading data",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-arangodb-loading-data.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "ArangoDB is a multimodel database",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-arangodb-multimodel-database.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Querying document data",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-arangodb-querying-document-data.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Querying graph data",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-arangodb-querying-graph-data.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Querying key/value data",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-arangodb-querying-keyvalue-data.html",
 "summary": ""
 }
 ,
@@ -85,28 +151,6 @@
 "tags": "",
 "keywords": "vegalite",
 "url": "vegalite-brushing-and-linking.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Brushing and linking",
-"tags": "",
-"keywords": "vega",
-"url": "vega-brushing-and-linking.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Changing colour",
-"tags": "",
-"keywords": "vega",
-"url": "vega-changing-colour.html",
 "summary": ""
 }
 ,
@@ -136,28 +180,6 @@
 
 
 {
-"title": "Colour-scales",
-"tags": "",
-"keywords": "vega",
-"url": "vega-colour-scales.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Combining event streams",
-"tags": "",
-"keywords": "vega",
-"url": "vega-combining-event-streams.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Composing plots",
 "tags": "",
 "keywords": "vegalite",
@@ -169,43 +191,10 @@
 
 
 {
-"title": "Composing plots",
-"tags": "",
-"keywords": "vega",
-"url": "vega-composing-plots.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Conclusion - key concepts",
 "tags": "",
 "keywords": "rdbms",
 "url": "rdbms-conclusion-key-concepts.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "A simple scatterplot",
-"tags": "",
-"keywords": "vega",
-"url": "vega-simple-scatterplot.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Data-independent marks",
-"tags": "",
-"keywords": "vega",
-"url": "vega-data-independent-marks.html",
 "summary": ""
 }
 ,
@@ -235,10 +224,10 @@
 
 
 {
-"title": "Debugging and building complex visualisations",
+"title": "Difference with key/value stores",
 "tags": "",
-"keywords": "vega",
-"url": "vega-debugging.html",
+"keywords": "nosql",
+"url": "nosql-difference-with-keyvalue-stores.html",
 "summary": ""
 }
 ,
@@ -257,6 +246,39 @@
 
 
 {
+"title": "Data modelling",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-document-databases-data-modelling.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Implementations",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-document-databases-implementations.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Introduction to document stores",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-document-databases-introduction.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "Drawbacks of relational databases",
 "tags": "",
 "keywords": "rdbms",
@@ -268,32 +290,10 @@
 
 
 {
-"title": "Enter - Update - Exit",
-"tags": "",
-"keywords": "vega",
-"url": "vega-enter-update-exit.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Data in epidemiological studies",
 "tags": "",
 "keywords": "rdbms",
 "url": "rdbms-epidemiological-studies.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Event streams",
-"tags": "",
-"keywords": "vega",
-"url": "vega-event-streams.html",
 "summary": ""
 }
 ,
@@ -325,32 +325,10 @@
 
 
 {
-"title": "Force-directed-networks",
-"tags": "",
-"keywords": "vega",
-"url": "vega-force-directed-networks.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Further exercises",
 "tags": "",
 "keywords": "vegalite",
 "url": "vegalite-further-exercises.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Further exercises",
-"tags": "",
-"keywords": "vega",
-"url": "vega-further-exercises.html",
 "summary": ""
 }
 ,
@@ -373,6 +351,61 @@
 "tags": "",
 "keywords": "rdbms",
 "url": "rdbms-getting-data-out.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Centralities",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-graph-databases-centralities.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Data modelling",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-graph-databases-data-modelling.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Introduction",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-graph-databases-introduction.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Graph mining",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-graph-databases-mining.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Nomenclature",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-graph-databases-nomenclature.html",
 "summary": ""
 }
 ,
@@ -413,6 +446,17 @@
 
 
 {
+"title": "Intermezzo - JSON",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-intermezzo-json.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "Introduction to relational database management systems",
 "tags": "",
 "keywords": "rdbms",
@@ -424,10 +468,10 @@
 
 
 {
-"title": "Legends",
+"title": "Joining vs embedding",
 "tags": "",
-"keywords": "vega",
-"url": "vega-legends.html",
+"keywords": "nosql",
+"url": "nosql-joining-vs-embedding.html",
 "summary": ""
 }
 ,
@@ -435,10 +479,10 @@
 
 
 {
-"title": "Loading external data",
+"title": "Key/value stores",
 "tags": "",
-"keywords": "vega",
-"url": "vega-loading-external-data.html",
+"keywords": "nosql",
+"url": "nosql-keyvalue-stores.html",
 "summary": ""
 }
 ,
@@ -461,6 +505,17 @@
 "tags": "",
 "keywords": "rdbms",
 "url": "rdbms-normalisation-homework.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "NoSQL and ArangoDB",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql_landing_page.html",
 "summary": ""
 }
 ,
@@ -503,6 +558,17 @@
 
 
 {
+"title": "Querying scalability",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-querying-scalability-joins.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "Relational databases and SQL",
 "tags": "",
 "keywords": "rdbms",
@@ -525,10 +591,10 @@
 
 
 {
-"title": "Scales overview",
+"title": "Relational data",
 "tags": "",
-"keywords": "vega",
-"url": "vega-scales-overview.html",
+"keywords": "nosql",
+"url": "nosql-relational-data.html",
 "summary": ""
 }
 ,
@@ -553,28 +619,6 @@
 "tags": "",
 "keywords": "vegalite",
 "url": "vegalite-setting-colour-and-shape.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Signals",
-"tags": "",
-"keywords": "vega",
-"url": "vega-signals.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Simple interaction",
-"tags": "",
-"keywords": "vega",
-"url": "vega-simple-interaction.html",
 "summary": ""
 }
 ,
@@ -616,6 +660,14 @@
 
 
 
+{
+"title": "Starting with ArangoDB",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-starting-with-arangodb.html",
+"summary": ""
+}
+,
 
 
 
@@ -635,6 +687,20 @@
 
 
 
+
+
+
+
+
+
+{
+"title": "The end of SQL?",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-the-end-of-sql.html",
+"summary": ""
+}
+,
 
 
 
@@ -651,17 +717,6 @@
 "tags": "",
 "keywords": "vegalite",
 "url": "vegalite-tooltips.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Transforms",
-"tags": "",
-"keywords": "vega",
-"url": "vega-transforms.html",
 "summary": ""
 }
 ,
@@ -695,28 +750,6 @@
 "tags": "",
 "keywords": "vegalite",
 "url": "vegalite-using-widgets-for-selection.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Using widgets to send signals",
-"tags": "",
-"keywords": "vega",
-"url": "vega-using-widgets-to-send-signals.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Vega",
-"tags": "",
-"keywords": "vega",
-"url": "vega_landing_page.html",
 "summary": ""
 }
 ,
@@ -761,6 +794,17 @@
 "tags": "",
 "keywords": "vegalite",
 "url": "vegalite-where-next.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Writing scalability",
+"tags": "",
+"keywords": "nosql",
+"url": "nosql-writing-scalability.html",
 "summary": ""
 }
 ,

@@ -32,37 +32,61 @@
   
   
   <url>
-    <loc>http://localhost:4000/vega-advanced-interaction.html</loc>
+    <loc>http://localhost:4000/nosql-arangodb-and-python.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/vega-advanced-transforms.html</loc>
+    <loc>http://localhost:4000/nosql-arangodb-and-r.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/vega-axes.html</loc>
+    <loc>http://localhost:4000/nosql-arangodb-apis.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-arangodb-improving-performance.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-arangodb-loading-data.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-arangodb-multimodel-database.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-arangodb-querying-document-data.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-arangodb-querying-graph-data.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-arangodb-querying-keyvalue-data.html</loc>
   </url>
   
   
   
   <url>
     <loc>http://localhost:4000/vegalite-brushing-and-linking.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-brushing-and-linking.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-changing-colour.html</loc>
   </url>
   
   
@@ -80,43 +104,13 @@
   
   
   <url>
-    <loc>http://localhost:4000/vega-colour-scales.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-combining-event-streams.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/vegalite-composing-plots.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/vega-composing-plots.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/rdbms-conclusion-key-concepts.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-simple-scatterplot.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-data-independent-marks.html</loc>
   </url>
   
   
@@ -134,7 +128,7 @@
   
   
   <url>
-    <loc>http://localhost:4000/vega-debugging.html</loc>
+    <loc>http://localhost:4000/nosql-difference-with-keyvalue-stores.html</loc>
   </url>
   
   
@@ -146,25 +140,31 @@
   
   
   <url>
+    <loc>http://localhost:4000/nosql-document-databases-data-modelling.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-document-databases-implementations.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-document-databases-introduction.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://localhost:4000/rdbms-drawbacks-of-rdbms.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/vega-enter-update-exit.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/rdbms-epidemiological-studies.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-event-streams.html</loc>
   </url>
   
   
@@ -184,19 +184,7 @@
   
   
   <url>
-    <loc>http://localhost:4000/vega-force-directed-networks.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/vegalite-further-exercises.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-further-exercises.html</loc>
   </url>
   
   
@@ -209,6 +197,36 @@
   
   <url>
     <loc>http://localhost:4000/rdbms-getting-data-out.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-graph-databases-centralities.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-graph-databases-data-modelling.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-graph-databases-introduction.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-graph-databases-mining.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-graph-databases-nomenclature.html</loc>
   </url>
   
   
@@ -232,19 +250,25 @@
   
   
   <url>
+    <loc>http://localhost:4000/nosql-intermezzo-json.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://localhost:4000/rdbms-intro.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/vega-legends.html</loc>
+    <loc>http://localhost:4000/nosql-joining-vs-embedding.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/vega-loading-external-data.html</loc>
+    <loc>http://localhost:4000/nosql-keyvalue-stores.html</loc>
   </url>
   
   
@@ -257,6 +281,12 @@
   
   <url>
     <loc>http://localhost:4000/rdbms-normalisation-homework.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql_landing_page.html</loc>
   </url>
   
   
@@ -282,6 +312,12 @@
   
   
   <url>
+    <loc>http://localhost:4000/nosql-querying-scalability-joins.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://localhost:4000/rdbms_landing_page.html</loc>
   </url>
   
@@ -294,7 +330,7 @@
   
   
   <url>
-    <loc>http://localhost:4000/vega-scales-overview.html</loc>
+    <loc>http://localhost:4000/nosql-relational-data.html</loc>
   </url>
   
   
@@ -309,18 +345,6 @@
   
   <url>
     <loc>http://localhost:4000/vegalite-setting-colour-and-shape.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-signals.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-simple-interaction.html</loc>
   </url>
   
   
@@ -345,6 +369,9 @@
   
   
   
+  <url>
+    <loc>http://localhost:4000/nosql-starting-with-arangodb.html</loc>
+  </url>
   
   
   
@@ -364,6 +391,15 @@
   
   
   
+  
+  
+  
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-the-end-of-sql.html</loc>
+  </url>
   
   
   
@@ -382,12 +418,6 @@
   
   
   <url>
-    <loc>http://localhost:4000/vega-transforms.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/rdbms-types-of-relationships.html</loc>
   </url>
   
@@ -401,18 +431,6 @@
   
   <url>
     <loc>http://localhost:4000/vegalite-using-widgets-for-selection.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega-using-widgets-to-send-signals.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vega_landing_page.html</loc>
   </url>
   
   
@@ -437,6 +455,12 @@
   
   <url>
     <loc>http://localhost:4000/vegalite-where-next.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/nosql-writing-scalability.html</loc>
   </url>
   
   

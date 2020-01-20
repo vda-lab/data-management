@@ -1,0 +1,117 @@
+entries:
+- title: sidebar
+  product: NoSQL databases
+  folders:
+
+  - title:
+    output: pdf
+    type: frontmatter
+    folderitems:
+    - title:
+      url: /titlepage.html
+      output: pdf
+      type: frontmatter
+    - title:
+      url: /tocpage.html
+      output: pdf
+      type: frontmatter
+
+
+  - title: Issues with relational databases
+    output: web, pdf
+    folderitems:
+    - title: Querying scalability
+      url: /nosql-querying-scalability-joins.html
+      output: web, pdf
+    - title: Writing scalability
+      url: /nosql-writing-scalability.html
+      output: web, pdf
+    - title: Relational data
+      url: /nosql-relational-data.html
+      output: web, pdf
+    - title: The end of SQL?
+      url: /nosql-the-end-of-sql.html
+      output: web, pdf
+  - title: Intermezzo - JSON
+    output: web, pdf
+    folderitems:
+    - title: Intermezzo - JSON
+      url: /nosql-intermezzo-json.html
+      output: web, pdf
+  - title: Key/value stores
+    output: web, pdf
+    folderitems:
+    - title: Key/value stores
+      url: /nosql-keyvalue-stores.html
+      output: web, pdf
+  - title: Document-oriented databases
+    output: web, pdf
+    folderitems:
+    - title: Introduction
+      url: /nosql-document-databases-introduction.html
+      output: web, pdf
+    - title: Joining vs embedding
+      url: /nosql-joining-vs-embedding.html
+      output: web, pdf
+    - title: Difference with key/value stores
+      url: /nosql-difference-with-keyvalue-stores.html
+      output: web, pdf
+    - title: Data modelling
+      url: /nosql-document-databases-data-modelling.html
+      output: web, pdf
+    - title: Implementations
+      url: /nosql-document-databases-implementations.html
+      output: web, pdf
+  - title: Graph databases
+    folderitems:
+    - title: Introduction
+      url: /nosql-graph-databases-introduction.html
+      output: web, pdf
+    - title: Nomenclature
+      url: /nosql-graph-databases-nomenclature.html
+      output: web, pdf
+    - title: Centralities
+      url: /nosql-graph-databases-centralities.html
+      output: web, pdf
+    - title: Graph mining
+      url: /nosql-graph-databases-mining.html
+      output: web, pdf
+    - title: Data modelling
+      url: /nosql-graph-databases-data-modelling.html
+      output: web, pdf
+  - title: ArangoDB
+    output: web, pdf
+    folderitems:
+    - title: A multi-model database
+      url: /nosql-arangodb-multimodel-database.html
+      output: web, pdf
+    - title: Starting with ArangoDB
+      url: /nosql-starting-with-arangodb.html
+      output: web, pdf
+    - title: Loading data
+      url: /nosql-arangodb-loading-data.html
+      output: web, pdf
+    - title: Querying key/value data
+      url: /nosql-arangodb-querying-keyvalue-data.html
+      output: web, pdf
+    - title: Querying document data
+      url: /nosql-arangodb-querying-document-data.html
+      output: web, pdf
+    - title: Querying graph data
+      url: /nosql-arangodb-querying-graph-data.html
+      output: web, pdf
+    - title: Improving performance
+      url: /nosql-arangodb-improving-performance.html
+      output: web, pdf
+  - title: ArangoDB APIs
+    output: web, pdf
+    folderitems:
+    - title: APIs
+      url: /nosql-arangodb-apis.html
+      output: web, pdf
+    - title: ArangoDB and R
+      url: /nosql-arangodb-and-r.html
+      output: web, pdf
+    - title: ArangoDB and python
+      url: /nosql-arangodb-and-python.html
+      output: web, pdf
