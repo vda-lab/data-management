@@ -1,6 +1,6 @@
 entries:
 - title: sidebar
-  product: Vega tutorial
+  product: Lambda architecture
   folders:
 
   - title:
@@ -16,109 +16,42 @@ entries:
       output: pdf
       type: frontmatter
 
-
-  - title: Creating static images
+  - title: SQL vs NoSQL
     output: web, pdf
     folderitems:
-    - title: A simple scatterplot
-      url: /vega-simple-scatterplot.html
+    - title: Introduction
+      url: /lambda-sqlvsnosql-introduction.html
       output: web, pdf
-    - title: Changing colour
-      url: /vega-changing-colour.html
+    - title: Keep components simple
+      url: /lambda-sqlvsnosql-keep-components-simple.html
       output: web, pdf
-    - title: Data-independent-marks
-      url: /vega-data-independent-marks.html
+    - title: Application tiers
+      url: /lambda-sqlvsnosql-application-tiers.html
       output: web, pdf
-  - title: Scales
+    - title: Memory locations
+      url: /lambda-sqlvsnosql-memory-locations.html
+      output: web, pdf
+    - title: Cache
+      url: /lambda-sqlvsnosql-cache.html
+      output: web, pdf
+    - title: ACID vs BASE
+      url: /lambda-sqlvsnosql-acid-vs-base.html
+      output: web, pdf
+  - title: Lambda architecture
     output: web, pdf
     folderitems:
-    - title: Overview
-      url: /vega-scales-overview.html
+    - title: Introduction
+      url: /lambda-architecture-introduction.html
       output: web, pdf
-    - title: Colour scales
-      url: /vega-colour-scales.html
+    - title: Batch layer
+      url: /lambda-batch-layer.html
       output: web, pdf
-  - title: Enter - Update - Exit
-    output: web, pdf
-    folderitems:
-    - title: Enter - Update - Exit
-      url: /vega-enter-update-exit.html
+    - title: Serving layer
+      url: /lambda-serving-layer.html
       output: web, pdf
-  - title: Axes
-    output: web, pdf
-    folderitems:
-    - title: Axes
-      url: /vega-axes.html
+    - title: Speed layer
+      url: /lambda-speed-layer.html
       output: web, pdf
-  - title: Legends
-    output: web, pdf
-    folderitems:
-    - title: Legends
-      url: /vega-legends.html
-      output: web, pdf
-  - title: Loading external data
-    output: web, pdf
-    folderitems:
-    - title: Loading external data
-      url: /vega-loading-external-data.html
-      output: web, pdf
-  - title: Transforms
-    output: web, pdf
-    folderitems:
-    - title: Transforms
-      url: /vega-transforms.html
-      output: web, pdf
-  - title: Interaction
-    output: web, pdf
-    folderitems:
-    - title: Simple interaction
-      url: vega-simple-interaction.html
-      output: web, pdf
-    - title: Advanced interaction
-      url: vega-advanced-interaction.html
-      output: web, pdf
-    - title: Event streams
-      url: vega-event-streams.html
-      output: web, pdf
-    - title: Combining event streams
-      url: vega-combining-event-streams.html
-      output: web, pdf
-    - title: Signals
-      url: vega-signals.html
-      output: web, pdf
-    - title: Using widgets to send signals
-      url: vega-using-widgets-to-send-signals.html
-      output: web, pdf
-  - title: Composing plots
-    output: web, pdf
-    folderitems:
-    - title: Composing plots
-      url: vega-composing-plots.html
-      output: web, pdf
-  - title: Advanced transforms
-    output: web, pdf
-    folderitems:
-    - title: Advanced transforms
-      url: vega-advanced-transforms.html
-      output: web, pdf
-    - title: Force-directed networks
-      url: vega-force-directed-networks.html
-      output: web, pdf
-  - title: Brushing and linking
-    output: web, pdf
-    folderitems:
-    - title: Brushing and linking
-      url: vega-brushing-and-linking.html
-      output: web, pdf
-  - title: Debugging
-    output: web, pdf
-    folderitems:
-    - title: Debugging
-      url: vega-debugging.html
-      output: web, pdf
-  - title: Further exercises
-    output: web, pdf
-    folderitems:
-    - title: Further exercises
-      url: vega-further-exercises.html
+    - title: An example
+      url: /lambda-example.html
       output: web, pdf

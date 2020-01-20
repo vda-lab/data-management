@@ -14,12 +14,6 @@
   
   
   <url>
-    <loc>http://localhost:4000/vegalite-a-scatterplot-matrix.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/rdbms-a-student-database.html</loc>
   </url>
   
@@ -86,37 +80,13 @@
   
   
   <url>
-    <loc>http://localhost:4000/vegalite-brushing-and-linking.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-changing-the-data.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/rdbms-clinical-trials.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/vegalite-composing-plots.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/rdbms-conclusion-key-concepts.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-data-transformations.html</loc>
   </url>
   
   
@@ -168,24 +138,6 @@
   </url>
   
   
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-facetting.html</loc>
-  </url>
-  
-  
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-focus-and-context-plots.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-further-exercises.html</loc>
-  </url>
   
   
   
@@ -244,12 +196,6 @@
   
   
   <url>
-    <loc>http://localhost:4000/vegalite-interaction.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/nosql-intermezzo-json.html</loc>
   </url>
   
@@ -274,6 +220,78 @@
   
   
   <url>
+    <loc>http://localhost:4000/lambda-architecture-introduction.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-batch-layer.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-example.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda_landing_page.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-serving-layer.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-speed-layer.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-sqlvsnosql-acid-vs-base.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-sqlvsnosql-application-tiers.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-sqlvsnosql-cache.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-sqlvsnosql-introduction.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-sqlvsnosql-keep-components-simple.html</loc>
+  </url>
+  
+  
+  
+  <url>
+    <loc>http://localhost:4000/lambda-sqlvsnosql-memory-locations.html</loc>
+  </url>
+  
+  
+  
+  <url>
     <loc>http://localhost:4000/rdbms-normal-forms.html</loc>
   </url>
   
@@ -293,12 +311,6 @@
   
   <url>
     <loc>http://localhost:4000/rdbms-other-best-practices.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-placing-views-side-by-side.html</loc>
   </url>
   
   
@@ -334,24 +346,6 @@
   </url>
   
   
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-selecting-datapoints.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-setting-colour-and-shape.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-simplest-barchart.html</loc>
-  </url>
   
   
   
@@ -412,12 +406,6 @@
   
   
   <url>
-    <loc>http://localhost:4000/vegalite-tooltips.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/rdbms-types-of-relationships.html</loc>
   </url>
   
@@ -430,43 +418,13 @@
   
   
   <url>
-    <loc>http://localhost:4000/vegalite-using-widgets-for-selection.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-vegalite-online-editor.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite_landing_page.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/rdbms-views.html</loc>
   </url>
   
   
   
   <url>
-    <loc>http://localhost:4000/vegalite-where-next.html</loc>
-  </url>
-  
-  
-  
-  <url>
     <loc>http://localhost:4000/nosql-writing-scalability.html</loc>
-  </url>
-  
-  
-  
-  <url>
-    <loc>http://localhost:4000/vegalite-zooming-and-panning.html</loc>
   </url>
   
   

@@ -15,17 +15,6 @@
 
 
 {
-"title": "A scatterplot matrix",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-a-scatterplot-matrix.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "A student database",
 "tags": "",
 "keywords": "rdbms",
@@ -147,28 +136,6 @@
 
 
 {
-"title": "Brushing and linking",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-brushing-and-linking.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Changing the data",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-changing-the-data.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Data in clinical trials",
 "tags": "",
 "keywords": "rdbms",
@@ -180,32 +147,10 @@
 
 
 {
-"title": "Composing plots",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-composing-plots.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Conclusion - key concepts",
 "tags": "",
 "keywords": "rdbms",
 "url": "rdbms-conclusion-key-concepts.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Data transformations",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-data-transformations.html",
 "summary": ""
 }
 ,
@@ -299,39 +244,6 @@
 ,
 
 
-
-{
-"title": "Facetting",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-facetting.html",
-"summary": ""
-}
-,
-
-
-
-
-
-{
-"title": "Focus and context plots",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-focus-and-context-plots.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Further exercises",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-further-exercises.html",
-"summary": ""
-}
-,
 
 
 
@@ -435,17 +347,6 @@
 
 
 {
-"title": "Interaction",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-interaction.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Intermezzo - JSON",
 "tags": "",
 "keywords": "nosql",
@@ -490,6 +391,138 @@
 
 
 {
+"title": "Introduction",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-architecture-introduction.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Batch layer",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-batch-layer.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "An example",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-example.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Lambda architecture",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda_landing_page.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Serving layer",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-serving-layer.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Speed layer",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-speed-layer.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "ACID vs BASE",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-sqlvsnosql-acid-vs-base.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Use different application tiers",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-sqlvsnosql-application-tiers.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Keep your cache current",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-sqlvsnosql-cache.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Introduction",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-sqlvsnosql-introduction.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Keep components simple",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-sqlvsnosql-keep-components-simple.html",
+"summary": ""
+}
+,
+
+
+
+{
+"title": "Think strategically about RAM, SSD and disk",
+"tags": "",
+"keywords": "lambda",
+"url": "lambda-sqlvsnosql-memory-locations.html",
+"summary": ""
+}
+,
+
+
+
+{
 "title": "Normal forms",
 "tags": "",
 "keywords": "rdbms",
@@ -527,17 +560,6 @@
 "tags": "",
 "keywords": "rdbms",
 "url": "rdbms-other-best-practices.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Placing views side-by-side",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-placing-views-side-by-side.html",
 "summary": ""
 }
 ,
@@ -600,39 +622,6 @@
 ,
 
 
-
-
-
-{
-"title": "Selecting datapoints",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-selecting-datapoints.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Setting colour and shape",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-setting-colour-and-shape.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "The simplest barchart",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-simplest-barchart.html",
-"summary": ""
-}
-,
 
 
 
@@ -713,17 +702,6 @@
 
 
 {
-"title": "Tooltips",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-tooltips.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Types of relationships",
 "tags": "",
 "keywords": "rdbms",
@@ -746,39 +724,6 @@
 
 
 {
-"title": "Using widgets for selection",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-using-widgets-for-selection.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Vega-Lite online editor",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-vegalite-online-editor.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Vega-Lite",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite_landing_page.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Views",
 "tags": "",
 "keywords": "rdbms",
@@ -790,32 +735,10 @@
 
 
 {
-"title": "Where next?",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-where-next.html",
-"summary": ""
-}
-,
-
-
-
-{
 "title": "Writing scalability",
 "tags": "",
 "keywords": "nosql",
 "url": "nosql-writing-scalability.html",
-"summary": ""
-}
-,
-
-
-
-{
-"title": "Zooming and panning",
-"tags": "",
-"keywords": "vegalite",
-"url": "vegalite-zooming-and-panning.html",
 "summary": ""
 }
 ,

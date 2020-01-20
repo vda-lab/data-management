@@ -2,6 +2,7 @@
 title: "Data Management"
 keywords: homepage
 permalink: index.html
+toc: false
 ---
 Welcome to the course material for the Software and Data Management course at UHasselt. The contents of this post is licensed as CC-BY: feel free to copy/remix/tweak/... it, but please credit your source.
 
@@ -25,6 +26,7 @@ Data management encompasses 3 parts:
 
 ## The actual content
 
-* [Relational databases]({{ site.baseurl }}/rdbms_landing_page.html)
-* [NoSQL]()
-* [Lambda Architecture]()
+We'll cover 3 topics here:
+- [Relational databases and SQL]({{ site.baseurl }}/rdbms_landing_page.html)
+- [NoSQL and ArangoDB]({{ site.baseurl }}/nosql_landing_page.html)
+- [Lambda architecture]({{ site.baseurl }}/lambda_landing_page.html)

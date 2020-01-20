@@ -252,29 +252,6 @@
    
 
     
-    
-<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
-<script>
-$( document ).ready(function() {
-  // Handler for .ready() called.
-
-$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
-
-/* this offset helps account for the space taken up by the floating toolbar. */
-$('#toc').on('click', 'a', function() {
-  var target = $(this.getAttribute('href'))
-    , scroll_target = target.offset().top
-
-  $(window).scrollTop(scroll_target - 10);
-  return false
-})
-  
-});
-</script>
-
-<div id="toc"></div>
-
-    
 
 
     
@@ -303,10 +280,11 @@ $('#toc').on('click', 'a', function() {
 
 <h2 id="the-actual-content">The actual content</h2>
 
+<p>We’ll cover 3 topics here:</p>
 <ul>
-  <li><a href="/rdbms_landing_page.html">Relational databases</a></li>
-  <li><a href="">NoSQL</a></li>
-  <li><a href="">Lambda Architecture</a></li>
+  <li><a href="/rdbms_landing_page.html">Relational databases and SQL</a></li>
+  <li><a href="/nosql_landing_page.html">NoSQL and ArangoDB</a></li>
+  <li><a href="/lambda_landing_page.html">Lambda architecture</a></li>
 </ul>
 
 
