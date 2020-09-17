@@ -27,7 +27,7 @@ Some useful commands:
 
 #### Using DB Browser for SQLite
 
-If you like to use a graphical user interface (or don't work on a linux or OSX computer), you can use the DB Browser for SQLite which you can download [here](TO BE DONE).
+If you like to use a graphical user interface (or don't work on a linux or OSX computer), you can use the DB Browser for SQLite which you can download [here](https://sqlitebrowser.org/).
 
 Note: In all code snippets that follow below, the `sqlite>` at the front represents the sqlite prompt, and should *not* be typed in...
 
