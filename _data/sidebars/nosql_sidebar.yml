@@ -63,6 +63,7 @@ entries:
       url: /nosql-document-databases-implementations.html
       output: web, pdf
   - title: Graph databases
+    output: web, pdf
     folderitems:
     - title: Introduction
       url: /nosql-graph-databases-introduction.html
