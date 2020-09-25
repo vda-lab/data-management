@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: false
 permalink: lambda-sqlvsnosql-application-tiers.html
 folder: lambda
-series: lambda-series
-weight: 3
 ---
 
 This is closely related to the lambda architecture that we'll dig into further below.

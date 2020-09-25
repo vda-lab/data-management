@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: false
 permalink: lambda-sqlvsnosql-keep-components-simple.html
 folder: lambda
-series: lambda-series
-weight: 2
 ---
 
 NoSQL systems are often created by integrating a number of modular functions that work together, in contrast to traditional RDBMS which are typically more integrated (mammoth) systems. Such simple components are set up in such way that they can be easily combined. You can compare this to the (very clever) linux pipeline system. When working on the linux command line, even knowing only a very limited number of commands you can do very complex things by piping these commands together: the output of one command becomes the input of the next.

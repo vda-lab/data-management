@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-intermezzo-json.html
 folder: nosql
-series: nosql-series
-weight: 5
 ---
 
 Before we proceed, we'll have a quick look at the JSON ("JavaScript Object Notation") text format, which is often used in different database systems. JSON follows the same principle as XML, in that it describes the data in the object itself. An example JSON object:

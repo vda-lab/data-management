@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-normal-forms.html
 folder: rdbms
-series: rdbms-series
-weight: 10
 ---
 There are some good practices in developing relational database schemes which make it easier to work with the data afterwards. Some of these practices are represented in the "normal forms".
 

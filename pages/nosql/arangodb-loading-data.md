@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-arangodb-loading-data.html
 folder: nosql
-series: nosql-series
-weight: 19
 ---
 
 ## Document data

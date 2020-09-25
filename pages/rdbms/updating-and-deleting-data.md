@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-updating-and-deleting-data.html
 folder: rdbms
-series: rdbms-series
-weight: 19
 ---
 
 Sometimes you will want to update or delete data in a table. The SQL code to do this uses a `WHERE` clause that is exactly the same as for a regular `SELECT`. A very important tip: first do a `SELECT` on your table with the `WHERE` clause that you'll use for the update or deletion just to make sure that you'll change the correct rows. When you've made changes to the wrong rows you won't be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](https://vda-lab.github.io/2019/10/lambda-architecture)).

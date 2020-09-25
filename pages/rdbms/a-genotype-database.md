@@ -5,8 +5,6 @@ sidebar: rdbms_sidebar
 toc: false
 permalink: rdbms-a-genotype-database.html
 folder: rdbms
-series: rdbms-series
-weight: 9
 ---
 Let's look at another example. Let's say you want to store individuals and their genotypes. In Excel, you could create a sheet that looks like this with genotypes for 3 polymorphisms in 2 individuals:
 

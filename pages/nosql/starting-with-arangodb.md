@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-starting-with-arangodb.html
 folder: nosql
-series: nosql-series
-weight: 18
 ---
 
 We will first need to install ArangoDB. It is available on a variety of operating systems and can be downloaded from [https://www.arangodb.com/download-major/](https://www.arangodb.com/download-major/).

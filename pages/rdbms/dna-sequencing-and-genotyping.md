@@ -5,8 +5,6 @@ sidebar: rdbms_sidebar
 toc: false
 permalink: rdbms-dna-sequencing-and-genotyping.html
 folder: rdbms
-series: rdbms-series
-weight: 3
 ---
 The importance of DNA sequencing and genotyping is steadily increasing within research and health care. In genotyping, one reads the nucleotides at specific positions in the genome to check if the patient has an allele that for example constitutes a higher risk to certain diseases, or that indicates higher or lower sensitivity to certain medication.
 

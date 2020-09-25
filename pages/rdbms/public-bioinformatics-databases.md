@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-public-bioinformatics-databases.html
 folder: rdbms
-series: rdbms-series
-weight: 21
 ---
 
 Sqlite is a light-weight system for running relational databases. If you want to make your data available to other people it's often better to use systems such as MySQL. The data behind the Ensembl genome browser, for example, is stored in a relational database and directly accessible through SQL as well.

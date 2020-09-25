@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-document-databases-data-modelling.html
 folder: nosql
-series: nosql-series
-weight: 10
 ---
 
 The data model depends on your use case, and your choice will greatly affect the complexity and performance of the queries. Let's for example look at the genotypes from the [previous session]({{ site.baseurl }}/2019/08/extended-introduction-to-relational-databases). There are 2 options to choose between: you can create documents per individual, or per SNP.

@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-drawbacks-of-rdbms.html
 folder: rdbms
-series: rdbms-series
-weight: 24
 ---
 
 Relational databases are great. They can be a big help in storing and organizing your data. But they are not the ideal solution in all situations.

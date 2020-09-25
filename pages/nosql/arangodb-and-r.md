@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-arangodb-and-r.html
 folder: nosql
-series: nosql-series
-weight: 25
 ---
 
 See the links for documentation on how to use ArangoDB from R and other languages. Just as an illustration: here's a document query in R:

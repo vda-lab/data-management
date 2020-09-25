@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-joining-vs-embedding.html
 folder: nosql
-series: nosql-series
-weight: 8
 ---
 
 Whereas you use a table _join_ in a RDBMS to combine different concepts/tables, you'd use _linking_ (which is equivalent to a join) or _embedding_ in document stores.

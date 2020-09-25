@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-sql-intro.html
 folder: rdbms
-series: rdbms-series
-weight: 16
 ---
 
 Any interaction with data in RDBMS can happen through the Structured Query Language (SQL): create tables, insert data, search data, ... There are two subparts of SQL:

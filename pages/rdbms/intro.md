@@ -5,8 +5,6 @@ sidebar: rdbms_sidebar
 toc: false
 permalink: rdbms-intro.html
 folder: rdbms
-series: rdbms-series
-weight: 4
 ---
 There is a wide variety of database systems to store data, but the most-used in the relational database management system (RDBMS). These basically consist of tables that contain rows (which represent instance data) and columns (representing properties of that data). Any table can be thought of as an Excel-sheet.
 

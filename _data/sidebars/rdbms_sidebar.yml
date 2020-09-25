@@ -3,8 +3,7 @@ entries:
   product: Relational databases and SQL
   folders:
 
-  - title:
-    output: pdf
+  - output: pdf
     type: frontmatter
     folderitems:
     - title:
@@ -16,7 +15,11 @@ entries:
       output: pdf
       type: frontmatter
 
-
+  - title: Introduction
+    folderitems:
+    - title: Introduction
+      url: /rdbms_landing_page.html
+      output: web, pdf
   - title: Data collection
     output: web, pdf
     folderitems:

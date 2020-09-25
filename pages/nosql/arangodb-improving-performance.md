@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-arangodb-improving-performance.html
 folder: nosql
-series: nosql-series
-weight: 23
 ---
 
 As with any other database system, the actual setup of your database and how you write your query can have a huge impact on how fast the query runs.

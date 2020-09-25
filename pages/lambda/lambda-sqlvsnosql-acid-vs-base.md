@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: false
 permalink: lambda-sqlvsnosql-acid-vs-base.html
 folder: lambda
-series: lambda-series
-weight: 6
 ---
 
 ## ACID

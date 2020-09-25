@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-arangodb-and-python.html
 folder: nosql
-series: nosql-series
-weight: 26
 ---
 
 TBD

@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: true
 permalink: lambda-batch-layer.html
 folder: lambda
-series: lambda-series
-weight: 8
 ---
 
 The _batch layer_ needs to be able to (1) store an immutable, constantly growing master dataset, and (2) compute arbitrary functions on that dataset. You might sometimes hear the term "data lake", which refers to a similar concept.

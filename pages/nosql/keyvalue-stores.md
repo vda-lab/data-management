@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-keyvalue-stores.html
 folder: nosql
-series: nosql-series
-weight: 6
 ---
 
 Key/value stores are a very simple type of database. The only thing they do, is link an arbitrary blob of data (the value) to a key (a string). This blob of data can be a piece of text, an image, etc. It is not possible top run queries. Key-value stores therefore basically act as dictionaries:

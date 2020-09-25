@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: true
 permalink: nosql-arangodb-querying-document-data.html
 folder: nosql
-series: nosql-series
-weight: 21
 ---
 
 Having stored our data in the `airports` and `flights` collections, we can query these in the `Query` section. An overview of the possible high-level operations can be found here: [https://www.arangodb.com/docs/stable/aql/operations.html](https://www.arangodb.com/docs/stable/aql/operations.html). From that website:

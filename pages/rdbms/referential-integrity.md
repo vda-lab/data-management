@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-referential-integrity.html
 folder: rdbms
-series: rdbms-series
-weight: 13
 ---
 
 In a SQL database, it is important that there are no tables that contain a foreign key which cannot be resolved. For example in the `genotypes` table above, there should not be a row where the `individual_id` is `9` because there does not exist a record in the `individuals` table with an `id` of `9`.

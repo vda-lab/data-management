@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: false
 permalink: lambda-sqlvsnosql-cache.html
 folder: lambda
-series: lambda-series
-weight: 5
 ---
 
 So keeping things in RAM makes it possible to very quickly access them. This is what you do when you load data into a variable in your python/R/SAS/ruby/perl/... code.

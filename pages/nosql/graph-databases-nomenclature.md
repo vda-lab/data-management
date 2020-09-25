@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-graph-databases-nomenclature.html
 folder: nosql
-series: nosql-series
-weight: 13
 ---
 
 A graph consists of vertices (aka nodes, aka objects) and edges (aka links, aka relations), where an edge is a connection between two vertices. Both vertices and edges can have properties.

@@ -3,8 +3,7 @@ entries:
   product: NoSQL databases
   folders:
 
-  - title:
-    output: pdf
+  - output: pdf
     type: frontmatter
     folderitems:
     - title:
@@ -16,7 +15,11 @@ entries:
       output: pdf
       type: frontmatter
 
-
+  - title: Introduction
+    folderitems:
+    - title: Introduction
+      url: /nosql_landing_page.html
+      output: web, pdf
   - title: Issues with relational databases
     output: web, pdf
     folderitems:

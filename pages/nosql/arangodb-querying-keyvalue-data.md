@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-arangodb-querying-keyvalue-data.html
 folder: nosql
-series: nosql-series
-weight: 20
 ---
 
 As mentioned above, key/value stores are very quick for returning documents given a certain key. ArangoDB can be used as a key/value store as well. Remember from above that a key/value store should only do these things:

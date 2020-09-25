@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-additional-functions.html
 folder: rdbms
-series: rdbms-series
-weight: 20
 ---
 
 ## LIMIT

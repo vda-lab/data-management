@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-normalisation-homework.html
 folder: rdbms
-series: rdbms-series
-weight: 23
 ---
 
 **This is the assignment for homework 1. For the due date, see [the website for this part of the course]({{ site.baseurl }}/sdm.html).**.

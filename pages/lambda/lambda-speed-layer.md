@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: true
 permalink: lambda-speed-layer.html
 folder: lambda
-series: lambda-series
-weight: 10
 ---
 
 The answer to a question that we ask the serving layer will not include data that came in while the precomputation was running. The speed layer takes care of this. Similar to the batch layer, it creates a view of the data but those updates are incremental rather than a recomputation (see above). We won't go into the speed layer too much because in most cases we can get away with not having one. If you don't need a speed layer, don't include it.

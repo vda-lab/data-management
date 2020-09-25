@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: false
 permalink: lambda-sqlvsnosql-introduction.html
 folder: lambda
-series: lambda-series
-weight: 1
 ---
 
 As mentioned in the previous post, NoSQL is not about not using SQL, but about picking the right _combination_ of database architectures.

@@ -5,8 +5,6 @@ sidebar: rdbms_sidebar
 toc: false
 permalink: rdbms-a-student-database.html
 folder: rdbms
-series: rdbms-series
-weight: 8
 ---
 ## The simplest version
 

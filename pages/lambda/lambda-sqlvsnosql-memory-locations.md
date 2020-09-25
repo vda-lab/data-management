@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: false
 permalink: lambda-sqlvsnosql-memory-locations.html
 folder: lambda
-series: lambda-series
-weight: 4
 ---
 
 To make sure that the performance of your application is adequate for your purpose, you have to think about where to store your data. Data can be kept in RAM, on a solid-state drive (SSD), the hard disk in your computer, or in a file somewhere on the network. This choice has an _immense_ effect on performance. It's easy to visualise this: consider that you are in Hasselt

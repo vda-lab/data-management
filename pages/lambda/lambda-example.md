@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: true
 permalink: lambda-example.html
 folder: lambda
-series: lambda-series
-weight: 11
 ---
 
 The batch layer master dataset can consist of files in a filesystem, records in some SQL tables, or any other way that we can store data. And although the lambda architecture is linked to the idea of Big Data and NoSQL, nothing prevents us from using a simple SQL database in this architecture if that fits our needs. Actually, the idea of _views_ in a relational database corresponds to a serving layer, whereas the original tables in that case are the batch layer.

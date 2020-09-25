@@ -5,8 +5,6 @@ sidebar: rdbms_sidebar
 toc: false
 permalink: rdbms-clinical-trials.html
 folder: rdbms
-series: rdbms-series
-weight: 1
 ---
 A clinical trial is a study involving the assessment of one or more regimens used in treating or preventing a specific illness or disease (McFadden, 2007). The design, aim, number of patients etc. depend on the phase of the clinical trial. Different types of data are collected:
 

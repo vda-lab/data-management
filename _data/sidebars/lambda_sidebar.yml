@@ -16,6 +16,11 @@ entries:
       output: pdf
       type: frontmatter
 
+  - title: Introduction
+    folderitems:
+    - title: Introduction
+      url: /lambda_landing_page.html
+      output: web, pdf
   - title: SQL vs NoSQL
     output: web, pdf
     folderitems:

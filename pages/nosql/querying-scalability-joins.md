@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-querying-scalability-joins.html
 folder: nosql
-series: nosql-series
-weight: 1
 ---
 
 Best practices in relational database design call for a normalised design (see in our [previous post](REF)). This means that the different concepts in the data are separated out into tables, and can be _joined_ together again in a query. Unfortunately, joins can be very expensive. For example, the Ensembl database (www.ensembl.org) is a fully normalised omics database, containing a total of 74 tables. For example, to get the exon positions for a given gene, one needs to run 3 joins.

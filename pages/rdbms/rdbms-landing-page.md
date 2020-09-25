@@ -5,8 +5,6 @@ sidebar: rdbms_sidebar
 toc: false
 permalink: rdbms_landing_page.html
 folder: rdbms
-series: rdbms-series
-weight: 0
 ---
 Working with data almost invariably involves working with relational databases and SQL (Structured Query Language). They have a decades-old history and are very established. In this section, we go over the why and how of this type of database.
 

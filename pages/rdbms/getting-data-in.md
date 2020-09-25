@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-getting-data-in.html
 folder: rdbms
-series: rdbms-series
-weight: 17
 ---
 
 ## INSERT INTO

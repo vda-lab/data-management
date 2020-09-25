@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: true
 permalink: nosql-arangodb-querying-graph-data.html
 folder: nosql
-series: nosql-series
-weight: 22
 ---
 
 Although both `airports` and `flights` are collections in ArangoDB, we set `flights` to be an "Edge" collection, which means that it should have a `_from` and a `_to` key as it is used to link documents in other collections to each other.

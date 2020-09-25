@@ -5,8 +5,6 @@ sidebar: lambda_sidebar
 toc: true
 permalink: lambda-serving-layer.html
 folder: lambda
-series: lambda-series
-weight: 9
 ---
 
 The serving layer contains one or more versions of the data in a form that we want for specific questions. Let's look at the friends example from above. We want to keep the original data in the batch layer, but also want to have easier versions to work with. These versions are computed by the batch layer, and are made available in what is called the _serving layer_.

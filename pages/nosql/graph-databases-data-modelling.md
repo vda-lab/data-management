@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-graph-databases-data-modelling.html
 folder: nosql
-series: nosql-series
-weight: 16
 ---
 
 In general, vertices are used to represent _things_ and edges are used to represent _connections_. Vertex properties can include e.g. metadata such as timestamp, version number etc; edges properties often include the weight of a connection, but can also cover things like the quality of a relationship and other metadata of that relationship.

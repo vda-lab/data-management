@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-conclusion-key-concepts.html
 folder: rdbms
-series: rdbms-series
-weight: 15
 ---
 
 So some key concepts in relational database design:

@@ -5,8 +5,6 @@ sidebar: rdbms_sidebar
 toc: false
 permalink: rdbms-epidemiological-studies.html
 folder: rdbms
-series: rdbms-series
-weight: 2
 ---
 Epidemiology is described as "the study of the occurrence and distribution of health-related states or events in specified populations, including the study of determinants influencing such states, and the application of this knowledge to control the health problems" (Dictionary of Epidemiology, Porta 2008). It covers a very broad and diverse line of research:
 - experimental vs observational studies

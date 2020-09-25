@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-getting-data-out.html
 folder: rdbms
-series: rdbms-series
-weight: 18
 ---
 
 It may seem counter-intuitive to first break down the data into multiple tables using the normal forms as described above, in order to having to combine them afterwards again in a SQL query. The reason for this is simple: it allows you to ask the data any question much more easily, instead of being restricted to the format of the original data.

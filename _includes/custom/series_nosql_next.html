@@ -1,13 +1,21 @@
 <div class="seriesContext">
-    <a>
-        {% assign pages = site.pages | sort:"weight"  %}
-        {% for pg in pages %}
-        {% if pg.series == "nosql-series" %}
-        {% if pg.weight > page.weight %}
-        <a href="{{pg.url | remove: '/'}}"><button type="button" class="btn btn-primary">Next: {{pg.title}}</button></a>
-        {% break %}
-        {% endif %}
-        {% endif %}
-        {% endfor %}
-    </a>
+  {% assign sections = site.data.sidebars.nosql_sidebar.entries[0].folders %}
+  {% assign pages = [] %}
+  {% for section in sections %}
+    {% assign section_pages = section.folderitems %}
+    {% assign pages = pages | concat: section_pages %}
+  {% endfor %}
+
+  {% for pg in pages %}
+    {% if pg.url == page.url %}
+      {% assign position = forloop.index0 %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  {% assign next_position = position | plus: 1 %}
+  {% assign next_page = pages[next_position] %}
+
+  {% if next_page %}
+    <a href="{{next_page.url | remove: '/'}}"><button type="button" class="btn btn-primary">Next: {{next_page.title}}</button></a>
+  {% endif %}
 </div>

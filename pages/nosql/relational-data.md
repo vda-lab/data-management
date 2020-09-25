@@ -5,8 +5,6 @@ sidebar: nosql_sidebar
 toc: false
 permalink: nosql-relational-data.html
 folder: nosql
-series: nosql-series
-weight: 3
 ---
 
 Imagine you have a social graph and the data is stored in a relational database. People have names, and know other people. Every "know" is reciprocal (so if I know you then you know me too).

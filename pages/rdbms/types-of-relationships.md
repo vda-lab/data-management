@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-types-of-relationships.html
 folder: rdbms
-series: rdbms-series
-weight: 11
 ---
 
 Relationships between tables are often categorised as:

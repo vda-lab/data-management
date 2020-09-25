@@ -5,8 +5,6 @@ sidebar: rdbms_sidebar
 toc: false
 permalink: rdbms-sqlite.html
 folder: rdbms
-series: rdbms-series
-weight: 5
 ---
 The relational database management system (RDBMS) that we will use is **SQLite**. It is very lightweight and easy to set up.
 

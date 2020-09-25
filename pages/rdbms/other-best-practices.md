@@ -4,8 +4,6 @@ keywords: rdbms
 sidebar: rdbms_sidebar
 permalink: rdbms-other-best-practices.html
 folder: rdbms
-series: rdbms-series
-weight: 12
 ---
 
 There are some additional guidelines that you can use in creating your database schema, although different people use different guidelines. Everyone ends up with their own approach. What _I_ do:
