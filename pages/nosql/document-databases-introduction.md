@@ -61,8 +61,4 @@ In document-oriented databases, these keys are however stored with the documents
 {% endhighlight %}
 Notice that in the document for a house (`id` of 5), there is no mention of `primary_of_secondary` because it is not relevant as it is for a hotel.
 
-## Nomenclature
-
-The way that things are named in document stores is a bit different than in RDBMS, but in general a _collection_ in a document store corresponds to a _table_ in a RDBMS, and a _document_ corresponds to a _row_.
-
 {% include custom/series_nosql_next.html %}

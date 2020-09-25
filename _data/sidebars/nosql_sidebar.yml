@@ -56,14 +56,14 @@ entries:
     - title: Introduction
       url: /nosql-document-databases-introduction.html
       output: web, pdf
-    - title: Joining vs embedding
-      url: /nosql-joining-vs-embedding.html
-      output: web, pdf
-    - title: Difference with key/value stores
-      url: /nosql-difference-with-keyvalue-stores.html
+    - title: Naming things
+      url: /nosql-document-databases-naming-things.html
       output: web, pdf
     - title: Data modelling
       url: /nosql-document-databases-data-modelling.html
+      output: web, pdf
+    - title: Difference with key/value stores
+      url: /nosql-difference-with-keyvalue-stores.html
       output: web, pdf
     - title: Implementations
       url: /nosql-document-databases-implementations.html
