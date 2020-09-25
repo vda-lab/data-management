@@ -29,8 +29,11 @@ entries:
     - title: Relational data
       url: /nosql-relational-data.html
       output: web, pdf
-    - title: The end of SQL?
-      url: /nosql-the-end-of-sql.html
+  - title: General NoSQL concepts
+    output: web, pdf
+    folderitems:
+    - title: General NoSQL concepts
+      url: /nosql-general-concepts.html
       output: web, pdf
   - title: Intermezzo - JSON
     output: web, pdf
