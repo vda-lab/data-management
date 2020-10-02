@@ -23,11 +23,11 @@ entries:
   - title: Issues with relational databases
     output: web, pdf
     folderitems:
-    - title: Querying scalability
-      url: /nosql-querying-scalability-joins.html
+    - title: Scalability and clusters
+      url: /nosql-scalability-and-clusters.html
       output: web, pdf
-    - title: Writing scalability
-      url: /nosql-writing-scalability.html
+    - title: Impedance mismatch
+      url: /nosql-impedance-mismatch.html
       output: web, pdf
     - title: Relational data
       url: /nosql-relational-data.html

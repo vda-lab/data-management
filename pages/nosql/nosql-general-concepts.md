@@ -9,12 +9,20 @@ folder: nosql
 ## The end of SQL?
 So does this mean that we should leave SQL behind? No. What we'll be looking at is _polyglot persistence_: depending on what data you're working with, some of that might still be stored in an SQL database, while other parts are stored in a document store and graph database (see below). So instead of having a single database, we can end up with a collection of databases to support a single application.
 
+![]({{site.baseurl}}/assets/polyglot_persistence_fromto.png)
+
+<small><i>Source: Sadalage & Fowler, 2012</i></small>
+
+The figure below shows how in the hypothetical case of a retailer's web application we might be using a combination of 8 different database technologies to store different types of information. Note that RDBMS are still part of the picture!
+
 ![polyglot persistence]({{ site.baseurl }}/assets/polyglot_persistence.png)
-<small>Source: https://martinfowler.com/articles/nosql-intro-original.pdf</small>
 
-This figure shows how in the hypothetical case of a retailer's web application we might be using a combination of 8 different database technologies to store different types of information. Note that RDBMS are still part of the picture!
+<small><i>Source: https://martinfowler.com/articles/nosql-intro-original.pdf</i></small>
 
-You'll often hear the term NoSQL as in "No-SQL", but this should be interpreted as "Not-Only-SQL".
+The term NoSQL was coined as the name and hashtag for a conference in 2009 about "open-source, distributed, non-relational databases" (source: Sadalage & Fowler, 2012). But as Sadalage & Fowler state: "there is no generally accepted definition, nor an authority to provide one". But in general, they
+- don't use SQL
+- are often driven by the need to run on clusters or a different data model (e.g. graphs)
+- are often schema-less: you can add fields to records without having to define changes in structure first (using e.g. `ALTER TABLE`)
 
 ## General NoSQL concepts
 NoSQL databases have received increasing attention in the more and more data-driven world. They allow for modelling of more complex data in a more scalable and agile way. Although it is impossible to lump all NoSQL technologies on a single heap, there are some concepts that apply.
