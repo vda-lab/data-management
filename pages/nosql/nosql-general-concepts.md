@@ -2,7 +2,7 @@
 title: General NoSQL concepts
 keywords: nosql
 sidebar: nosql_sidebar
-toc: false
+toc: true
 permalink: nosql-general-concepts.html
 folder: nosql
 ---
