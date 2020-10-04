@@ -2,12 +2,102 @@
 title: Data modelling
 keywords: nosql
 sidebar: nosql_sidebar
-toc: false
+toc: true
 permalink: nosql-document-databases-data-modelling.html
 folder: nosql
 ---
 {% include custom/series_nosql_previous.html %}
 
+## Documents are schemaless
+As mentioned [before]({{ site.baseurl }}/nosql-general-concepts.html), one of the important differences between RDBMS and document databases, is that documents are _schemaless_. What does this mean? Consider the case where we are collecting data on bird migrations (as for example [https://www.belgianbirdalerts.be/](https://www.belgianbirdalerts.be/)). In an RDMBS, we could put this information in a `sightings` table.
+
+<small><i>sightings</i></small>
+
+| id | species_la | species_en | date_time | municipality |
+|----|---------|------|----------|
+|  1 | Emberiza pusilla | Little Bunting | Dwerggors | 30-09-2020 15:37 | Zeebrugge, BE |
+|  2 | Sylvia nisoria | Barred Warbler | Sperwergrasmus | 2020-10-01 13:45 | Zeebrugge, BE |
+| ... | ... | ... | ... | ... |
+
+What if we want to store the Dutch name as well? Then we'd need to alter the table schema to have a new column to hold that information: `ALTER TABLE sightings ADD species_du TEXT;`. After adding this column and updating the value in that particular column, we get the following:
+
+<small><i>sightings</i></small>
+
+| id | species_la | species_en | species_du | date_time | municipality |
+|----|---------|------|----------|
+|  1 | Emberiza pusilla | Little Bunting | Dwerggors | 30-09-2020 15:37 | Zeebrugge, BE |
+|  2 | Sylvia nisoria | Barred Warbler | Sperwergrasmus | 2020-10-01 13:45 | Zeebrugge, BE |
+| ... | ... | ... | ... | ... |
+
+So far so good: this table still looks clean. Now imagine that we want to improve the reporting, and actually include the longitude and latitude instead of just the municipality. Also, we want to split up the date from the time. To do this, we have to alter the schema of the `sightings` table to include these new columns. Only after we changed this schema, we can input data using the new information:
+
+<small><i>sightings</i></small>
+
+| id | species_la | species_en | species_du | date_time | municipality | date | time | lat | long |
+|----|---------|------|----------|
+|  1 | Emberiza pusilla | Little Bunting | Dwerggors | 30-09-2020 15:37 | Zeebrugge, BE | | | | |
+|  2 | Sylvia nisoria | Barred Warbler | Sperwergrasmus | 2020-10-01 13:45 | Zeebrugge, BE | | | | |
+| ... | ... | ... | ... | ... | | | | |
+|  56 | Elanus caeruleus | Black-winged Kite | Grijze Wouw | | | 2020-10-02 | 15:15 | 50.96577 | 3.92744 |
+|  57 | Ficedula parva | Red-breasted Flycatcher | Kleine Vliegenvanger | | | 2020-10-04 | 10:34 | 51.33501 | 3.23154 |
+|  58 | Phalaropus lobatus | Red-necked Phalarope | Grauwe Franjepoot | | | 2020-10-04 | 10:48 | 51.14660 | 2.73363 |
+|  59 | Locustella certhiola | Pallas's Grasshopper Warbler | Siberische Sprinkhaanzanger | | | 2020-10-04 | 11:53 | 51.33950 | 3.22775 |
+| ... | ... | ... | ... | ... | | | ... | ... |
+
+Executing an `ALTER TABLE` on a relational database is a _huge_ step. Having a well-defined schema is core to a RDBMS, so changing it should not be done lightly.
+
+In contrast, nothing would need to be done to store this new information if we had been using a document-database. Consider our initial data:
+
+```json
+{ id: 1,
+  species_la: "Emberiza pusilla",
+  species_en: "Little Bunting",
+  date_time: "30-09-2020 15:37",
+  municipality: "Zeebrugge, BE"},
+{ id: 2,
+  species_la: "Sylvia nisoria",
+  species_en: "Barred Warbler",
+  date_time: "2020-10-01 13:45",
+  municipality: "Zeebrugge, BE"},
+...
+```
+
+If we want to change from reporting municipality to latitude and longitude, we just add those instead on new documents:
+```json
+{ id: 1,
+  species_la: "Emberiza pusilla",
+  species_en: "Little Bunting",
+  date_time: "30-09-2020 15:37",
+  municipality: "Zeebrugge, BE" },
+{ id: 2,
+  species_la: "Sylvia nisoria",
+  species_en: "Barred Warbler",
+  date_time: "2020-10-01 13:45",
+  municipality: "Zeebrugge, BE" },
+...
+{ id: 56,
+  species_la: "Elanus caeruleus",
+  species_en: "Black-winged Kite",
+  species_ud: "Grijze Wouw",
+  date: "2020-10-02",
+  time: "15:15",
+  lat: 50.96577,
+  long: 3.92744 },
+{ id: 57,
+  species_la: "Ficedula parva",
+  species_en: "Red-breasted Flycatcher",
+  species_ud: "Kleine Vliegenvanger",
+  date: "2020-10-04",
+  time: "10:34",
+  lat: 51.33501,
+  long: 3.23154 },
+...
+```
+
+### Explicit vs implicit schema
+Important: Even though a document database does not enforce a strict schema, there is still an _implicit schema_. The application (or you) need to know that the English species name is stored with the key `species_en`. It should not be a mix of `species_en` in some cases, `species_english` in others, or `english_name` or `english_species_name`, etc. That would make it impossible to for example get a list of all species that were sighted.
+
+## Embedding vs referencing
 When modelling data in a relational database, we typically try to create a _normalised database schema_. In such schema, different concepts are stored in different tables, and information is linked by referencing rows in different tables.
 
 Consider the example of a blog. This information concerns different concepts: the blog itself, posts on that blog, authors, comments, and tags. This can be modelled like this in a relational database:
@@ -26,7 +116,6 @@ AND a.name = "John Doe";
 
 In document databases, we have to find a balance between _embedding_ and _referencing_.
 
-## Embedding vs referencing
 On the one extreme end, we can follow the same approach as in relational databases, and create a separate collection for each concept. So there would be a collection for `blogs`, one for `blog_entries`, for `authors`, for `comments` and `tags`. At the other extreme end, we can _embed_ some of this information. For example, a single blog entry can have the author name and email, the comments and tags _inside_ it.
 
 A referencing-heavy approach:
