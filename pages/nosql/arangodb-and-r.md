@@ -6,6 +6,7 @@ toc: false
 permalink: nosql-arangodb-and-r.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
 
 See the links for documentation on how to use ArangoDB from R and other languages. Just as an illustration: here's a document query in R:
 {% highlight R %}

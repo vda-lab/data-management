@@ -6,6 +6,7 @@ toc: false
 permalink: nosql-relational-data.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
 
 Here's an extreme example of impedance mismatch. Imagine you have a social graph and the data is stored in a relational database. People have names, and know other people. Every "know" is reciprocal (so if I know you then you know me too).
 

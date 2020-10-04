@@ -6,6 +6,8 @@ toc: false
 permalink: nosql-impedance-mismatch.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
+
 When discussing relational databases, we went through the exercise of normalising our database scheme to make sure that, among other things, we minimise the emergence of inconsistencies of the data, and allow ourselves to ask the database any question. But this is actually strange, right? We first deconstruct the data that we receive into normalised tables, only to need table joins to get anything useful back out. Also, any value in the database needs to be simple, and can for example should not be stored as a nested record or a list. For example, you would not store the children of a couple like this:
 
 | id | mother | father | children       |

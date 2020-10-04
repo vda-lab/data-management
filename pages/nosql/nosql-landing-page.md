@@ -6,6 +6,8 @@ toc: false
 permalink: nosql_landing_page.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
+
 ![NoSQL Distilled]({{site.baseurl}}/assets/nosql_distilled_book.jpg)
 
 As described in Sadalage and Fowler's book "NoSQL Distilled", RDBMS have definitely proven their worth since the 1980s. Some of their strengths include:

@@ -6,6 +6,7 @@ toc: false
 permalink: nosql-document-databases-introduction.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
 
 In contrast to relational databases (RDBMS) which define their columns at the _table_ level, document-oriented databases (also called document stores) define their fields at the _document_ level. You can imagine that a single row in a RDBMS table corresponds to a single document where the keys in the document correspond to the column names in the RDBMS. Let's look at an example table in a RDBMS containing information about buildings:
 

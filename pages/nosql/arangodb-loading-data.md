@@ -6,6 +6,7 @@ toc: false
 permalink: nosql-arangodb-loading-data.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
 
 ## Document data
 Let's load some data. Download the list of airports in the US from [http://vda-lab.be/assets/airports.json](http://vda-lab.be/assets/airports.json). This file looks like this:

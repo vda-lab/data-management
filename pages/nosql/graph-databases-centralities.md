@@ -6,6 +6,7 @@ toc: false
 permalink: nosql-graph-databases-centralities.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
 
 Another important way of describing nodes is based on their _centrality_, i.e. how _central_ they are in the network. There exist different versions of this centrality:
 - _degree centrality_: how many other vertices a given vertex is connected to. This is the same as node degree.

@@ -6,6 +6,8 @@ toc: false
 permalink: nosql-document-databases-implementations.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
+
 A quick look at the Wikipedia page for ["Document-oriented database"](https://en.wikipedia.org/wiki/Document-oriented_database#Implementations) quickly shows us that there is a long list (>30) implementations. Each of these has their own strengths and use cases. They include [AllegroGraph](https://allegrograph.com/), [ArangoDB](http://arangodb.com/), [CouchDB](https://couchdb.apache.org/), [MongoDB](https://www.mongodb.com/), [OrientDB](http://orientdb.org/), [RethinkDB](http://rethinkdb.com/) and so on.
 
 ![]({{site.baseurl}}/assets/logo_allegrograph.png)![]({{site.baseurl}}/assets/logo_arangodb.png)![]({{site.baseurl}}/assets/logo_couchdb.png)![]({{site.baseurl}}/assets/logo_mongodb.png)![]({{site.baseurl}}/assets/logo_orientdb.png)![]({{site.baseurl}}/assets/logo_rethinkdb.png)

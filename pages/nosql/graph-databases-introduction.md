@@ -6,6 +6,7 @@ toc: false
 permalink: nosql-graph-databases-introduction.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
 
 Graphs are used in a wide range of applications, from fraud detection (see the Panama Papers) and anti-terrorism and social marketing to drug interaction research and genome sequencing.
 

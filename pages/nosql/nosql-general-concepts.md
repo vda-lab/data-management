@@ -6,6 +6,8 @@ toc: false
 permalink: nosql-general-concepts.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
+
 ## The end of SQL?
 So does this mean that we should leave SQL behind? No. What we'll be looking at is _polyglot persistence_: depending on what data you're working with, some of that might still be stored in an SQL database, while other parts are stored in a document store and graph database (see below). So instead of having a single database, we can end up with a collection of databases to support a single application.
 

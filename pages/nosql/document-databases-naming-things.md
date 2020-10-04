@@ -6,6 +6,8 @@ toc: false
 permalink: nosql-document-databases-naming-things.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
+
 The way that things are named in document stores is a bit different than in RDBMS, but in general a _collection_ in a document store corresponds to a _table_ in a RDBMS, and a _document_ corresponds to a _row_.
 
 As a comparison, consider the following examples of a relational database vs a document database for storing blog data.

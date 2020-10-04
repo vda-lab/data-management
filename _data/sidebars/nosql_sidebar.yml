@@ -32,6 +32,9 @@ entries:
     - title: Relational data
       url: /nosql-relational-data.html
       output: web, pdf
+    - title: NoSQL vs RDBMS - conclusions
+      url: /nosql-vs-rdbms-conclusions.html
+      output: web, pdf
   - title: General NoSQL concepts
     output: web, pdf
     folderitems:

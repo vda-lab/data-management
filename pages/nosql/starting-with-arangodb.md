@@ -6,6 +6,7 @@ toc: false
 permalink: nosql-starting-with-arangodb.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
 
 We will first need to install ArangoDB. It is available on a variety of operating systems and can be downloaded from [https://www.arangodb.com/download-major/](https://www.arangodb.com/download-major/).
 

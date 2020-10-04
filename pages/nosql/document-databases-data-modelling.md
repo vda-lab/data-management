@@ -6,6 +6,8 @@ toc: false
 permalink: nosql-document-databases-data-modelling.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
+
 When modelling data in a relational database, we typically try to create a _normalised database schema_. In such schema, different concepts are stored in different tables, and information is linked by referencing rows in different tables.
 
 Consider the example of a blog. This information concerns different concepts: the blog itself, posts on that blog, authors, comments, and tags. This can be modelled like this in a relational database:

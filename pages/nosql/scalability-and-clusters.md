@@ -6,6 +6,8 @@ toc: false
 permalink: nosql-scalability-and-clusters.html
 folder: nosql
 ---
+{% include custom/series_nosql_previous.html %}
+
 The 2000s has seen a boom in the amount of data generated and stored. There are basically two approaches to cope with this: _scale up_ or _scale out_. What you do when scaling _up_ is to just buy a bigger server on which we can run the database server. This works up to a point, but (a) there are clear limits in size, and (b) it is very expensive. In the other option, scaling _out_, we take multiple commodity (and therefore cheap) machines and set them up as a cluster where each of the machines has to store only part of the data. Unfortunately, RDBMS are not designed with this in mind.
 
 ## Querying data
