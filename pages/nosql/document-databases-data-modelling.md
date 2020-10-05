@@ -48,7 +48,7 @@ Executing an `ALTER TABLE` on a relational database is a _huge_ step. Having a w
 
 In contrast, nothing would need to be done to store this new information if we had been using a document-database. Consider our initial data:
 
-```json
+{% highlight json %}
 { id: 1,
   species_la: "Emberiza pusilla",
   species_en: "Little Bunting",
@@ -60,10 +60,10 @@ In contrast, nothing would need to be done to store this new information if we h
   date_time: "2020-10-01 13:45",
   municipality: "Zeebrugge, BE"},
 ...
-```
+{% endhighlight %}
 
 If we want to change from reporting municipality to latitude and longitude, we just add those instead on new documents:
-```json
+{% highlight json %}
 { id: 1,
   species_la: "Emberiza pusilla",
   species_en: "Little Bunting",
@@ -92,7 +92,7 @@ If we want to change from reporting municipality to latitude and longitude, we j
   lat: 51.33501,
   long: 3.23154 },
 ...
-```
+{% endhighlight %}
 
 ### Explicit vs implicit schema
 Important: Even though a document database does not enforce a strict schema, there is still an _implicit schema_. The application (or you) need to know that the English species name is stored with the key `species_en`. It should not be a mix of `species_en` in some cases, `species_english` in others, or `english_name` or `english_species_name`, etc. That would make it impossible to for example get a list of all species that were sighted.
@@ -106,13 +106,13 @@ Consider the example of a blog. This information concerns different concepts: th
 
 
 Each concept is stored in a separate table. To get all comments on posts written by John Doe, we can do this (we won't go into actual schemas here):
-```SQL
+{% highlight sql %}
 SELECT c.date, c.comment
 FROM authors a, blog_entries b, comments c
 WHERE a.id = b.author_id
 AND b.id = c.entry_id
 AND a.name = "John Doe";
-```
+{% endhighlight %}
 
 In document databases, we have to find a balance between _embedding_ and _referencing_.
 
@@ -157,7 +157,7 @@ This will return all comments written by the author with ID 5. To get all commen
 - Find out what the ID is of "John Doe": `db.authors.find({name: "John Doe"})`. Let's say that this returns the document `{id: 8, name: "John Doe", twitter: "JohnDoe18272"}`.
 - Find all blog entries written by him: `db.blog_entries.find({author_id: 8})`. Let's say that this returns the following list of blog posts:
 
-```json
+{% highlight json %}
 [{id: 26,
   author_id: 8,
   date: 2020-08-17,
@@ -168,12 +168,12 @@ This will return all comments written by the author with ID 5. To get all commen
   date: 2020-08-23,
   title: "How I broke my leg",
   text: "..."}]
-```
+{% endhighlight %}
 
 - Find all the comments that are linked to one of these posts: `db.comments.find({blog_entry_id: [26,507]})`.
 
 As you can see, we need 3 different queries to get that information, which means that the database is accessed 3 times. In contrast, with embedding all the relevant information can be extracted with just a single query. Let's say that information is stored like this:
-```json
+{% highlight json %}
 [{id: 26,
   author: {
     name: "John Doe",
@@ -218,10 +218,98 @@ As you can see, we need 3 different queries to get that information, which means
    ]},
    ...
 ]
-```
+{% endhighlight %}
+
 Now to get all comments on posts written by John Doe, you only need a single query: `db.blog_entries.find({name:"John Doe"})` and therefore a single trip to the database.
 
 BTW: Notice how the author information is duplicated in this example. Again: find a _balance_ between linking and embedding...
+
+### Document-databases are often aggregation-oriented
+This possibility for embedding makes that document databases have an aspect of aggregation-orientation to them. Whereas in RDBMS new information is pulled apart and stored in different tables, in a document database all this information can be stored together.
+
+For example, consider a system that needs to store genotyping information. With genotyping, part of an person's DNA is read and an A, C, T or G is assigned to particular positions in the genome (single nucleotide polymorphisms or SNPs). In a relational database model, it looks like this:
+
+![primary and foreign keys]({{ site.baseurl }}/assets/primary_foreign_keys.png)
+
+`individuals` table:
+
+| id | name         | ethnicity |
+|:-- |:------------ |:--------- |
+| 1  | individual_A | caucasian |
+| 2  | individual_B | caucasian |
+
+`snps` table:
+
+| id | name    | chromosome | position |
+|:-- |:------- |:---------- |:-------- |
+| 1  | rs12345 | 1          | 12345    |
+| 2  | rs98765 | 1          | 98765    |
+| 3  | rs28465 | 5          | 23456    |
+
+`genotypes` table:
+
+| id | snp_id | individual_id | genotype | ambiguity_code |
+|:-- |:------ |:------------- |:-------- |:-------------- |
+| 1  | 1      | 1             | A/A      | A              |
+| 2  | 2      | 1             | A/G      | R              |
+| 3  | 3      | 1             | G/T      | K              |
+| 4  | 1      | 2             | A/C      | M              |
+| 5  | 2      | 2             | G/G      | G              |
+| 6  | 3      | 2             | G/G      | G              |
+
+To get all information for `individual_A` we need to write a join that gets information from different tables:
+{% highlight sql %}
+SELECT i.name, i.ethnicity, s.name, s.chromosome, s.position, g.genotype
+FROM individuals i, snps s, genotypes g
+WHERE i.id = g.individual_id
+AND s.id = g.snp_id
+AND i.name = 'individual_A';
+{% endhighlight %}
+
+In a document database, we can store this by individual, for example in a `genotype_documents` collection:
+
+{% highlight json %}
+{ id: 1, name: "individual_A", ethnicity: "caucasian",
+         genotypes: [ { name: "rs12345", chromosome: 1, position: 12345, genotype: "A/A" },
+                      { name: "rs9876", chromosome: 1, position: 9876, genotype: "A/G" },
+                      { name: "rs28465", chromosome: 5, position: 23456, genotype: "G/T" }]}
+{ id: 1, name: "individual_B", ethnicity: "caucasian",
+         genotypes: [ { name: "rs12345", chromosome: 1, position: 12345, genotype: "A/C" },
+                      { name: "rs9876", chromosome: 1, position: 9876, genotype: "G/G" },
+                      { name: "rs28465", chromosome: 5, position: 23456, genotype: "G/G" }]}
+{% endhighlight %}
+
+In this case, it is much easier to get all information for `individual_A`. Such query could simply be: `db.genotype_documents({name: 'individual_A'})`. This is because **_all data is aggregated by individual_**.
+
+But what if we want all genotypes that were recorded for SNP `rs9876` across all individuals? In SQL, the query would be very similar to the one for `individual_A`:
+{% highlight sql %}
+SELECT i.name, i.ethnicity, s.name, s.chromosome, s.position, g.genotype
+FROM individuals i, snps s, genotypes g
+WHERE i.id = g.individual_id
+AND s.id = g.snp_id
+AND s.name = 'rs9876';
+{% endhighlight %}
+
+We do however loose the advantage of the individual-centric model completely with our document database: a query (although it might look simple) will have to extract a little piece of information from every single document in the database which is extremely costly. If we knew we were going to ask this question, it'd have been better to model the data like this:
+
+{% highlight json %}
+{ id: 1, name: "rs12345", chromosome: 1, position: 12345,
+         genotypes: [ { name: "individual_A", genotype: "A/A"},
+                      { name: "individual_B", genotype: "A/C"} ] },
+{ id: 1, name: "rs9876", chromosome: 1, position: 9876,
+         genotypes: [ { name: "individual_A", genotype: "A/G"},
+                      { name: "individual_B", genotype: "G/G"} ] },
+{ id: 1, name: "rs28465", chromosome: 1, position: 23456,
+         genotypes: [ { name: "individual_A", genotype: "G/T"},
+                      { name: "individual_B", genotype: "G/G"} ] }
+{% endhighlight %}
+
+So do you model your data by individual or by SNP? That depends...
+
+- If you know beforehand that you'll be querying by individual and not by SNP, use the first version.
+- If by SNP, use the latter.
+- You could model in a similar way as the relational database with separate collections for `individuals`, `snps` and `genotypes`. In other words: using linking rather than embedding.
+- You could do _both_, but not as the master dataset. In this case, you have a master dataset from which you recalculate these two different versions of the same data on a regular basis (daily, weekly, ..., depending on the update frequency). This latter approach fits in the Lambda Architecture that we'll talk about later.
 
 ## Homogeneous vs heterogeneous collections
 Now should every collection be about one specific thing, or not? Above, we asked the question if every concept should be separate in their own collection or if we want to embed information, or if we want to merge different objects into a single document. Still, the documents within a collection would still be the same. Whether or not we embed the author information in the blog entries, the `blog_entries` collection is still about blog entries.
