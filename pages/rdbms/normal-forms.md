@@ -7,86 +7,218 @@ folder: rdbms
 ---
 There are some good practices in developing relational database schemes which make it easier to work with the data afterwards. Some of these practices are represented in the "normal forms".
 
-For reference, here's the original `genotypes` table again:
+Let's consider the following table listing individuals, SNPs and genotypes. This is genetic data. As you know, everyone has very similar DNA (otherwise we wouldn't be human), but there are a lot of positions in that genome (about 1/1000) where people differ from each other (otherwise we would all be clones). A "single nucleotide polymorphism" (or "SNP") is such a position in the genome. A "genotype" is the actual nucleotides that someone has in his/her genome at that particular position. And because we have 2 copies of each chromosome, a genotype consists of 2 letters (A, C, G and T).
 
-| individual   | ethnicity | rs12345 | rs12345_amb | chr_12345 | pos_12345 | rs98765 | rs98765_amb | chr_98765 | pos_98765 | rs28465 | rs28465_amb | chr_28465 | pos_28465 |
-|:------------ |:--------- |:------- |:----------- |:--------- |:--------- |:------- |:----------- |:--------- |:--------- |:------- |:----------- |:--------- |:--------- |
-| individual_A | caucasian | A/A     | A           | 1         | 12345     | A/G     | R           | 1         | 98765     | G/T     | K           | 5         | 28465     |
-| individual_B | caucasian | A/C     | M           | 1         | 12345     | G/G     | G           | 1         | 98765     | G/G     | G           | 5         | 28465     |
+| individual | ethnicity | rs12345 | chromosome;position | rs12345_diseases | rs98765 | chromosome;position | rs28465 | chromosome;position |
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+| individual_A | caucasian | A/A | 1;12345 | COPD;asthma | A/G | 1;98765 | G/T | 5;28465 |
+| individual_B | caucasian | A/C | 1;12345 | COPD;asthma | G/G | 1;98765 | G/G | 5;28465 |
+
+This is the corresponding schema:
+
+![]({{site.baseurl}}/assets/normalisation_0.png)
 
 ## First normal form
 
 To get to the first normal form:
 
-* **Eliminate duplicative columns** from the same table, by splitting them out in separate tables.
+* **Make columns atomic**: a single cell should contain only a single value
+* **Values in a column should be of a single domain**: a single column should not have a mix of data
+* **All columns should have unique names**
+* **Columns should be not be hidden lists**: often clear because the column _name_ actually holds information
 
-The columns rs12345, rs98765 and rs28465 are duplicates; they describe exactly the same type of thing (albeit different instances) and we need to eliminate these. And we can do that by splitting the original table into two tables. In doing this, we need to *think what each table actually represents*. We
+The above table violates several of these points:
+- The `rs12345_diseases` columns holds non-atomic values: `COPD;asthma` is a list.
+- The column name `chromosome;position` is used multiple times.
+- The columns `rs12345`, `rs98765` and `rs28465` are effectively the same thing: they describe the genotypes for a particular SNP. The same is true for the `chromsome;position` columns (but that was already clear from the previous point).
 
-- give the tables a sensible name
-- add a unique `id` number
-- add additional necessary columns (here, for example, a `name` column in the `snps` table)
-- rename columns so that they do not refer to the different duplicates anymore (e.g. `rs12345` becomes `name`)
-- add foreign keys to link tables
+The solution to these issues is to go from a _wide_ format to a _long_ format: remove columns by adding rows. For example, the information for the 3 different SNPs is now stored in different rows instead of different columns. The same is true for the non-atomic values: we just duplicate the row to be able to split up the diseases. This will end up with many rows but don't worry about that.
 
-Regarding the `id`: each row in a table should have a **unique key** within that table. Best practices tell us to use autoincrementing integers, and that the **primary key should contain no information in itself**.
+| individual | ethnicity | snp | genotype | chr | pos | disease |
+|:--|:--|:--|:--|:--|:--|:--|:--|
+| individual_A | caucasian | rs12345 | A/A | 1 | 12345 | COPD |
+| individual_A | caucasian | rs12345 | A/A | 1 | 12345 | asthma |
+| individual_B | caucasian | rs12345 | A/C | 1 | 12345 | COPD |
+| individual_B | caucasian | rs12345 | A/C | 1 | 12345 | asthma |
+| individual_A | caucasian | rs98765 | A/G | 1 | 98765 | |
+| individual_B | caucasian | rs98765 | G/G | 1 | 98765 | |
+| individual_A | caucasian | rs28465 | G/T | 5 | 28465 | |
+| individual_B | caucasian | rs28465 | G/G | 5 | 28465 | |
 
+The new schema:
 
-`individuals` table:
+![]({{site.baseurl}}/assets/normalisation_1.png)
 
-| id | name         | ethnicity |
-|:-- |:------------ |:--------- |
-| 1  | individual_A | caucasian |
-| 2  | individual_B | caucasian |
+Everything is still contained in a single table, which will change when we go to the second normal form.
+
+## Second normal form
+
+* **Schema is in First Normal form**
+* **There are no partial dependencies**
+
+In the new table above, we see that there are several columns that are 1-to-1 dependent on another column. For example, if we know the individual, we know their ethnicity. If we know the SNP, we know the chromosome, position and any diseases involved. For the 2nd normal form, we extract these into separate tables. In doing this, think about the _concepts_ that you're trying to separate.
 
 `genotypes` table:
 
-| id | name    | individual_id | genotype | ambiguity_code | chromosome | position |
-|:-- |:------- |:------------- |:-------- |:-------------- |:---------- |:-------- |
-| 1  | rs12345 | 1             | A/A      | A              | 1          | 12345    |
-| 2  | rs98765 | 1             | A/G      | R              | 1          | 98765    |
-| 3  | rs28465 | 1             | G/T      | K              | 5          | 23456    |
-| 4  | rs12345 | 2             | A/C      | M              | 1          | 12345    |
-| 5  | rs98765 | 2             | G/G      | G              | 1          | 98765    |
-| 6  | rs28465 | 2             | G/G      | G              | 5          | 23456    |
+| id | individual_id | snp_id | genotype |
+|:--|:--|:--|:--|
+| 1 | 1 | 1 | A/A |
+| 2 | 1 | 1 | A/A |
+| 3 | 2 | 1 | A/C |
+| 4 | 1 | 2 | A/G |
+| 5 | 2 | 2 | G/G |
+| 6 | 1 | 3 | G/T |
+| 7 | 2 | 3 | G/G |
 
-What we did:
-* The name of each table should be **plural** (not mandatory, but good practice).
-* Each table should have a **primary key**, ideally named `id`. Different tables can contain columns that have the same name; column names should be unique within a table, but can occur across tables.
-* In the genotypes table, individuals are identified by their `id` in the `individuals` table which is their primary key. The `individual_id` column in the `genotypes` table is called the **foreign key** Again best practice: if a **foreign key** refers to the id column in the individuals table, it should be named **individual_id** (note the singular).
-* The foreign key `individual_id` in the `genotypes` table must be of the same type as the id column in the `individuals` tables.
+`individuals` table:
 
-The commands to create these tables:
+| id | name | ethnicity |
+|:--|:--|:--|
+| 1 | individual_A | caucasian |
+| 2 | individual_B | caucasian |
 
-{% highlight sql %}
-DROP TABLE genotypes;
-CREATE TABLE genotypes (id INTEGER PRIMARY KEY, name STRING, individual_id INTEGER, genotype STRING, ambiguity_code STRING, chromosome STRING, position INTEGER);
-CREATE TABLE individuals (id INTEGER PRIMARY KEY, name STRING, ethnicity STRING)
-{% endhighlight %}
+`snps` table:
 
-{% highlight sql %}
-INSERT INTO individuals (name, ethnicity)
-                    VALUES ('individual_A','caucasian');
-INSERT INTO individuals (name, ethnicity)
-                    VALUES ('individual_B','caucasian');
-INSERT INTO genotypes (name, individual_id, genotype, ambiguity_code, chromosome, position)
-                    VALUES ('rs12345',1,'A/A','A','1',12345);
-INSERT INTO genotypes (name, individual_id, genotype, ambiguity_code, chromosome, position)
-                    VALUES ('rs98765',1,'A/G','R','1',12345);
-INSERT INTO genotypes (name, individual_id, genotype, ambiguity_code, chromosome, position)
-                    VALUES ('rs28465',1,'G/T','K','5',23456);
-INSERT INTO genotypes (name, individual_id, genotype, ambiguity_code, chromosome, position)
-                    VALUES ('rs12345',2,'A/C','M','1',12345);
-INSERT INTO genotypes (name, individual_id, genotype, ambiguity_code, chromosome, position)
-                    VALUES ('rs98765',2,'G/G','G','1',12345);
-INSERT INTO genotypes (name, individual_id, genotype, ambiguity_code, chromosome, position)
-                    VALUES ('rs28465',2,'G/G','G','5',23456);
-{% endhighlight %}
+| id | name | chr | pos | diseases |
+|:--|:--|:--|:--|:--|
+| 1 | rs12345 | 1 | 12345 | COPD |
+| 2 | rs12345 | 1 | 12345 | asthma |
+| 3 | rs98765 | 1 | 98765 | |
+| 4 | rs28465 | 5 | 28465 | |
 
-The fact that `id` is defined as INTEGER PRIMARY KEY makes it increment automatically if not defined specifically. So loading data without explicitly specifying the value for id automatically takes care of everything.
-The same goes for `rowid`. _In the explanations and code below, replace `id` with `rowid` if you used the DB Browser instead of the command line to create the tables._
+
+Some observations (and good practices):
+- The name of each table should be **plural** (not mandatory, but good practice).
+- Each table should have a **primary key**, ideally named `id`. Different tables can contain columns that have the same name; column names should be unique within a table, but can occur across tables.
+- In the `genotypes` table, individuals are identified by their `id` in the `individuals` table which is their primary key. The `individual_id` column in the `genotypes` table is called the **foreign key**. Again best practice: if a foreign key refers to the `id` column in the `individuals` table, it should be named `individual_id` (note the singular).
+- The name of each table should be plural (not mandatory, but good practice).
+- The foreign key `individual_id` in the `genotypes` table must be of the same type as the `id` column in the `individuals` table.
+
+By the way, we see that the first 2 rows in the `genotypes` table are exactly the same apart from the unique ID, so we can remove one (e.g. with ID `2`).
+
+`genotypes` table:
+
+| id | individual_id | snp_id | genotype |
+|:--|:--|:--|:--|
+| 1 | 1 | 1 | A/A |
+| 3 | 2 | 1 | A/C |
+| 4 | 1 | 2 | A/G |
+| 5 | 2 | 2 | G/G |
+| 6 | 1 | 3 | G/T |
+| 7 | 2 | 3 | G/G |
+
+The new schema:
+
+![]({{site.baseurl}}/assets/normalisation_2.png)
+
+## Third normal form
+
+* **Look for rows that are the same except for a non-key column**
+
+In the `snps` table above, there are two rows that are exactly the same (not taking into account the `id` column), if it weren't for the `disease` field.
+
+| 1 | rs12345 | 1 | 12345 | COPD |
+| 2 | rs12345 | 1 | 12345 | asthma |
+
+Such case indicates a one-to-many or many-to-many relationship: a single SNP can be involved in multiple diseases. Again we have duplication here: the fact that SNP `rs12345` is on chromosome 1 at position 12345 is captured twice. We can solve this by extracting another table, called `diseases`.
+
+Although biologically incorrect, imagine that a disease can only be linked to a single SNP. This would be a one-to-many relationship: one SNP to many diseases. In that case we could create the following tables:
+
+`snps` table:
+
+| id | name | chr | pos |
+|:--|:--|:--|:--|
+| 1 | rs12345 | 1 | 12345 |
+| 2 | rs12345 | 1 | 12345 |
+| 3 | rs98765 | 1 | 98765 |
+| 4 | rs28465 | 5 | 28465 |
+
+`diseases` table:
+
+| id | name | snp_id |
+|:--|:--|:--|
+| 1 | COPD | 1 |
+| 2 | asthma | 1 |
+
+We have now eliminated the `disease` column from the `snps` table so end up with 2 identical rows (rows 1 and 2) and can remove one of them.
+
+| id | name | chr | pos |
+|:--|:--|:--|:--|
+| 1 | rs12345 | 1 | 12345 |
+| 2 | rs12345 | 1 | 12345 |
+| 3 | rs98765 | 1 | 98765 |
+| 4 | rs28465 | 5 | 28465 |
+
+But as we just mentioned, biologically speaking a single SNP can be involved in multiple diseases and a single disease can be influenced by multiple SNPs. This is a _many-to-many_ relationship. In this case, we can't just add a `snp_id` to the `diseases` table anymore (or you would have to use a non-atomic field which would violate the 1st normal form). You typically create a separate _link table_.
+
+`snps` table:
+
+| id | name | chr | pos |
+|:--|:--|:--|:--|
+| 1 | rs12345 | 1 | 12345 |
+| 3 | rs98765 | 1 | 98765 |
+| 4 | rs28465 | 5 | 28465 |
+
+`diseases` table:
+
+| id | name |
+|:--|:--|
+| 1 | COPD |
+| 2 | asthma |
+
+`disease2snp` table:
+
+| id | snp_id | disease_id |
+|:--|:--|:--|
+| 1 | 1 | 1 |
+| 2 | 1 | 2 |
+
+### The final database
+
+In the end, we have the following tables:
+
+`snps` table:
+
+| id | name | chr | pos |
+|:--|:--|:--|:--|
+| 1 | rs12345 | 1 | 12345 |
+| 2 | rs98765 | 1 | 98765 |
+| 3 | rs28465 | 5 | 28465 |
+
+`diseases` table:
+
+| id | name |
+|:--|:--|
+| 1 | COPD |
+| 2 | asthma |
+
+`disease2snp` table:
+
+| id | snp_id | disease_id |
+|:--|:--|:--|
+| 1 | 1 | 1 |
+| 2 | 1 | 2 |
+
+`genotypes` table:
+
+| id | individual_id | snp_id | genotype |
+|:--|:--|:--|:--|
+| 1 | 1 | 1 | A/A |
+| 3 | 2 | 1 | A/C |
+| 4 | 1 | 2 | A/G |
+| 5 | 2 | 2 | G/G |
+| 6 | 1 | 3 | G/T |
+| 7 | 2 | 3 | G/G |
+
+`individuals` table:
+
+| id | name | ethnicity |
+|:--|:--|:--|
+| 1 | individual_A | caucasian |
+| 2 | individual_B | caucasian |
 
 ### Types of table relationships
-So how do you know in which table to create the foreign key? Should there be an `individual_id` in the `genotypes` table? Or a `genotype_id` in the `individuals` table? That all depends on the **type of relationship** between two tables. This type can be:
+To come back to the one-to-many relationships... So how do you know in which table to create the foreign key? Should there be an `individual_id` in the `genotypes` table? Or a `genotype_id` in the `individuals` table? That all depends on the **type of relationship** between two tables. This type can be:
 
 - **one-to-one**, for example an single ISBN number can be linked to a single book and vice versa.
 - **one-to-many**, for example a single company will have many employees, but a single employee will work only for a single company
@@ -152,113 +284,6 @@ The information in these tables says that:
 - Terry Pratchett and Neil Gaiman co-wrote "Good Omens"
 - Terry Pratchett wrote "Going Postal" and "Small Gods" by himself
 - Christopher Moore was the single authors of "The Stupidest Angel"
-
-Now back to our individuals and their genotypes...
-
-## Second normal form
-
-There is **still a lot of duplication** in this data. In the `genotypes` table we see in record 1 that the SNP `rs12345` is on chromosome 1 at position 12345; we see the exact same information again in record 4, where it is listed for individual nr 2. What if we are told after that we have created the table that `rs12345` is actually on chromsome 2 instead of 1? In a `genotypes` table as the one above we would have to look up all these records and change the value from 1 to 2. Enter the second normal form:
-
-* **Remove dependencies within rows**
-
-In the `genotypes` table, `chromosome` and `position` depend on `name`. For the second normal form we extract this into yet another table, called `snps`. So now we have:
-
-`individuals` table:
-
-| id | name         | ethnicity |
-|:-- |:------------ |:--------- |
-| 1  | individual_A | caucasian |
-| 2  | individual_B | caucasian |
-
-`snps` table:
-
-| id | name    | chromosome | position |
-|:-- |:------- |:---------- |:-------- |
-| 1  | rs12345 | 1          | 12345    |
-| 2  | rs98765 | 1          | 98765    |
-| 3  | rs28465 | 5          | 23456    |
-
-`genotypes` table:
-
-| id | snp_id | individual_id | genotype | ambiguity_code |
-|:-- |:------ |:------------- |:-------- |:-------------- |
-| 1  | 1      | 1             | A/A      | A              |
-| 2  | 2      | 1             | A/G      | R              |
-| 3  | 3      | 1             | G/T      | K              |
-| 4  | 1      | 2             | A/C      | M              |
-| 5  | 2      | 2             | G/G      | G              |
-| 6  | 3      | 2             | G/G      | G              |
-
-The commands to create these tables:
-
-{% highlight sql %}
-DROP TABLE genotypes;
-DROP TABLE individuals;
-CREATE TABLE individuals (id INTEGER PRIMARY KEY, name STRING, ethnicity STRING);
-CREATE TABLE snps (id INTEGER PRIMARY KEY, name STRING, chromosome STRING, position INTEGER);
-CREATE TABLE genotypes (id INTEGER PRIMARY KEY, snp_id INTEGER, individual_id INTEGER, genotype STRING, ambiguity_code STRING);
-{% endhighlight %}
-
-{% highlight sql %}
-INSERT INTO individuals (name, ethnicity)
-                    VALUES ('individual_A','caucasian');
-INSERT INTO individuals (name, ethnicity)
-                    VALUES ('individual_B','caucasian');
-INSERT INTO snps (name, chromosome, position)
-                    VALUES('rs12345','1',12345);
-INSERT INTO snps (name, chromosome, position)
-                    VALUES('rs98765','1',98765);
-INSERT INTO snps (name, chromosome, position)
-                    VALUES('rs28465','5',23456);
-INSERT INTO genotypes (snp_id, individual_id, genotype, ambiguity_code)
-                    VALUES (1,1,'A/A','A');
-INSERT INTO genotypes (snp_id, individual_id, genotype, ambiguity_code)
-                    VALUES (2,1,'A/G','R');
-INSERT INTO genotypes (snp_id, individual_id, genotype, ambiguity_code)
-                    VALUES (3,1,'G/T','K');
-INSERT INTO genotypes (snp_id, individual_id, genotype, ambiguity_code)
-                    VALUES (1,2,'A/C','M');
-INSERT INTO genotypes (snp_id, individual_id, genotype, ambiguity_code)
-                    VALUES (2,2,'G/G','G');
-INSERT INTO genotypes (snp_id, individual_id, genotype, ambiguity_code)
-                    VALUES (3,2,'G/G','G');
-{% endhighlight %}
-
-So we end up with this schema:
-
-![primary and foreign keys]({{ site.baseurl }}/assets/primary_foreign_keys.png)
-
-## Removing calculated columns
-
-Finally, we try to **eliminate unnecessary data** from our database; data that could be **calculated** based on other things that are present. In our example table genotypes, the `genotype` and `genotype_amb` columns basically contain the same information, just using a different encoding. We could (should) therefore remove one of these. This is similar to having a column with country names (e.g. 'Belgium') and one with country codes (e.g. 'Bel') in the individuals table: you'd want to remove one of those.
-
-Our final `individuals` table would look like this:
-
-| id | name         | ethnicity |
-|:-- |:------------ |:--------- |
-| 1  | individual_A | caucasian |
-| 2  | individual_B | caucasian |
-
-The `snps` table:
-
-| id | name      | chromosome | position |
-|:-- |:--------- |:---------- |:-------- |
-| 1  | rs12345   | 1          | 12345    |
-| 2  | rs98765   | 1          | 98765    |
-| 3  | rs28465   | 5          | 28465    |
-
-The `genotypes` table:
-
-| id | individual_id | snp_id | genotype_amb |
-|:-- |:------------- |:------ |:------------ |
-| 1  | 1             | 1      | A            |
-| 2  | 1             | 2      | R            |
-| 3  | 1             | 3      | K            |
-| 4  | 2             | 1      | M            |
-| 5  | 2             | 2      | G            |
-| 6  | 2             | 3      | G            |
-
-To know what your database schema looks like, you can issue the `.schema` command in sqlite3. `.tables` gives you a list of the tables that are defined. If you're using the DB Browser tool, click on `Database Structure`.
 
 
 {% include custom/series_rdbms_next.html %}
