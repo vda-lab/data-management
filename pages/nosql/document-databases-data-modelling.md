@@ -134,9 +134,10 @@ Typically you would _combine embedding and referencing_.
 
 ### On cross-collection queries
 In many document database-implementations (e.g. mongodb) it is not possible to query across collections, which can make using referenced data much more difficult. A query in mongodb, for example, will look like this (don't worry about the exact syntax; it should be clear what this tries to do):
-```json
+{% highlight json %}
 db.comments.find({author_id: 5})
-```
+{% endhighlight %}
+
 This will return all comments written by the author with ID 5. To get all comments on posts written by author John Doe we would have to do the following if we'd use a full referencing approach:
 - Find out what the ID is of "John Doe": `db.authors.find({name: "John Doe"})`. Let's say that this returns the document `{id: 8, name: "John Doe", twitter: "JohnDoe18272"}`.
 - Find all blog entries written by him: `db.blog_entries.find({author_id: 8})`. Let's say that this returns the following list of blog posts:
@@ -274,32 +275,32 @@ This is however not mandatory, and nothing keeps you from putting all kinds of d
 In a homogeneous design, we put our speakers, rooms and talks in different collections:
 
 _speakers_
-```json
+{% highlight json %}
 [ { id: 1, name: "John Doe", twitter: "JohnDoe18272" },
   { id: 2, name: "Superman", twitter: "Clark" },
   ... ]
-```
+{% endhighlight %}
 
 _rooms_
-```json
+{% highlight json %}
 [ { id: 1, name: "1st floor left", floor: 1, capacity: 80},
   { id: 2, name: "lecture hall 2", floor: 1, capacity: 200},
   ... ]
-```
+{% endhighlight %}
 
 _talks_
-```json
+{% highlight json %}
 [ { id: 1, speaker_id: 1, room_id: 4, time: "10am", title: "Fun with deep learning" },
   { id: 2, speaker_id: 1, room_id: 2, time: "2pm", title: "How I solved world hunger"},
   ... ]
-```
+{% endhighlight %}
 
 ### Heterogeneous design
 The above is a perfectly valid approach for storing this type of data. In some cases, however, you might anticipate that you often want to have information from different types. Let's say that you expect to want to find everything that is related to room 4. In the above setup, you'd have to run 3 different queries; one for each collection.
 
 Another approach is to actually put all that information together. To make sure that we can still query specific types of information (e.g. just the speakers), let's add an additional key `type` (can be anything). Let's call the collection `agenda`:
 
-```json
+{% highlight json %}
 [ { id: 1, type: "speaker", speaker_id: 1, name: "John Doe", twitter: "JohnDoe18272" },
   { id: 2, type: "speaker", speaker_id: 2, name: "Superman", twitter: "Clark" },
   { id: 3, type: "room", room_id: 1, name: "1st floor left", floor: 1, capacity: 80},
@@ -307,14 +308,14 @@ Another approach is to actually put all that information together. To make sure 
   { id: 5, type: "talk", speaker_id: 1, room_id: 4, time: "10am", title: "Fun with deep learning" },
   { id: 6, type: "talk", speaker_id: 1, room_id: 2, time: "2pm", title: "How I solved world hunger"},
   ... ]
-```
+{% endhighlight %}
 
 Now to get all information available for room with ID 2, we just get `db.agenda.find({room_id: 2})` which will return speakers, rooms and talks:
-```json
+{% highlight json %}
 [ { id: 4, type: "room", room_id: 2, name: "lecture hall 2", floor: 1, capacity: 200},
   { id: 6, type: "talk", speaker_id: 1, room_id: 2, time: "2pm", title: "How I solved world hunger"},
   ... ]
-```
+{% endhighlight %}
 
 To just get the talks that are given in that room (so not the room itself) we just add the additional constraint on `type`: `db.agenda.find({room_id: 2, type: "talk"})`.
 
