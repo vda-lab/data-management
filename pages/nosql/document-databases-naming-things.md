@@ -36,19 +36,11 @@ Each _table_ has _rows_.
 
 _Collection_ `posts`
 ```json
-{ title: "COVID-19 lockdown",
-  date: "4-5-2020",
-  author: {
-    name: "Geert Molenberghs",
-    email: "geert@gmail.com"
-  },
+{ title: "COVID-19 lockdown", date: "4-5-2020",
+  author: { name: "Geert Molenberghs", email: "geert@gmail.com" },
   text: "It seems that..." },
-{ title: "Schools closed",
-  date: "5-5-2020",
-  author: {
-    name: "Geert Molenberghs",
-    email: "geert@gmail.com"
-  },
+{ title: "Schools closed", date: "5-5-2020",
+  author: { name: "Geert Molenberghs", email: "geert@gmail.com" },
   text: "As the number of COVID-19 cases is growing, ..."}
 ```
 

@@ -15,10 +15,9 @@ Before we proceed, we'll have a quick look at the JSON ("JavaScript Object Notat
   name:"Big Data",
   lecturer:"Jan Aerts",
   keywords:["data management","NoSQL","big data"],
-  students:[
-    {student_id:"u0123456", name:"student 1"},
-    {student_id:"u0234567", name:"student 2"},
-    {student_id:"u0345678", name:"student 3"}]}
+  students:[ {student_id:"u0123456", name:"student 1"},
+             {student_id:"u0234567", name:"student 2"},
+             {student_id:"u0345678", name:"student 3"}]}
 {% endhighlight %}
 
 JSON has very simple syntax rules:

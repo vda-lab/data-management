@@ -12,9 +12,12 @@ folder: nosql
 Let's load some data. Download the list of airports in the US from [http://vda-lab.be/assets/airports.json](http://vda-lab.be/assets/airports.json). This file looks like this:
 
 {% highlight json %}
-{"_key": "00M", "name": "Thigpen ", "city": "Bay Springs", "state": "MS", "country": "USA", "lat": 31.95376472, "long": "Thigpen ", "vip": false}
-{"_key": "00R", "name": "Livingston Municipal", "city": "Livingston", "state": "TX", "country": "USA", "lat": 30.68586111, "long": "Livingston Municipal", "vip": false}
-{"_key": "00V", "name": "Meadow Lake", "city": "Colorado Springs", "state": "CO", "country": "USA", "lat": 38.94574889, "long": "Meadow Lake", "vip": false}
+{"_key": "00M", "name": "Thigpen ", "city": "Bay Springs", "state": "MS", "country": "USA",
+ "lat": 31.95376472, "long": -89.23450472, "vip": false}
+{"_key": "00R", "name": "Livingston Municipal", "city": "Livingston", "state": "TX", "country": "USA",
+ "lat": 30.68586111, "long": -95.01792778, "vip": false}
+{"_key": "00V", "name": "Meadow Lake", "city": "Colorado Springs", "state": "CO", "country": "USA",
+ "lat": 38.94574889, "long": -104.5698933, "vip": false}
 ...
 {% endhighlight %}
 
@@ -41,23 +44,11 @@ We have a flight dataset, that you can download from [here]({{site.baseurl}}/ass
 This is what a single flight looks like:
 {% highlight json %}
 {
-  "_key": "1834",
-  "_id": "flights/1834",
-  "_from": "airports/ATL",
-  "_to": "airports/CHS",
-  "_rev": "_ZRp7f-S---",
-  "Year": 2008,
-  "Month": 1,
-  "Day": 1,
-  "DayOfWeek": 2,
-  "DepTime": 2,
-  "ArrTime": 57,
-  "DepTimeUTC": "2008-01-01T05:02:00.000Z",
-  "ArrTimeUTC": "2008-01-01T05:57:00.000Z",
-  "UniqueCarrier": "FL",
-  "FlightNum": 579,
-  "TailNum": "N937AT",
-  "Distance": 259
+  "_key": "1834", "_id": "flights/1834",
+  "_from": "airports/ATL", "_to": "airports/CHS", "_rev": "_ZRp7f-S---",
+  "Year": 2008, "Month": 1, "Day": 1, "DayOfWeek": 2,
+  "DepTimeUTC": "2008-01-01T05:02:00.000Z", "ArrTimeUTC": "2008-01-01T05:57:00.000Z",
+  "UniqueCarrier": "FL", "FlightNum": 579, "TailNum": "N937AT", "Distance": 259
 }
 {% endhighlight %}
 

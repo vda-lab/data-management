@@ -50,47 +50,31 @@ In contrast, nothing would need to be done to store this new information if we h
 
 {% highlight json %}
 { id: 1,
-  species_la: "Emberiza pusilla",
-  species_en: "Little Bunting",
-  date_time: "30-09-2020 15:37",
-  municipality: "Zeebrugge, BE"},
+  species_la: "Emberiza pusilla", species_en: "Little Bunting",
+  date_time: "30-09-2020 15:37", municipality: "Zeebrugge, BE"},
 { id: 2,
-  species_la: "Sylvia nisoria",
-  species_en: "Barred Warbler",
-  date_time: "2020-10-01 13:45",
-  municipality: "Zeebrugge, BE"},
+  species_la: "Sylvia nisoria", species_en: "Barred Warbler",
+  date_time: "2020-10-01 13:45", municipality: "Zeebrugge, BE"},
 ...
 {% endhighlight %}
 
 If we want to change from reporting municipality to latitude and longitude, we just add those instead on new documents:
 {% highlight json %}
 { id: 1,
-  species_la: "Emberiza pusilla",
-  species_en: "Little Bunting",
-  date_time: "30-09-2020 15:37",
-  municipality: "Zeebrugge, BE" },
+  species_la: "Emberiza pusilla", species_en: "Little Bunting",
+  date_time: "30-09-2020 15:37", municipality: "Zeebrugge, BE" },
 { id: 2,
-  species_la: "Sylvia nisoria",
-  species_en: "Barred Warbler",
-  date_time: "2020-10-01 13:45",
-  municipality: "Zeebrugge, BE" },
+  species_la: "Sylvia nisoria", species_en: "Barred Warbler",
+  date_time: "2020-10-01 13:45", municipality: "Zeebrugge, BE" },
 ...
 { id: 56,
-  species_la: "Elanus caeruleus",
-  species_en: "Black-winged Kite",
-  species_ud: "Grijze Wouw",
-  date: "2020-10-02",
-  time: "15:15",
-  lat: 50.96577,
-  long: 3.92744 },
+  species_la: "Elanus caeruleus", species_en: "Black-winged Kite", species_du: "Grijze Wouw",
+  date: "2020-10-02", time: "15:15",
+  lat: 50.96577, long: 3.92744 },
 { id: 57,
-  species_la: "Ficedula parva",
-  species_en: "Red-breasted Flycatcher",
-  species_ud: "Kleine Vliegenvanger",
-  date: "2020-10-04",
-  time: "10:34",
-  lat: 51.33501,
-  long: 3.23154 },
+  species_la: "Ficedula parva", species_en: "Red-breasted Flycatcher", species_du: "Kleine Vliegenvanger",
+  date: "2020-10-04", time: "10:34",
+  lat: 51.33501, long: 3.23154 },
 ...
 {% endhighlight %}
 
@@ -158,63 +142,33 @@ This will return all comments written by the author with ID 5. To get all commen
 - Find all blog entries written by him: `db.blog_entries.find({author_id: 8})`. Let's say that this returns the following list of blog posts:
 
 {% highlight json %}
-[{id: 26,
-  author_id: 8,
-  date: 2020-08-17,
-  title: "A nice vacation",
-  text: "..."},
- {id: 507,
-  author_id: 8,
-  date: 2020-08-23,
-  title: "How I broke my leg",
-  text: "..."}]
+[{id: 26, author_id: 8, date: 2020-08-17,
+  title: "A nice vacation", text: "..."},
+ {id: 507, author_id: 8, date: 2020-08-23,
+  title: "How I broke my leg", text: "..."}]
 {% endhighlight %}
 
 - Find all the comments that are linked to one of these posts: `db.comments.find({blog_entry_id: [26,507]})`.
 
 As you can see, we need 3 different queries to get that information, which means that the database is accessed 3 times. In contrast, with embedding all the relevant information can be extracted with just a single query. Let's say that information is stored like this:
 {% highlight json %}
-[{id: 26,
-  author: {
-    name: "John Doe",
-    twitter: "JohnDoe18272"
-  },
+[{id: 26, author: { name: "John Doe", twitter: "JohnDoe18272" },
   date: 2020-08-17,
-  title: "A nice vacation",
-  text: "...",
-  comments: [
-    {date: ...,
-     author: {...},
-    {date: ...,
-     author: {...}}
+  title: "A nice vacation", text: "...",
+  comments: [ {date: ..., author: {...},
+              {date: ..., author: {...}}
   ]},
- {id: 507,
-   author: {
-     name: "John Doe",
-     twitter: "JohnDoe18272"
-   },
+ {id: 507, author: { name: "John Doe", twitter: "JohnDoe18272" },
   date: 2020-08-23,
-  title: "How I broke my leg",
-  text: "...",
-  comments: [
-    {date: ...,
-     author: {...},
-    {date: ...,
-     author: {...}}
+  title: "How I broke my leg", text: "...",
+  comments: [ {date: ..., author: {...},
+              {date: ..., author: {...}}
   ]},
-  {id: 507,
-    author: {
-      name: "Superman",
-      twitter: "Clark"
-    },
+  {id: 507, author: { name: "Superman", twitter: "Clark" },
    date: 2020-09-03,
-   title: "A view from the sky",
-   text: "...",
-   comments: [
-     {date: ...,
-      author: {...},
-     {date: ...,
-      author: {...}}
+   title: "A view from the sky", text: "...",
+   comments: [ {date: ..., author: {...},
+               {date: ..., author: {...}}
    ]},
    ...
 ]
@@ -321,40 +275,22 @@ In a homogeneous design, we put our speakers, rooms and talks in different colle
 
 _speakers_
 ```json
-[ { id: 1,
-    name: "John Doe",
-    twitter: "JohnDoe18272" },
-  { id: 2,
-    name: "Superman",
-    twitter: "Clark" },
+[ { id: 1, name: "John Doe", twitter: "JohnDoe18272" },
+  { id: 2, name: "Superman", twitter: "Clark" },
   ... ]
 ```
 
 _rooms_
 ```json
-[ { id: 1,
-    name: "1st floor left",
-    floor: 1,
-    capacity: 80},
-  { id: 2,
-    name: "lecture hall 2",
-    floor: 1,
-    capacity: 200},
+[ { id: 1, name: "1st floor left", floor: 1, capacity: 80},
+  { id: 2, name: "lecture hall 2", floor: 1, capacity: 200},
   ... ]
 ```
 
 _talks_
 ```json
-[ { id: 1,
-    speaker_id: 1,
-    room_id: 4,
-    time: "10am",
-    title: "Fun with deep learning" },
-  { id: 2,
-    speaker_id: 1,
-    room_id: 2,
-    time: "2pm",
-    title: "How I solved world hunger"},
+[ { id: 1, speaker_id: 1, room_id: 4, time: "10am", title: "Fun with deep learning" },
+  { id: 2, speaker_id: 1, room_id: 2, time: "2pm", title: "How I solved world hunger"},
   ... ]
 ```
 
@@ -364,57 +300,19 @@ The above is a perfectly valid approach for storing this type of data. In some c
 Another approach is to actually put all that information together. To make sure that we can still query specific types of information (e.g. just the speakers), let's add an additional key `type` (can be anything). Let's call the collection `agenda`:
 
 ```json
-[ { id: 1,
-    type: "speaker",
-    speaker_id: 1,
-    name: "John Doe",
-    twitter: "JohnDoe18272" },
-  { id: 2,
-    type: "speaker",
-    speaker_id: 2,
-    name: "Superman",
-    twitter: "Clark" },
-  { id: 3,
-    type: "room",
-    room_id: 1,
-    name: "1st floor left",
-    floor: 1,
-    capacity: 80},
-  { id: 4,
-    type: "room",
-    room_id: 2,
-    name: "lecture hall 2",
-    floor: 1,
-    capacity: 200},
-  { id: 5,
-    type: "talk",
-    speaker_id: 1,
-    room_id: 4,
-    time: "10am",
-    title: "Fun with deep learning" },
-  { id: 6,
-    type: "talk",
-    speaker_id: 1,
-    room_id: 2,
-    time: "2pm",
-    title: "How I solved world hunger"},
+[ { id: 1, type: "speaker", speaker_id: 1, name: "John Doe", twitter: "JohnDoe18272" },
+  { id: 2, type: "speaker", speaker_id: 2, name: "Superman", twitter: "Clark" },
+  { id: 3, type: "room", room_id: 1, name: "1st floor left", floor: 1, capacity: 80},
+  { id: 4, type: "room", room_id: 2, name: "lecture hall 2", floor: 1, capacity: 200},
+  { id: 5, type: "talk", speaker_id: 1, room_id: 4, time: "10am", title: "Fun with deep learning" },
+  { id: 6, type: "talk", speaker_id: 1, room_id: 2, time: "2pm", title: "How I solved world hunger"},
   ... ]
 ```
 
 Now to get all information available for room with ID 2, we just get `db.agenda.find({room_id: 2})` which will return speakers, rooms and talks:
 ```json
-[ { id: 4,
-    type: "room",
-    room_id: 2,
-    name: "lecture hall 2",
-    floor: 1,
-    capacity: 200},
-  { id: 6,
-    type: "talk",
-    speaker_id: 1,
-    room_id: 2,
-    time: "2pm",
-    title: "How I solved world hunger"},
+[ { id: 4, type: "room", room_id: 2, name: "lecture hall 2", floor: 1, capacity: 200},
+  { id: 6, type: "talk", speaker_id: 1, room_id: 2, time: "2pm", title: "How I solved world hunger"},
   ... ]
 ```
 

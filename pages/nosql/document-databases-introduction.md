@@ -24,40 +24,18 @@ This is a far from ideal way for storing this data because many cells will remai
 In document-oriented databases, these keys are however stored with the documents themselves. A typical way to represent this is as in JSON format, and can be represented as such:
 {% highlight json %}
 [
-  { id: 1,
-    name: "building1",
-    address: "street1",
-    city: "city1",
-    type: "hotel",
-    nr_rooms: 15 },
-  { id: 2,
-    name: "building2",
-    address: "street2",
-    city: "city2",
-    type: "school"
-    primary_or_secondary: "primary" },
-  { id: 3,
-    name: "building3",
-    address: "street3",
-    city: "city3",
-    type: "hotel",
-    nr_rooms: 52 },
-  { id: 4,
-    name: "building4",
-    address: "street4",
-    city: "city4",
+  { id: 1, name: "building1", address: "street1", city: "city1",
+    type: "hotel", nr_rooms: 15 },
+  { id: 2, name: "building2", address: "street2", city: "city2",
+    type: "school", primary_or_secondary: "primary" },
+  { id: 3, name: "building3", address: "street3", city: "city3",
+    type: "hotel", nr_rooms: 52 },
+  { id: 4, name: "building4", address: "street4", city: "city4",
     type: "church" },
-  { id: 5,
-    name: "building5",
-    address: "street5",
-    city: "city5",
+  { id: 5, name: "building5", address: "street5", city: "city5",
     type: "house" },
-  { id: 6,
-    name: "building6",
-    address: "street6",
-    city: "city6",
-    type: "shop",
-    closing_day: "Monday" }
+  { id: 6, name: "building6", address: "street6", city: "city6",
+    type: "shop", closing_day: "Monday" }
 ]
 {% endhighlight %}
 Notice that in the document for a house (`id` of 5), there is no mention of `primary_of_secondary` because it is not relevant as it is for a hotel.

@@ -389,29 +389,17 @@ This code goes through each airport, and _collects_ the state that it's in. It'l
     "airports": [
       {
         "a": {
-          "_key": "0AK",
-          "_id": "airports/0AK",
-          "_rev": "_ZYukZZy--e",
-          "name": "Pilot Station",
-          "city": "Pilot Station",
-          "state": "AK",
-          "country": "USA",
-          "lat": 61.93396417,
-          "long": "Pilot Station",
+          "_key": "0AK", "_id": "airports/0AK", "_rev": "_ZYukZZy--e",
+          "name": "Pilot Station", "city": "Pilot Station", "state": "AK", "country": "USA",
+          "lat": 61.93396417, "long": "Pilot Station",
           "vip": false
         }
       },
       {
         "a": {
-          "_key": "15Z",
-          "_id": "airports/15Z",
-          "_rev": "_ZYukZa---I",
-          "name": "McCarthy 2",
-          "city": "McCarthy",
-          "state": "AK",
-          "country": "USA",
-          "lat": 61.43706083,
-          "long": "McCarthy 2",
+          "_key": "15Z", "_id": "airports/15Z", "_rev": "_ZYukZa---I",
+          "name": "McCarthy 2", "city": "McCarthy", "state": "AK", "country": "USA",
+          "lat": 61.43706083, "long": "McCarthy 2",
           "vip": false
         }
       },
@@ -445,14 +433,9 @@ What is this `[*].a._id`? If we look at the output from the previous query, we g
 [
   {
     "state": "AK",
-    "airports": [
-      {
-        "a": {..., "_id": "airports/0AK", ...}
-      },
-      {
-        "a": {...,"_id": "airports/15Z", ...}
-      },
-      ...]
+    "airports": [ { "a": {..., "_id": "airports/0AK", ...} },
+                  { "a": {...,"_id": "airports/15Z", ...} },
+                  ...]
   }
 ]
 {% endhighlight %}
