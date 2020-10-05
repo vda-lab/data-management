@@ -14,10 +14,6 @@ Let's consider the following table listing individuals, SNPs and genotypes. This
 | individual_A | caucasian | A/A | 1;12345 | COPD;asthma | A/G | 1;98765 | G/T | 5;28465 |
 | individual_B | caucasian | A/C | 1;12345 | COPD;asthma | G/G | 1;98765 | G/G | 5;28465 |
 
-This is the corresponding schema:
-
-![]({{site.baseurl}}/assets/normalisation_0.png)
-
 ## First normal form
 
 To get to the first normal form:
@@ -47,7 +43,7 @@ The solution to these issues is to go from a _wide_ format to a _long_ format: r
 
 The new schema:
 
-![]({{site.baseurl}}/assets/normalisation_1.png)
+![]({{site.baseurl}}/assets/1NF.png)
 
 Everything is still contained in a single table, which will change when we go to the second normal form.
 
@@ -109,7 +105,7 @@ By the way, we see that the first 2 rows in the `genotypes` table are exactly th
 
 The new schema:
 
-![]({{site.baseurl}}/assets/normalisation_2.png)
+![]({{site.baseurl}}/assets/2NF.png)
 
 ## Third normal form
 
@@ -216,6 +212,10 @@ In the end, we have the following tables:
 |:--|:--|:--|
 | 1 | individual_A | caucasian |
 | 2 | individual_B | caucasian |
+
+The schema itself:
+
+![]({{site.baseurl}}/assets/3NF.png)
 
 ### Types of table relationships
 To come back to the one-to-many relationships... So how do you know in which table to create the foreign key? Should there be an `individual_id` in the `genotypes` table? Or a `genotype_id` in the `individuals` table? That all depends on the **type of relationship** between two tables. This type can be:
