@@ -63,10 +63,11 @@ In the new table above, we see that there are several columns that are 1-to-1 de
 | 1 | 1 | 1 | A/A |
 | 2 | 1 | 1 | A/A |
 | 3 | 2 | 1 | A/C |
-| 4 | 1 | 2 | A/G |
-| 5 | 2 | 2 | G/G |
-| 6 | 1 | 3 | G/T |
-| 7 | 2 | 3 | G/G |
+| 4 | 2 | 1 | A/C |
+| 5 | 1 | 2 | A/G |
+| 6 | 2 | 2 | G/G |
+| 7 | 1 | 3 | G/T |
+| 8 | 2 | 3 | G/G |
 
 `individuals` table:
 
@@ -92,7 +93,7 @@ Some observations (and good practices):
 - The name of each table should be plural (not mandatory, but good practice).
 - The foreign key `individual_id` in the `genotypes` table must be of the same type as the `id` column in the `individuals` table.
 
-By the way, we see that the first 2 rows in the `genotypes` table are exactly the same apart from the unique ID, so we can remove one (e.g. with ID `2`).
+By the way, we see that the first 2 rows in the `genotypes` table are exactly the same apart from the unique ID, and the same is true for rows 3 and 4, so we can remove one for each (e.g. the ones with ID `2` and `4`).
 
 `genotypes` table:
 
@@ -100,10 +101,10 @@ By the way, we see that the first 2 rows in the `genotypes` table are exactly th
 |:--|:--|:--|:--|
 | 1 | 1 | 1 | A/A |
 | 3 | 2 | 1 | A/C |
-| 4 | 1 | 2 | A/G |
-| 5 | 2 | 2 | G/G |
-| 6 | 1 | 3 | G/T |
-| 7 | 2 | 3 | G/G |
+| 5 | 1 | 2 | A/G |
+| 6 | 2 | 2 | G/G |
+| 7 | 1 | 3 | G/T |
+| 8 | 2 | 3 | G/G |
 
 The new schema:
 
