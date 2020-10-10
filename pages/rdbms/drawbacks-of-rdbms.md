@@ -43,8 +43,53 @@ In table format:
 | James  | John   |
 | Fred   | James  |
 | Frits  | Fred   |
+| Gerry  | Frits  |
 
-If you *really* want to have this in a relational database, how would you find out who are the friends of the friends of James?
+If you *really* want to have this in a relational database, how would you find out who are the friends of the friends of James? First, we'd need to find out who James' friends are:
 
+{% highlight sql %}
+SELECT knower FROM friends WHERE knowee = 'James'
+UNION
+SELECT knowee FROM friends WHERE knower = 'James';
+{% endhighlight %}
+
+Using this as a subquery, we can then find out who the friends of those friends are:
+{% highlight sql %}
+SELECT knower FROM friends
+WHERE knowee IN (
+  SELECT knower FROM friends WHERE knowee = 'James'
+  UNION
+  SELECT knowee FROM friends WHERE knower = 'James'
+)
+UNION
+SELECT knowee FROM friends
+WHERE knower IN (
+  SELECT knower FROM friends WHERE knowee = 'James'
+  UNION
+  SELECT knowee FROM friends WHERE knower = 'James'
+);
+{% endhighlight %}
+
+If we want to know how big the group is, we'll have to nest this _again_ as a subquery:
+
+{% highlight sql %}
+SELECT COUNT(*) FROM (
+  SELECT knower FROM friends
+  WHERE knowee IN (
+    SELECT knower FROM friends WHERE knowee = 'James'
+    UNION
+    SELECT knowee FROM friends WHERE knower = 'James'
+  )
+  UNION
+  SELECT knowee FROM friends
+  WHERE knower IN (
+    SELECT knower FROM friends WHERE knowee = 'James'
+    UNION
+    SELECT knowee FROM friends WHERE knower = 'James'
+  )
+);
+{% endhighlight %}
+
+You can imagine that there must be better ways of doing this. Remember this example when you'll learn about graph databases...
 
 {% include custom/series_rdbms_next.html %}

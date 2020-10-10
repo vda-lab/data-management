@@ -92,9 +92,9 @@ entries:
     - title: Views
       url: /rdbms-views.html
       output: web, pdf
-    - title: Normalisation homework
-      url: /rdbms-normalisation-homework.html
-      output: web, pdf
+    # - title: Normalisation homework
+    #   url: /rdbms-normalisation-homework.html
+    #   output: web, pdf
   - title: Drawbacks of relational databases
     output: web, pdf
     folderitems:
