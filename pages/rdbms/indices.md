@@ -5,6 +5,7 @@ sidebar: rdbms_sidebar
 permalink: rdbms-indices.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
 
 There might be columns that you will often use for filtering. For example, you expect to regularly run queries that include a filter on ethnicity. To speed things up you can create an index on that column.
 

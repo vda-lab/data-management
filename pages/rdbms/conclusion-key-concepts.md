@@ -5,6 +5,7 @@ sidebar: rdbms_sidebar
 permalink: rdbms-conclusion-key-concepts.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
 
 So some key concepts in relational database design:
 

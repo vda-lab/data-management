@@ -5,6 +5,7 @@ sidebar: rdbms_sidebar
 permalink: rdbms-other-best-practices.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
 
 There are some additional guidelines that you can use in creating your database schema, although different people use different guidelines. Everyone ends up with their own approach. What _I_ do:
 

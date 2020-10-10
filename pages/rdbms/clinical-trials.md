@@ -6,6 +6,8 @@ toc: false
 permalink: rdbms-clinical-trials.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
+
 A clinical trial is a study involving the assessment of one or more regimens used in treating or preventing a specific illness or disease (McFadden, 2007). The design, aim, number of patients etc. depend on the phase of the clinical trial. Different types of data are collected:
 
 - _Administrative data_ describes information to uniquely identify a patient and their contact details. Often, the name cannot be used due to the fact that multiple people can have the same name, but more importantly to ensure minimal identifiability (privacy); therefore a unique patient ID is generated at enrolment. In addition, information like the name of the trial and name of the center in large multicenter trials are recorded.

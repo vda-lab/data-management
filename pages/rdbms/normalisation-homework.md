@@ -5,6 +5,7 @@ sidebar: rdbms_sidebar
 permalink: rdbms-normalisation-homework.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
 
 **This is the assignment for homework 1. For the due date, see [the website for this part of the course]({{ site.baseurl }}/sdm.html).**.
 

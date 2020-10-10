@@ -6,6 +6,8 @@ toc: false
 permalink: rdbms-dna-sequencing-and-genotyping.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
+
 The importance of DNA sequencing and genotyping is steadily increasing within research and health care. In genotyping, one reads the nucleotides at specific positions in the genome to check if the patient has an allele that for example constitutes a higher risk to certain diseases, or that indicates higher or lower sensitivity to certain medication.
 
 For example, mutations in the BRCA1 and BRCA2 genes change a person's chance of getting breast cancer (see http://arup.utah.edu/database/BRCA/Variants/BRCA2.php for a list of possible mutations in BRCA2 and their pathogenicity). One of the many harmful mutations is a mutation at position 32,316,517 on chromosome 13 (in exon 2 of BRCA2) that changes a C to an A, resulting in a stop codon.

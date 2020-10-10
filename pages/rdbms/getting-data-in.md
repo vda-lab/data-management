@@ -5,6 +5,7 @@ sidebar: rdbms_sidebar
 permalink: rdbms-getting-data-in.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
 
 ## INSERT INTO
 

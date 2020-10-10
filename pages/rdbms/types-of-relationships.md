@@ -5,6 +5,7 @@ sidebar: rdbms_sidebar
 permalink: rdbms-types-of-relationships.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
 
 Relationships between tables are often categorised as:
 - _one-to-one_: one row in one table is linked to exactly one row in another table (e.g. ISBN number in first table to book in second table)

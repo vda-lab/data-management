@@ -5,6 +5,8 @@ sidebar: rdbms_sidebar
 permalink: rdbms-normal-forms.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
+
 There are some good practices in developing relational database schemes which make it easier to work with the data afterwards. Some of these practices are represented in the "normal forms".
 
 Let's consider the following table listing individuals, SNPs and genotypes. This is genetic data. As you know, everyone has very similar DNA (otherwise we wouldn't be human), but there are a lot of positions in that genome (about 1/1000) where people differ from each other (otherwise we would all be clones). A "single nucleotide polymorphism" (or "SNP") is such a position in the genome. A "genotype" is the actual nucleotides that someone has in his/her genome at that particular position. And because we have 2 copies of each chromosome, a genotype consists of 2 letters (A, C, G and T).

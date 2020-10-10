@@ -6,6 +6,8 @@ toc: false
 permalink: rdbms-a-student-database.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
+
 ## The simplest version
 
 Let's say we want to store which students follow the S&DM course. We want to keep track of their first name, last name, student ID, and whether or not they follow the course. This should allow for some easy queries, such as listing all people who take the course, or returning the number of people who do so.

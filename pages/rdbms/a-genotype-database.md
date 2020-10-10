@@ -6,6 +6,8 @@ toc: false
 permalink: rdbms-a-genotype-database.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
+
 Let's look at another example. Let's say you want to store individuals and their genotypes. In Excel, you could create a sheet that looks like this with genotypes for 3 polymorphisms in 2 individuals:
 
 | individual   | ethnicity | rs12345 | rs12345_amb | chr_12345 | pos_12345 | rs98765 | rs98765_amb | chr_98765 | pos_98765 | rs28465 | rs28465_amb | chr_28465 | pos_28465 |

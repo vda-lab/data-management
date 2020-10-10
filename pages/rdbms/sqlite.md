@@ -6,6 +6,8 @@ toc: false
 permalink: rdbms-sqlite.html
 folder: rdbms
 ---
+{% include custom/series_rdbms_previous.html %}
+
 The relational database management system (RDBMS) that we will use is **SQLite**. It is very lightweight and easy to set up.
 
 #### Using SQLite on the linux command line
