@@ -295,6 +295,7 @@ FOR airport IN (
 {% endhighlight %}
 
 ## Joining collections
+### Inner joins
 It is simple enough to combine different collections, just by nesting `FOR` loops but making sure that there exits a `FILTER` in the inner loop to match up IDs. For example, to list all destination airports and distances for flights where the departure airport lies in California:
 
 {% highlight sql %}
@@ -313,8 +314,7 @@ airports/ACV  airports/CEC  56
 ...
 {% endhighlight %}
 
-(Remember from above that using links in a document setting consitute a code smell. If you're doing this a lot, check if your data should be modelled as a graph. Further down when we're talking about ArangoDB as a graph database we'll write a version of this same query that uses a graph approach.)
-
+(Remember from above that using links in a document setting might consitute a code smell. If you're doing this a lot, check if your data should be modelled as a graph. Further down when we're talking about ArangoDB as a graph database we'll write a version of this same query that uses a graph approach.)
 
 What if we want to show the departure and arrival airports full names instead of their codes, and have an additional filter on the arrival airport? To do this, we need an additional join with the airports table:
 
@@ -340,6 +340,7 @@ Arcata  Jack McNamara                 56
 ...
 {% endhighlight %}
 
+### Outer joins
 The above joins are inner joins, which means that we will only find the departure airports for which such arrival airports exist (see the SQL session). What if we want to list the airports in California that do not have any flights to other airports in California? In this case, put the second `FOR` loop within the `RETURN` statement:
 {% highlight sql %}
 FOR a1 IN airports

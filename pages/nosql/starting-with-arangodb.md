@@ -8,9 +8,13 @@ folder: nosql
 ---
 {% include custom/series_nosql_previous.html %}
 
-We will first need to install ArangoDB. It is available on a variety of operating systems and can be downloaded from [https://www.arangodb.com/download-major/](https://www.arangodb.com/download-major/).
-
 <img src="{{ site.baseurl }}/assets/arangodb-positioning.png" width="600px"/>
+
+## Installation
+The easiest way to install ArangoDB is to download it from [here](https://www.arangodb.com/download-major/). Make sure to check the Installation Manual:
+- for Windows: [https://www.arangodb.com/docs/stable/installation-windows.html](https://www.arangodb.com/docs/stable/installation-windows.html)
+- for MacOS: [https://www.arangodb.com/docs/stable/installation-mac-osx.html](https://www.arangodb.com/docs/stable/installation-mac-osx.html) => probably easiest to use the second option and install it using the .dmg package
+- linux: installation options available for CentOS, Fedora, Redhat, Debian, Ubuntu, SuSE and ArchLinux
 
 For getting started with ArangoDB, see [here](https://www.arangodb.com/docs/stable/getting-started.html). Some of the following is extracted from that documentation. After installing ArangoDB, you can access the web interface at [http://localhost:8529](http://localhost:8529); log in as user `root` (without a password) and connect to the `_system` database. (Note that in a real setup, the root user would only be used for administrative purposes, and you would first create a new username. For the sake of simplicity, we'll take a shortcut here.)
 

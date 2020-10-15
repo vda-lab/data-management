@@ -56,11 +56,14 @@ entries:
     - title: Introduction
       url: /nosql-document-databases-introduction.html
       output: web, pdf
-    - title: Naming things
-      url: /nosql-document-databases-naming-things.html
+    - title: Concepts
+      url: /nosql-document-databases-concepts.html
       output: web, pdf
     - title: Data modelling
       url: /nosql-document-databases-data-modelling.html
+      output: web, pdf
+    - title: Data modelling patterns
+      url: /nosql-document-databases-data-modelling-patterns.html
       output: web, pdf
     - title: Difference with key/value stores
       url: /nosql-difference-with-keyvalue-stores.html
@@ -104,6 +107,9 @@ entries:
     - title: Querying document data
       url: /nosql-arangodb-querying-document-data.html
       output: web, pdf
+    # - title: JSON schema validation
+    #   url: /nosql-arangodb-schema-validation.html
+    #   output: web, pdf
     - title: Querying graph data
       url: /nosql-arangodb-querying-graph-data.html
       output: web, pdf
