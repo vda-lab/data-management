@@ -50,7 +50,7 @@ SQL is a _declarative_ language, which means that you tell the RDBMS _what_ you 
 {% highlight sql %}
 FOR a IN airports
   FILTER a.lat > 35
-  RETURN a
+  RETURN a.state
 {% endhighlight %}
 
 Similarly, the minimal SQL query is:
