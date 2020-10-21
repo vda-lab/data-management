@@ -29,6 +29,15 @@ INSERT {_key: "b", value: [1,2,3,4,5]} INTO keyvalues
 INSERT {_key: "c", value: {first: 1, second: 2}} INTO keyvalues
 {% endhighlight %}
 
+Note that you can only do _one_ insert at a time in the ArangoDB webinterface. So to insert both, you can write:
+
+{% highlight sql %}
+FOR i in [
+    { "_key": "b", "value": [1,2,3,4,5] },
+    { "_key": "c", "value": {first: 1, second: 2} }]
+INSERT i IN keyvalues
+{% endhighlight %}
+(We'll come back to the `FOR` loop etc in the next section.)
 
 ## Retrieving a key/value pair
 To retrieve a document given a certain key (in this case "`c`"), we can run the query
@@ -41,7 +50,7 @@ How this works will get much more clear as we move further down in this post...
 ## Removing a key/value pair
 To remove a key/value pair (e.g. the pair for key `b`), we run the following:
 {% highlight sql %}
-REMOVE b FROM keyvalues
+REMOVE 'b' IN keyvalues
 {% endhighlight %}
 
 Retrieving and removing key/value pairs are very fast in ArangoDB, because the `_key` attribute is indexed by default.
