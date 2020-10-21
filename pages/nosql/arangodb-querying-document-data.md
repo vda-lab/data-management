@@ -84,13 +84,20 @@ This will return:
 3  30
 {% endhighlight %}
 
+## Projections
+
 If you don't want to return the whole document, you can specify this in the `RETURN` statement. This is called a _projection_. For example:
 {% highlight sql %}
 FOR a IN airports
   RETURN a.name
 {% endhighlight %}
 
-or
+Apart from a single value per document, we can also return arrays or maps:
+
+{% highlight sql %}
+FOR a IN airports
+  RETURN [a.name, a.state]
+{% endhighlight %}
 
 {% highlight sql %}
 FOR a IN airports
@@ -149,6 +156,8 @@ FOR a IN airports
   RETURN a
 {% endhighlight %}
 
+Important to note: all steps in the `FOR` loop are executed from top to bottom. So the order in which they appear is important (see further).
+
 ## `SORT`ing the results
 {% highlight sql %}
 FOR a IN airports
@@ -176,7 +185,10 @@ SORT BY lat
 LIMIT 15;
 {% endhighlight %}
 
-In AQL, the different filters, sorts, limits, etc are applied top to bottom. This means that the following two do not necessarily give the same results:
+In AQL, the different filters, sorts, limits, etc are applied top to bottom, so order is important! This means that the following two do not necessarily give the same results.
+
+Here are 2 versions (one correct, one wrong) of a query to get (max) 5 airports in California with a VIP lounge.
+### Version 1
 {% highlight sql %}
 FOR a IN airports
   FILTER a.vip == true
@@ -185,6 +197,44 @@ FOR a IN airports
   RETURN a
 {% endhighlight %}
 
+Let's break this down step by step and see what we get in the intermediate phases:
+{% highlight sql %}
+FOR a IN airports
+  FILTER a.vip == true
+  RETURN a
+{% endhighlight %}
+
+returns:
+
+| _key | _id | _rev | name | city | state | country | lat | long | vip |
+|--|--|--|--|--|--|--|--|--|--|
+| AMA | airports/AMA | _ZbpOKxW-Aa | Amarillo International | Amarillo | TX | USA | 35.2193725 | -101.7059272 | true |
+| ATL | airports/ATL | _ZbpOKxa-_E | William B Hartsfield-Atlanta Intl | Atlanta | GA | USA | 33.64044444 | -84.42694444 | true |
+| DFW | airports/DFW | _ZbpOKxu--I | Dallas-Fort Worth International | Dallas-Fort Worth | TX | USA | 32.89595056 | -97.0372 | true |
+| JFK | airports/JFK | _ZbpOKyK-Aa | John F Kennedy Intl | New York | NY | USA | 40.63975111 | -73.77892556 | true |
+| LAX | airports/LAX | _ZbpOKyS-_c | Los Angeles International | Los Angeles | CA | USA | 33.94253611 | -118.4080744 | true |
+| ORD | airports/ORD | _ZbpOKyq-AS | Chicago O'Hare International | Chicago | IL | USA | 41.979595 | -87.90446417 | true |
+| SFO | airports/SFO | _ZbpOKz--A- | San Francisco International | San Francisco | CA | USA | 37.61900194 | -122.3748433 | true |
+
+We see that there are 7 airports in the US with a VIP lounge. Let's add the second filter:
+{% highlight sql %}
+FOR a IN airports
+  FILTER a.vip == true
+  FILTER a.state == 'CA'
+  RETURN a
+{% endhighlight %}
+
+returns:
+
+| _key | _id | _rev | name | city | state | country | lat | long | vip |
+|--|--|--|--|--|--|--|--|--|--|
+| LAX | airports/LAX | _ZbpOKyS-_c | Los Angeles International | Los Angeles | CA | USA | 33.94253611 | -118.4080744 | true |
+| SFO | airports/SFO | _ZbpOKz--A- | San Francisco International | San Francisco | CA | USA | 37.61900194 | -122.3748433 | true |
+
+Finally, we limit the output to a maximum of 5 records, but we only have 2 anyway...
+
+### Version 2
+In the second version, we switched the `FILTER a.state == 'CA'` and `LIMIT 5`:
 {% highlight sql %}
 FOR a IN airports
   FILTER a.vip == true
@@ -192,6 +242,108 @@ FOR a IN airports
   FILTER a.state == 'CA'
   RETURN a
 {% endhighlight %}
+
+Again, let's see what happens step by step:
+{% highlight sql %}
+FOR a IN airports
+  FILTER a.vip == true
+  RETURN a
+{% endhighlight %}
+
+returns:
+
+| _key | _id | _rev | name | city | state | country | lat | long | vip |
+|--|--|--|--|--|--|--|--|--|--|
+| AMA | airports/AMA | _ZbpOKxW-Aa | Amarillo International | Amarillo | TX | USA | 35.2193725 | -101.7059272 | true |
+| ATL | airports/ATL | _ZbpOKxa-_E | William B Hartsfield-Atlanta Intl | Atlanta | GA | USA | 33.64044444 | -84.42694444 | true |
+| DFW | airports/DFW | _ZbpOKxu--I | Dallas-Fort Worth International | Dallas-Fort Worth | TX | USA | 32.89595056 | -97.0372 | true |
+| JFK | airports/JFK | _ZbpOKyK-Aa | John F Kennedy Intl | New York | NY | USA | 40.63975111 | -73.77892556 | true |
+| LAX | airports/LAX | _ZbpOKyS-_c | Los Angeles International | Los Angeles | CA | USA | 33.94253611 | -118.4080744 | true |
+| ORD | airports/ORD | _ZbpOKyq-AS | Chicago O'Hare International | Chicago | IL | USA | 41.979595 | -87.90446417 | true |
+| SFO | airports/SFO | _ZbpOKz--A- | San Francisco International | San Francisco | CA | USA | 37.61900194 | -122.3748433 | true |
+
+In the second step, we limit the output to maximum 5 records:
+
+{% highlight sql %}
+FOR a IN airports
+  FILTER a.vip == true
+  LIMIT 5
+  RETURN a
+{% endhighlight %}
+
+returns:
+
+| _key | _id | _rev | name | city | state | country | lat | long | vip |
+|--|--|--|--|--|--|--|--|--|--|
+| AMA | airports/AMA | _ZbpOKxW-Aa | Amarillo International | Amarillo | TX | USA | 35.2193725 | -101.7059272 | true |
+| ATL | airports/ATL | _ZbpOKxa-_E | William B Hartsfield-Atlanta Intl | Atlanta | GA | USA | 33.64044444 | -84.42694444 | true |
+| DFW | airports/DFW | _ZbpOKxu--I | Dallas-Fort Worth International | Dallas-Fort Worth | TX | USA | 32.89595056 | -97.0372 | true |
+| JFK | airports/JFK | _ZbpOKyK-Aa | John F Kennedy Intl | New York | NY | USA | 40.63975111 | -73.77892556 | true |
+| LAX | airports/LAX | _ZbpOKyS-_c | Los Angeles International | Los Angeles | CA | USA | 33.94253611 | -118.4080744 | true |
+
+If we look closely, we now have lost SFO airport...
+
+In our final step, we pick those airports that are in California:
+{% highlight sql %}
+FOR a IN airports
+  FILTER a.vip == true
+  LIMIT 5
+  FILTER a.state == 'CA'
+  RETURN a
+{% endhighlight %}
+
+returns:
+
+| _key | _id | _rev | name | city | state | country | lat | long | vip |
+|--|--|--|--|--|--|--|--|--|--|
+| LAX | airports/LAX | _ZbpOKyS-_c | Los Angeles International | Los Angeles | CA | USA | 33.94253611 | -118.4080744 | true |
+
+Because we already lost SFO along the way we can't show that anymore, meaning that our output is not correct.
+
+## LET: defining variables
+In some cases it becomes complex or even impossible to put the whole query in a single nested combination of `FOR` loops, `FILTER`s and `SORT`s. Sometimes it's easier to extract some data separately. That's where `LET` comes in.
+
+The following two queries give the same result:
+
+{% highlight sql %}
+FOR a IN airports
+RETURN a
+{% endhighlight %}
+
+{% highlight sql %}
+LET myAirports = (
+  FOR a IN airports
+  RETURN a
+)
+
+FOR m IN myAirports
+RETURN m
+{% endhighlight %}
+
+Here's an example where a `LET` is necessary. If we want to find out which airports to get to in 2 stops starting from Adak (ADK), we could first find out which airports can be reached _directly_ from ADK, write those down, and then for each of these do a separate query to find the second airport. Or we can put the airports reached directly in an array that we loop over afterwards:
+
+{% highlight sql %}
+LET arrivals1 = (
+    FOR f IN flights
+    FILTER f._from == 'airports/ADK'
+    RETURN f._to)
+
+FOR a IN arrivals1
+    FOR f IN flights
+    FILTER f._from == a
+    RETURN DISTINCT f._to
+{% endhighlight %}
+
+The output:
+```
+[ "airports/SEA", "airports/PDX", "airports/SLC", "airports/PHX",
+  "airports/FAI", "airports/ADQ", "airports/JNU", "airports/MSP",
+  "airports/OME", "airports/BET", "airports/SCC", "airports/HNL",
+  "airports/CDV", "airports/LAS", "airports/OTZ", "airports/ORD",
+  "airports/IAH", "airports/ADK" ]
+```
+
+Notice that the last element in the list is ADK itself because obviously you can reach it again in 2 stops.
 
 ## Functions in ArangoDB
 ArangoDB includes a large collections of functions that can be run at different levels, e.g. to analyse the underlying database, to calculate aggregates like minimum and maximum from an array, to calculating the geographical distance between two locations on a map, to concatenate strings, etc. For a full list of functions see [https://www.arangodb.com/docs/stable/aql/functions.html](https://www.arangodb.com/docs/stable/aql/functions.html).
@@ -273,13 +425,9 @@ We can do something similar with AQL. For argument's sake, let's wrap a simple q
 {% highlight sql %}
 FOR s IN (
     FOR a IN airports
-        COLLECT state = a.state WITH COUNT INTO nrAirports
-        SORT nrAirports DESC
-        RETURN {
-            "state" : state,
-            "nrAirports" : nrAirports
-        }
-    )
+    LIMIT 2
+    RETURN a
+)
 RETURN s
 {% endhighlight %}
 This is exactly the same as if we would have run only the inner query. An AQL query similar to the SQL query above:
@@ -294,9 +442,11 @@ FOR airport IN (
     RETURN c
 {% endhighlight %}
 
+Don't worry about the `COLLECT WITH COUNT INTO` yet. We'll come back to that below...
+
 ## Joining collections
 ### Inner joins
-It is simple enough to combine different collections, just by nesting `FOR` loops but making sure that there exits a `FILTER` in the inner loop to match up IDs. For example, to list all destination airports and distances for flights where the departure airport lies in California:
+Just like inner joins in RDBMS, it is simple to combine different collections. In AQL we do this by nesting `FOR` loops. But like in RDBMS joins we have to make sure that there exists a `FILTER` in the inner loop to match up IDs. For example, to list all destination airports and distances for flights where the departure airport lies in California:
 
 {% highlight sql %}
 FOR a IN airports
@@ -341,7 +491,7 @@ Arcata  Jack McNamara                 56
 {% endhighlight %}
 
 ### Outer joins
-The above joins are inner joins, which means that we will only find the departure airports for which such arrival airports exist (see the SQL session). What if we want to list the airports in California that do not have any flights to other airports in California? In this case, put the second `FOR` loop within the `RETURN` statement:
+The above joins are inner joins, which means that we will only find the departure airports for which such arrival airports exist (see the SQL session). What if we want to list the airports in California that do not have any flights to other airports in California as well? In this case, put the second `FOR` loop within the `RETURN` statement:
 {% highlight sql %}
 FOR a1 IN airports
   FILTER a1.state == 'CA'
@@ -369,16 +519,109 @@ Camarillo        []
 
 You'll see that e.g. Buchanan and Camarillo are also listed, which was not the case before.
 
-## Grouping
-To group results, AQL provides the `COLLECT` keyword. Note that this does grouping, but no aggregation. With `COLLECT` you create a new variable that will be used for the grouping.
+### Note on profiling
+There are often many ways of getting to the correct results. However, some might be more efficient than others. Consider the example above where we list all destination airports and distances for flights where the departure airport lies in California. This will give 437 results:
+
+| departure | arrival | distance |
+|--|--|--|
+| airports/ACV | airports/SFO | 250 |
+| airports/ACV | airports/SMF | 207 |
+| airports/ACV | airports/CEC | 56 |
+| ... | ... | ... |
 
 {% highlight sql %}
 FOR a IN airports
-  COLLECT state = a.state INTO airportsByState
-  RETURN {
-    "state" : state,
-    "airports" : airportsByState
-  }
+  FILTER a.state == 'CA'
+  FOR f IN flights
+    FILTER f._from == a._id
+    RETURN DISTINCT {departure: a._id, arrival: f._to, distance: f.Distance}
+{% endhighlight %}
+
+We could also have started with the flights, and for each flight check if the departure airport (`f._from`) lies in California.
+
+{% highlight sql %}
+FOR f IN flights
+    LET dep_airport = (
+        FOR a IN airports
+            FILTER a._id == f._from
+            RETURN a.state
+    )
+    FILTER dep_airport[0] == 'CA'
+    RETURN DISTINCT {departure: f._from, arrival: f._to, distance: f.Distance}
+{% endhighlight %}
+
+This will give the same output, but run for a much longer time. The first version took 0.2 seconds; this second one 2.8 seconds. It is clear to see why: we apply a filter as soon as possible in the first version. A profile for this first version:
+
+```
+Execution plan:
+ Id   NodeType                  Calls   Items   Runtime [s]   Comment
+  1   SingletonNode                 1       1       0.00000   * ROOT
+  2   EnumerateCollectionNode       4    3363       0.00305     - FOR a IN airports   /* full collection scan, projections: `_id`, `state` */
+  3   CalculationNode               4    3363       0.00058       - LET #2 = (a.`state` == "CA")   /* simple expression */   /* collections used: a : airports */
+  4   FilterNode                    1     205       0.00052       - FILTER #2
+ 11   IndexNode                    35   34202       0.16585       - FOR f IN flights   /* edge index scan, projections: `Distance`, `_to` */
+  8   CalculationNode              35   34202       0.05951         - LET #6 = { "departure" : a.`_id`, "arrival" : f.`_to`, "distance" : f.`Distance` }   /* simple expression */   /* collections used: a : airports, f : flights */
+  9   CollectNode                   1     437       0.04776         - COLLECT #8 = #6   /* distinct */
+ 10   ReturnNode                    1     437       0.00000         - RETURN #8
+```
+
+Profile for the second version:
+```
+Execution plan:
+ Id   NodeType                   Calls    Items   Runtime [s]   Comment
+  1   SingletonNode                  1        1       0.00000   * ROOT
+  2   EnumerateCollectionNode      287   286463       0.14689     - FOR f IN flights   /* full collection scan */
+  9   SubqueryNode                 287   286463       5.97333       - LET dep_airport = ...   /* const subquery */
+  3   SingletonNode             286463   286463       0.35125         * ROOT
+ 16   IndexNode                 286463   286283       2.66140           - FOR a IN airports   /* primary index scan, projections: `state` */
+ 15   LimitNode                 286463   286283       0.72835             - LIMIT 0, 1
+  7   CalculationNode           286463   286283       0.74753             - LET #7 = a.`state`   /* attribute expression */   /* collections used: a : airports */
+  8   ReturnNode                286463   286283       0.71181             - RETURN #7
+ 10   CalculationNode              287   286463       0.17962       - LET #9 = (dep_airport[0] == "CA")   /* simple expression */
+ 11   FilterNode                    35    34202       0.10274       - FILTER #9
+ 12   CalculationNode               35    34202       0.05116       - LET #11 = { "departure" : f.`_from`, "arrival" : f.`_to`, "distance" : f.`Distance` }   /* simple expression */   /* collections used: f : flights */
+ 13   CollectNode                    1      437       0.04276       - COLLECT #13 = #11   /* distinct */
+ 14   ReturnNode                     1      437       0.00000       - RETURN #13
+```
+
+The `Calls` column shows how many times a particular line in the query is executed. In the first version, we check if the airport is in CA 3,363 times (as there are 3,363 airports). In the second version, we see that many of the steps in the query are performed 286,463 times (i.e. the number of records in the `flights` collection).
+
+Take home message: think about the order in which you want to do things in a query. If possible, perform `FILTER`s and `LIMIT`s as early as possible.
+
+## Grouping
+SQL has the `GROUP BY` pragma, for example:
+
+{% highlight sql %}
+SELECT name, COUNT(*) AS c
+FROM airports
+GROUP BY name;
+{% endhighlight %}
+
+To group results, AQL provides the `COLLECT` keyword.
+
+### COLLECT on its own
+The simplest way to use `COLLECT` is for getting distinct values back. For example:
+
+{% highlight sql %}
+FOR a IN airports
+COLLECT s = a.state
+RETURN s
+{% endhighlight %}
+
+What happens here? The `COLLECT s = a.state` takes the `state` key for each airport, and adds it to the new set called `s`. This set will then contain all unique values. This is actually exactly the same as
+
+{% highlight sql %}
+FOR a IN airports
+RETURN DISTINCT a.state
+{% endhighlight %}
+
+### COLLECT with INTO
+What if you want to keep track of the records that actually make up the group itself?
+
+{% highlight sql %}
+FOR a IN airports
+COLLECT s = a.state INTO airportsByState
+RETURN { state: s, airports: airportsByState }
 {% endhighlight %}
 
 This code goes through each airport, and _collects_ the state that it's in. It'll return a list of states with for each the list of their airports:
@@ -413,9 +656,9 @@ This output is however not ideal... We basically just want to have the airport c
 
 {% highlight sql %}
 FOR a IN airports
-  COLLECT state = a.state INTO airportsByState
+  COLLECT s = a.state INTO airportsByState
   RETURN {
-    "state" : state,
+    "state" : s,
     "airports" : airportsByState[*].a._id
   }
 {% endhighlight %}
@@ -442,7 +685,8 @@ What is this `[*].a._id`? If we look at the output from the previous query, we g
 {% endhighlight %}
 The `[*].a._id` means "for each of these (`*`), return the value for `a._id`". This is very helpful if you want to extract a certain key from an array of documents.
 
-`COLLECT` can be combined with the `WITH COUNT` pragma to return the number of items, for example:
+### COLLECT with WITH COUNT INTO
+`COLLECT` can be combined with the `WITH COUNT INTO` pragma to return the number of items instead of the items themselves, for example:
 
 {% highlight sql %}
 FOR a IN airports
@@ -487,16 +731,15 @@ WN       48065
 AA       24797
 OO       22509
 {% endhighlight %}
-Apparently SouthWest Airlines (`WN`) has many more domestic flights than any other airline, including American Airlines (`AA`) and ... (I don't know what the OO stands for...)
+Apparently SouthWest Airlines (`WN`) has many more domestic flights than any other airline, including American Airlines (`AA`) and SkyWest Airlines (`OO`).
 
-## Aggregation
-We can go further and make calculations as well. Note that we can only use `AGGREGATE` when we have run `COLLECT` before. When using `AGGREGATE` we create a new variable and assign it a value using one of the functions that we saw [here](#functions-in-arangodb).
+### COLLECT with AGGREGATE
+We can go further and make calculations on these groupings as well. When using `AGGREGATE` we create a new variable and assign it a value using one of the functions that we saw [here](#functions-in-arangodb).
 
 What is the average flight distance?
 {% highlight sql %}
 FOR f IN flights
-    COLLECT AGGREGATE
-    avg_length = AVG(f.Distance)
+    COLLECT AGGREGATE avg_length = AVG(f.Distance)
     RETURN avg_length
 {% endhighlight %}
 
@@ -505,15 +748,14 @@ The answer is 729.93 kilometers.
 What is the shortest flight for each day of the week?
 {% highlight sql %}
 FOR f IN flights
-  COLLECT dayOfWeek = f.DayOfWeek
-  AGGREGATE minDistance = MIN(f.Distance)
+  COLLECT dayOfWeek = f.DayOfWeek AGGREGATE minDistance = MIN(f.Distance)
   RETURN {
     "dow" : dayOfWeek,
     "minDistance": minDistance
   }
 {% endhighlight %}
 
-Based on this query, we see that there is actually a flight on Wednesday that is shorter than any other flight.
+Based on this query, we see that Wednesday has the shortest flight.
 {% highlight csv %}
 dow  minDistance
 1    31
@@ -536,7 +778,7 @@ FOR f IN flights
     RETURN GEO_POINT(a.long, a.lat)
 {% endhighlight %}
 
-Here we used the `LET` operation (see above "Querying document data") for creating an array with two documents that we can loop over in the next lines using `FOR`.
+Here we used the `LET` operation for creating an array with two documents that we can loop over in the next lines using `FOR`.
 
 ![short flights]({{ site.baseurl }}/assets/arangodb-shortflights.png)
 
