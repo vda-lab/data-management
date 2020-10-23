@@ -9,7 +9,7 @@ folder: nosql
 {% include custom/series_nosql_previous.html %}
 
 ## Document data
-Let's load some data. Download the list of airports in the US from [http://vda-lab.be/assets/airports.json](http://vda-lab.be/assets/airports.json). This file looks like this:
+Let's load some data. Download the list of airports in the US from [http://vda-lab.github.io/assets/airports.json](http://vda-lab.github.io/assets/airports.json). This file looks like this:
 
 {% highlight json %}
 {"_key": "00M", "name": "Thigpen ", "city": "Bay Springs", "state": "MS", "country": "USA",
@@ -37,7 +37,7 @@ In addition to `_key`, ArangoDB documents can have other special keys. In a grap
 
 ![]({{ site.baseurl }}/assets/nodes_and_link.png)
 
-We have a flight dataset, that you can download from [http://vda-lab.be/assets/flights.json](http://vda-lab.be/assets/flights.json). Similar to loading the airports dataset, we go to the `Collections` page in the webinterface, and click `Upload`. This time, however, we need to set the type to `Edge` rather than `Document`.
+We have a flight dataset, that you can download from [http://vda-lab.github.io/assets/flights.json](http://vda-lab.github.io/assets/flights.json). Similar to loading the airports dataset, we go to the `Collections` page in the webinterface, and click `Upload`. This time, however, we need to set the type to `Edge` rather than `Document`.
 
 <img src="{{site.baseurl}}/assets/arangodb_createcollection_edges.png" width="600px" />
 
