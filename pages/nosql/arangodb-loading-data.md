@@ -37,7 +37,7 @@ In addition to `_key`, ArangoDB documents can have other special keys. In a grap
 
 ![]({{ site.baseurl }}/assets/nodes_and_link.png)
 
-We have a flight dataset, that you can download from [here]({{site.baseurl}}/assets/flights.json). Similar to loading the airports dataset, we go to the `Collections` page in the webinterface, and click `Upload`. This time, however, we need to set the type to `Edge` rather than `Document`.
+We have a flight dataset, that you can download from [http://vda-lab.be/assets/flights.json](http://vda-lab.be/assets/flights.json). Similar to loading the airports dataset, we go to the `Collections` page in the webinterface, and click `Upload`. This time, however, we need to set the type to `Edge` rather than `Document`.
 
 <img src="{{site.baseurl}}/assets/arangodb_createcollection_edges.png" width="600px" />
 
