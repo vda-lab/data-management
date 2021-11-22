@@ -74,6 +74,9 @@ entries:
   - title: SQL - Structured Query Language
     output: web, pdf
     folderitems:
+    - title: SQL introduction
+      url: /sql-intro.html
+      output: web, pdf
     - title: Getting data in
       url: /rdbms-getting-data-in.html
       output: web, pdf
