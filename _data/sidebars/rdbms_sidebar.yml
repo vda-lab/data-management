@@ -75,7 +75,7 @@ entries:
     output: web, pdf
     folderitems:
     - title: SQL introduction
-      url: /sql-intro.html
+      url: /rdbms-sql-intro.html
       output: web, pdf
     - title: Getting data in
       url: /rdbms-getting-data-in.html
