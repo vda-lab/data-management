@@ -9,11 +9,11 @@ folder: rdbms
 
 Sqlite is a light-weight system for running relational databases. If you want to make your data available to other people it's often better to use systems such as MySQL. The data behind the Ensembl and UCSC genome browsers, for example, is stored in a relational database and directly accessible through SQL as well.
 
-If you install a mysql client (see www.mariadb.org or www.mysql.com), you can access these public databases as well.
+If you install a mysql client (see www.mariadb.org or www.mysql.com), you can access these public databases as well. Another option is to run mysql using docker.
 
-To access the last release of human from Ensembl: `mysql -h ensembldb.ensembl.org -P 5306 -u anonymous homo_sapiens_core_70_37`. To get an overview of the tables that we can query: `show tables`.
+To access the last release of human from Ensembl: `mysql -h ensembldb.ensembl.org -P 5306 -u anonymous homo_sapiens_core_70_37`. To get an overview of the tables that we can query: `show tables`. Using docker this would be `docker run -it --rm mysql mysql -h ensembldb.ensembl.org -u anonymous -P 5306 homo_sapiens_core_70_37`.
 
-To access the `hg38` release of the UCSC database (which is also a MySQL database): `mysql -h genome-mysql.soe.ucsc.edu -ugenome -A hg38`. You can then for example found out where the gene CYP3A4 is located with
+To access the `hg38` release of the UCSC database (which is also a MySQL database): `mysql -h genome-mysql.soe.ucsc.edu -ugenome -A hg38`. With docker: `docker run -it --rm mysql mysql -h genome-mysql.soe.ucsc.edu -u genome -A hg38`. You can then for example find out where the gene CYP3A4 is located with
 
 {% highlight sql %}
 SELECT name, name2, chrom, strand, txStart, txEnd, cdsStart, cdsEnd
