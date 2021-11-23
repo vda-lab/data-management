@@ -292,9 +292,12 @@ There are some good practices in developing relational database schemes which ma
 
 Let's consider the following table listing individuals, SNPs and genotypes. This is genetic data. As you know, everyone has very similar DNA (otherwise we wouldn't be human), but there are a lot of positions in that genome (about 1/1000) where people differ from each other (otherwise we would all be clones). A "single nucleotide polymorphism" (or "SNP") is such a position in the genome. A "genotype" is the actual nucleotides that someone has in his/her genome at that particular position. And because we have 2 copies of each chromosome, a genotype consists of 2 letters (A, C, G and T).
 
+[%header,format=csv]
+|===
 individual, ethnicity, rs12345, chromosome;position, rs12345_diseases, rs98765, chromosome;position, rs28465, chromosome;position
 individual_A, caucasian, A/A, 1;12345, COPD;asthma, A/G, 1;98765, G/T, 5;28465
 individual_B, caucasian, A/C, 1;12345, COPD;asthma, G/G, 1;98765, G/G, 5;28465
+|===
 
 ==== First normal form
 
@@ -1158,7 +1161,7 @@ id, accession, chromosome, position, gene
 1, rs12345, 1, 12345, gene_A
 2, rs98765, 1, 98765, gene_A
 3, rs28465, 5, 28465, gene_B
-4, rs92873, 7, 7382, 
+4, rs92873, 7, 7382,
 5, rs10238, 11, 291732, gene_C
 6, rs92731, 17, 10283, gene_C
 |===
