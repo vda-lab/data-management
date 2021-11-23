@@ -1,7 +1,8 @@
 = Relational Database Management Systems
 :author: Jan Aerts
 :email: jan.aerts@uhasselt.be
-:toc: preamble
+// :toc: preamble
+:toc: left
 :sectnums: true
 :source-highlighter: highlight.js
 :imagesdir: assets
@@ -1157,7 +1158,7 @@ id, accession, chromosome, position, gene
 1, rs12345, 1, 12345, gene_A
 2, rs98765, 1, 98765, gene_A
 3, rs28465, 5, 28465, gene_B
-4, rs92873, 7, 7382
+4, rs92873, 7, 7382, 
 5, rs10238, 11, 291732, gene_C
 6, rs92731, 17, 10283, gene_C
 |===
@@ -1354,7 +1355,7 @@ id, accession, chromosome, position, gene
 1, rs12345, 1, 12345, gene_A
 2, rs98765, 1, 98765, gene_A
 3, rs28465, 5, 28465, gene_B
-4, rs92873, 7, 7382, 
+4, rs92873, 7, 7382,
 5, rs10238, 11, 291732, gene_C
 6, rs92731, 17, 10283, gene_C
 |===
