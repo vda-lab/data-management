@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" rdbms">
+<title>Normal forms | Data Management</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-custom.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="data-management" href="http://localhost:4000/feed.xml">
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Data Management</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/vda-lab/data-management" target="_blank" rel="noopener">GitHub</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="rdbms_landing_page.html">Relational databases and SQL</a></li>
+                        
+                        
+                        
+                        <li><a href="nosql_landing_page.html">NoSQL</a></li>
+                        
+                        
+                        
+                        <li><a href="lambda_landing_page.html">Lambda architecture</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Normal forms">{title}</a></li>',
+                    noResultsText: '',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">Relational databases and SQL </li>
+  
+  
+  
+      
+  
+      
+  
+  <li>
+      <a title="Data collection" href="#">Data collection</a>
+      <ul>
+          
+          
+          
+          <li><a title="Clinical trials" href="rdbms-clinical-trials.html">Clinical trials</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Epidemiological studies" href="rdbms-epidemiological-studies.html">Epidemiological studies</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="DNA sequencing and genotyping" href="rdbms-dna-sequencing-and-genotyping.html">DNA sequencing and genotyping</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Relational databases" href="#">Relational databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Introduction" href="rdbms-intro.html">Introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="SQLite" href="rdbms-sqlite.html">SQLite</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Database schema normalisation" href="#">Database schema normalisation</a>
+      <ul>
+          
+          
+          
+          <li><a title="Database schema" href="rdbms-database-schema.html">Database schema</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="A student database" href="rdbms-a-student-database.html">A student database</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="A genotype database" href="rdbms-a-genotype-database.html">A genotype database</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="Normal forms" href="rdbms-normal-forms.html">Normal forms</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Types of relationships" href="rdbms-types-of-relationships.html">Types of relationships</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Other best practices" href="rdbms-other-best-practices.html">Other best practices</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Referential integrity" href="rdbms-referential-integrity.html">Referential integrity</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Indices" href="rdbms-indices.html">Indices</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Conclusion - key concepts" href="rdbms-conclusion-key-concepts.html">Conclusion - key concepts</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="SQL - Structured Query Language" href="#">SQL - Structured Query Language</a>
+      <ul>
+          
+          
+          
+          <li><a title="SQL introduction" href="rdbms-sql-intro.html">SQL introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Getting data in" href="rdbms-getting-data-in.html">Getting data in</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Getting data out" href="rdbms-getting-data-out.html">Getting data out</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Updating and deleting data" href="rdbms-updating-and-deleting-data.html">Updating and deleting data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Additional functions" href="rdbms-additional-functions.html">Additional functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Public bioinformatics databases" href="rdbms-public-bioinformatics-databases.html">Public bioinformatics databases</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Views" href="rdbms-views.html">Views</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Drawbacks of relational databases" href="#">Drawbacks of relational databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Drawbacks of relational databases" href="rdbms-drawbacks-of-rdbms.html">Drawbacks of relational databases</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block: -->
+         <!-- <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p> -->
+
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">Normal forms</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <div class="seriesContext">
+  
+  
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+  
+  
+
+  
+    <a href="rdbms-a-genotype-database.html"><button type="button" class="btn btn-primary">Previous: A genotype database</button></a>
+  
+</div>
+
+<p>There are some good practices in developing relational database schemes which make it easier to work with the data afterwards. Some of these practices are represented in the “normal forms”.</p>
+
+<p>Let’s consider the following table listing individuals, SNPs and genotypes. This is genetic data. As you know, everyone has very similar DNA (otherwise we wouldn’t be human), but there are a lot of positions in that genome (about 1/1000) where people differ from each other (otherwise we would all be clones). A “single nucleotide polymorphism” (or “SNP”) is such a position in the genome. A “genotype” is the actual nucleotides that someone has in his/her genome at that particular position. And because we have 2 copies of each chromosome, a genotype consists of 2 letters (A, C, G and T).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">individual</th>
+      <th style="text-align: left">ethnicity</th>
+      <th style="text-align: left">rs12345</th>
+      <th style="text-align: left">chromosome;position</th>
+      <th style="text-align: left">rs12345_diseases</th>
+      <th style="text-align: left">rs98765</th>
+      <th style="text-align: left">chromosome;position</th>
+      <th style="text-align: left">rs28465</th>
+      <th style="text-align: left">chromosome;position</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">A/A</td>
+      <td style="text-align: left">1;12345</td>
+      <td style="text-align: left">COPD;asthma</td>
+      <td style="text-align: left">A/G</td>
+      <td style="text-align: left">1;98765</td>
+      <td style="text-align: left">G/T</td>
+      <td style="text-align: left">5;28465</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">A/C</td>
+      <td style="text-align: left">1;12345</td>
+      <td style="text-align: left">COPD;asthma</td>
+      <td style="text-align: left">G/G</td>
+      <td style="text-align: left">1;98765</td>
+      <td style="text-align: left">G/G</td>
+      <td style="text-align: left">5;28465</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="first-normal-form">First normal form</h2>
+
+<p>To get to the first normal form:</p>
+
+<ul>
+  <li><strong>Make columns atomic</strong>: a single cell should contain only a single value</li>
+  <li><strong>Values in a column should be of a single domain</strong>: a single column should not have a mix of data</li>
+  <li><strong>All columns should have unique names</strong></li>
+  <li><strong>Columns should be not be hidden lists</strong>: often clear because the column <em>name</em> actually holds information</li>
+</ul>
+
+<p>The above table violates several of these points:</p>
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">rs12345_diseases</code> columns holds non-atomic values: <code class="language-plaintext highlighter-rouge">COPD;asthma</code> is a list.</li>
+  <li>The column name <code class="language-plaintext highlighter-rouge">chromosome;position</code> is used multiple times.</li>
+  <li>The columns <code class="language-plaintext highlighter-rouge">rs12345</code>, <code class="language-plaintext highlighter-rouge">rs98765</code> and <code class="language-plaintext highlighter-rouge">rs28465</code> are effectively the same thing: they describe the genotypes for a particular SNP. The same is true for the <code class="language-plaintext highlighter-rouge">chromsome;position</code> columns (but that was already clear from the previous point).</li>
+</ul>
+
+<p>The solution to these issues is to go from a <em>wide</em> format to a <em>long</em> format: remove columns by adding rows. For example, the information for the 3 different SNPs is now stored in different rows instead of different columns. The same is true for the non-atomic values: we just duplicate the row to be able to split up the diseases. This will end up with many rows but don’t worry about that.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">individual</th>
+      <th style="text-align: left">ethnicity</th>
+      <th style="text-align: left">snp</th>
+      <th style="text-align: left">genotype</th>
+      <th style="text-align: left">chr</th>
+      <th style="text-align: left">pos</th>
+      <th style="text-align: left">disease</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">A/A</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+      <td style="text-align: left">COPD</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">A/A</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+      <td style="text-align: left">asthma</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">A/C</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+      <td style="text-align: left">COPD</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">A/C</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+      <td style="text-align: left">asthma</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">A/G</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">G/G</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">G/T</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">G/G</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+      <td style="text-align: left"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The new schema:</p>
+
+<p><img src="/assets/1NF.png" alt="" /></p>
+
+<p>Everything is still contained in a single table, which will change when we go to the second normal form.</p>
+
+<h2 id="second-normal-form">Second normal form</h2>
+
+<ul>
+  <li><strong>Schema is in First Normal form</strong></li>
+  <li><strong>There are no partial dependencies</strong></li>
+</ul>
+
+<p>In the new table above, we see that there are several columns that are 1-to-1 dependent on another column. For example, if we know the individual, we know their ethnicity. If we know the SNP, we know the chromosome, position and any diseases involved. For the 2nd normal form, we extract these into separate tables. In doing this, think about the <em>concepts</em> that you’re trying to separate.</p>
+
+<p><code class="language-plaintext highlighter-rouge">genotypes</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">individual_id</th>
+      <th style="text-align: left">snp_id</th>
+      <th style="text-align: left">genotype</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/C</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/C</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">A/G</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">G/G</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">7</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">G/T</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">8</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">G/G</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">individuals</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">ethnicity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">snps</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">chr</th>
+      <th style="text-align: left">pos</th>
+      <th style="text-align: left">diseases</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+      <td style="text-align: left">COPD</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+      <td style="text-align: left">asthma</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+      <td style="text-align: left"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Some observations (and good practices):</p>
+<ul>
+  <li>The name of each table should be <strong>plural</strong> (not mandatory, but good practice).</li>
+  <li>Each table should have a <strong>primary key</strong>, ideally named <code class="language-plaintext highlighter-rouge">id</code>. Different tables can contain columns that have the same name; column names should be unique within a table, but can occur across tables.</li>
+  <li>In the <code class="language-plaintext highlighter-rouge">genotypes</code> table, individuals are identified by their <code class="language-plaintext highlighter-rouge">id</code> in the <code class="language-plaintext highlighter-rouge">individuals</code> table which is their primary key. The <code class="language-plaintext highlighter-rouge">individual_id</code> column in the <code class="language-plaintext highlighter-rouge">genotypes</code> table is called the <strong>foreign key</strong>. Again best practice: if a foreign key refers to the <code class="language-plaintext highlighter-rouge">id</code> column in the <code class="language-plaintext highlighter-rouge">individuals</code> table, it should be named <code class="language-plaintext highlighter-rouge">individual_id</code> (note the singular).</li>
+  <li>The name of each table should be plural (not mandatory, but good practice).</li>
+  <li>The foreign key <code class="language-plaintext highlighter-rouge">individual_id</code> in the <code class="language-plaintext highlighter-rouge">genotypes</code> table must be of the same type as the <code class="language-plaintext highlighter-rouge">id</code> column in the <code class="language-plaintext highlighter-rouge">individuals</code> table.</li>
+</ul>
+
+<p>By the way, we see that the first 2 rows in the <code class="language-plaintext highlighter-rouge">genotypes</code> table are exactly the same apart from the unique ID, and the same is true for rows 3 and 4, so we can remove one for each (e.g. the ones with ID <code class="language-plaintext highlighter-rouge">2</code> and <code class="language-plaintext highlighter-rouge">4</code>).</p>
+
+<p><code class="language-plaintext highlighter-rouge">genotypes</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">individual_id</th>
+      <th style="text-align: left">snp_id</th>
+      <th style="text-align: left">genotype</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/C</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">A/G</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">G/G</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">7</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">G/T</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">8</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">G/G</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The new schema:</p>
+
+<p><img src="/assets/2NF.png" alt="" /></p>
+
+<h2 id="third-normal-form">Third normal form</h2>
+
+<ul>
+  <li><strong>Look for rows that are the same except for a non-key column</strong></li>
+</ul>
+
+<p>In the <code class="language-plaintext highlighter-rouge">snps</code> table above, there are two rows that are exactly the same (not taking into account the <code class="language-plaintext highlighter-rouge">id</code> column), if it weren’t for the <code class="language-plaintext highlighter-rouge">disease</code> field.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>rs12345</td>
+      <td>1</td>
+      <td>12345</td>
+      <td>COPD</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>rs12345</td>
+      <td>1</td>
+      <td>12345</td>
+      <td>asthma</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Such case indicates a one-to-many or many-to-many relationship: a single SNP can be involved in multiple diseases. Again we have duplication here: the fact that SNP <code class="language-plaintext highlighter-rouge">rs12345</code> is on chromosome 1 at position 12345 is captured twice. We can solve this by extracting another table, called <code class="language-plaintext highlighter-rouge">diseases</code>.</p>
+
+<p>Although biologically incorrect, imagine that a disease can only be linked to a single SNP. This would be a one-to-many relationship: one SNP to many diseases. In that case we could create the following tables:</p>
+
+<p><code class="language-plaintext highlighter-rouge">snps</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">chr</th>
+      <th style="text-align: left">pos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">diseases</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">snp_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">COPD</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">asthma</td>
+      <td style="text-align: left">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We have now eliminated the <code class="language-plaintext highlighter-rouge">disease</code> column from the <code class="language-plaintext highlighter-rouge">snps</code> table so end up with 2 identical rows (rows 1 and 2) and can remove one of them.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">chr</th>
+      <th style="text-align: left">pos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>But as we just mentioned, biologically speaking a single SNP can be involved in multiple diseases and a single disease can be influenced by multiple SNPs. This is a <em>many-to-many</em> relationship. In this case, we can’t just add a <code class="language-plaintext highlighter-rouge">snp_id</code> to the <code class="language-plaintext highlighter-rouge">diseases</code> table anymore (or you would have to use a non-atomic field which would violate the 1st normal form). You typically create a separate <em>link table</em>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">snps</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">chr</th>
+      <th style="text-align: left">pos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">diseases</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">COPD</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">asthma</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">disease2snp</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">snp_id</th>
+      <th style="text-align: left">disease_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="the-final-database">The final database</h3>
+
+<p>In the end, we have the following tables:</p>
+
+<p><code class="language-plaintext highlighter-rouge">snps</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">chr</th>
+      <th style="text-align: left">pos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">diseases</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">COPD</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">asthma</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">disease2snp</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">snp_id</th>
+      <th style="text-align: left">disease_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">genotypes</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">individual_id</th>
+      <th style="text-align: left">snp_id</th>
+      <th style="text-align: left">genotype</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">A/C</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">A/G</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">G/G</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">G/T</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">7</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">G/G</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">individuals</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">ethnicity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">individual_A</td>
+      <td style="text-align: left">caucasian</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">individual_B</td>
+      <td style="text-align: left">caucasian</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The schema itself:</p>
+
+<p><img src="/assets/3NF.png" alt="" /></p>
+
+<h3 id="types-of-table-relationships">Types of table relationships</h3>
+<p>To come back to the one-to-many relationships… So how do you know in which table to create the foreign key? Should there be an <code class="language-plaintext highlighter-rouge">individual_id</code> in the <code class="language-plaintext highlighter-rouge">genotypes</code> table? Or a <code class="language-plaintext highlighter-rouge">genotype_id</code> in the <code class="language-plaintext highlighter-rouge">individuals</code> table? That all depends on the <strong>type of relationship</strong> between two tables. This type can be:</p>
+
+<ul>
+  <li><strong>one-to-one</strong>, for example an single ISBN number can be linked to a single book and vice versa.</li>
+  <li><strong>one-to-many</strong>, for example a single company will have many employees, but a single employee will work only for a single company</li>
+  <li><strong>many-to-many</strong>, for example a single book can have multiple authors and a single author can have written multiple books</li>
+</ul>
+
+<p>One-to-many is obviously the same as many-to-one but looking at it from the other direction…</p>
+
+<p>When you have a <em>one-to-one relationship</em>, you can actually merge that information into the same table so in the end you won’t even need a foreign key. In the book example mentioned above, you’d just add the ISBN number to the books table.<br />
+When you have a <em>one-to-many relationship</em>, you’d add the foreign key to the “many” table. In the example below a <em>single company</em> will have <em>many employees</em>, so you add the foreign key in the employees table.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">companies</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">company_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">Big company 1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">Big company 2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">Big company 3</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="language-plaintext highlighter-rouge">employees</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: left">address</th>
+      <th style="text-align: left">company_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">John Jones</td>
+      <td style="text-align: left">some_address, some_city</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">Jim James</td>
+      <td style="text-align: left">another_address, some_city</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">Fred Fredricks</td>
+      <td style="text-align: left">yet_another_address, another_city</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>When you have a <em>many-to-many relationship</em> you’d typically extract that information into a new table. For the books/authors example, you’d have a single table for the books, a single table for the authors, and a separate table that links the two together. That “linking” table can also contain information that is specific for that relationship, but it does not have to. An example is the <code class="language-plaintext highlighter-rouge">genotypes</code> table above. There are many SNPs for a single individual, and a single SNP is measured for many individuals. That’s why we created a separate table called <code class="language-plaintext highlighter-rouge">genotypes</code>, which in this case has additional columns that denote the value for a single individual for a single SNP. For the books/authors example, this would be:</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">books</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">title</th>
+      <th style="text-align: left">ISBN13</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch</td>
+      <td style="text-align: left">9780060853983</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">Going Postal (Discworld #33)</td>
+      <td style="text-align: left">9780060502935</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">Small Gods (Discworld #13)</td>
+      <td style="text-align: left">9780552152976</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">The Stupidest Angel: A Heartwarming Tale of Christmas Terror</td>
+      <td style="text-align: left">9780060842352</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="language-plaintext highlighter-rouge">authors</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">Terry Pratchett</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">Christopher Moore</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">Neil Gaiman</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="language-plaintext highlighter-rouge">author2book</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">author_id</th>
+      <th style="text-align: left">book_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">3</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">4</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The information in these tables says that:</p>
+
+<ul>
+  <li>Terry Pratchett and Neil Gaiman co-wrote “Good Omens”</li>
+  <li>Terry Pratchett wrote “Going Postal” and “Small Gods” by himself</li>
+  <li>Christopher Moore was the single authors of “The Stupidest Angel”</li>
+</ul>
+
+<div class="seriesContext">
+  
+  
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+  
+  
+
+  
+    <a href="rdbms-types-of-relationships.html"><button type="button" class="btn btn-primary">Next: Types of relationships</button></a>
+  
+</div>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2021 Visual Data Analysis Lab. All rights reserved. <br />
+ Site last generated: Nov 22, 2021 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

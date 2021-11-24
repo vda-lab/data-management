@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" nosql">
+<title>General NoSQL concepts | Data Management</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-custom.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="data-management" href="http://localhost:4000/feed.xml">
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Data Management</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/vda-lab/data-management" target="_blank" rel="noopener">GitHub</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="rdbms_landing_page.html">Relational databases and SQL</a></li>
+                        
+                        
+                        
+                        <li><a href="nosql_landing_page.html">NoSQL</a></li>
+                        
+                        
+                        
+                        <li><a href="lambda_landing_page.html">Lambda architecture</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="General NoSQL concepts">{title}</a></li>',
+                    noResultsText: '',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">NoSQL databases </li>
+  
+  
+  
+      
+  
+      
+  
+  <li>
+      <a title="Issues with relational databases" href="#">Issues with relational databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Scalability and clusters" href="nosql-scalability-and-clusters.html">Scalability and clusters</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Impedance mismatch" href="nosql-impedance-mismatch.html">Impedance mismatch</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Relational data" href="nosql-relational-data.html">Relational data</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="General NoSQL concepts" href="#">General NoSQL concepts</a>
+      <ul>
+          
+          
+          
+          <li class="active"><a title="General NoSQL concepts" href="nosql-general-concepts.html">General NoSQL concepts</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Intermezzo - JSON" href="#">Intermezzo - JSON</a>
+      <ul>
+          
+          
+          
+          <li><a title="Intermezzo - JSON" href="nosql-intermezzo-json.html">Intermezzo - JSON</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Key/value stores" href="#">Key/value stores</a>
+      <ul>
+          
+          
+          
+          <li><a title="Key/value stores" href="nosql-keyvalue-stores.html">Key/value stores</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Document-oriented databases" href="#">Document-oriented databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Introduction" href="nosql-document-databases-introduction.html">Introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Concepts" href="nosql-document-databases-concepts.html">Concepts</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Data modelling" href="nosql-document-databases-data-modelling.html">Data modelling</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Data modelling patterns" href="nosql-document-databases-data-modelling-patterns.html">Data modelling patterns</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Difference with key/value stores" href="nosql-difference-with-keyvalue-stores.html">Difference with key/value stores</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Implementations" href="nosql-document-databases-implementations.html">Implementations</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Graph databases" href="#">Graph databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Introduction" href="nosql-graph-databases-introduction.html">Introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Nomenclature" href="nosql-graph-databases-nomenclature.html">Nomenclature</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Centralities" href="nosql-graph-databases-centralities.html">Centralities</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Graph mining" href="nosql-graph-databases-mining.html">Graph mining</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Data modelling" href="nosql-graph-databases-data-modelling.html">Data modelling</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="ArangoDB" href="#">ArangoDB</a>
+      <ul>
+          
+          
+          
+          <li><a title="A multi-model database" href="nosql-arangodb-multimodel-database.html">A multi-model database</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Starting with ArangoDB" href="nosql-starting-with-arangodb.html">Starting with ArangoDB</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Loading data" href="nosql-arangodb-loading-data.html">Loading data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Querying key/value data" href="nosql-arangodb-querying-keyvalue-data.html">Querying key/value data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Querying document data" href="nosql-arangodb-querying-document-data.html">Querying document data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Querying graph data" href="nosql-arangodb-querying-graph-data.html">Querying graph data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Improving performance" href="nosql-arangodb-improving-performance.html">Improving performance</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="ArangoDB APIs" href="#">ArangoDB APIs</a>
+      <ul>
+          
+          
+          
+          <li><a title="APIs" href="nosql-arangodb-apis.html">APIs</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="ArangoDB and R" href="nosql-arangodb-and-r.html">ArangoDB and R</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="ArangoDB and python" href="nosql-arangodb-and-python.html">ArangoDB and python</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block: -->
+         <!-- <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p> -->
+
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">General NoSQL concepts</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <div class="seriesContext">
+  
+  
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+  
+  
+
+  
+    <a href="nosql-relational-data.html"><button type="button" class="btn btn-primary">Previous: Relational data</button></a>
+  
+</div>
+
+<h2 id="the-end-of-sql">The end of SQL?</h2>
+<p>So does this mean that we should leave SQL behind? No. What we’ll be looking at is <em>polyglot persistence</em>: depending on what data you’re working with, some of that might still be stored in an SQL database, while other parts are stored in a document store and graph database (see below). So instead of having a single database, we can end up with a collection of databases to support a single application.</p>
+
+<p><img src="/assets/polyglot_persistence_fromto.png" alt="" /></p>
+
+<p><small><i>Source: Sadalage &amp; Fowler, 2012</i></small></p>
+
+<p>The figure below shows how in the hypothetical case of a retailer’s web application we might be using a combination of 8 different database technologies to store different types of information. Note that RDBMS are still part of the picture!</p>
+
+<p><img src="/assets/polyglot_persistence.png" alt="polyglot persistence" /></p>
+
+<p><small><i>Source: https://martinfowler.com/articles/nosql-intro-original.pdf</i></small></p>
+
+<p>The term NoSQL was coined as the name and hashtag for a conference in 2009 about “open-source, distributed, non-relational databases” (source: Sadalage &amp; Fowler, 2012). But as Sadalage &amp; Fowler state: “there is no generally accepted definition, nor an authority to provide one”. But in general, they</p>
+<ul>
+  <li>don’t use SQL</li>
+  <li>are often driven by the need to run on clusters or a different data model (e.g. graphs)</li>
+  <li>are often schema-less: you can add fields to records without having to define changes in structure first (using e.g. <code class="language-plaintext highlighter-rouge">ALTER TABLE</code>)</li>
+</ul>
+
+<h2 id="general-nosql-concepts">General NoSQL concepts</h2>
+<p>NoSQL databases have received increasing attention in the more and more data-driven world. They allow for modelling of more complex data in a more scalable and agile way. Although it is impossible to lump all NoSQL technologies on a single heap, there are some concepts that apply.</p>
+
+<h3 id="nosql-is-not-just-one-technology">NoSQL is not just one technology</h3>
+<p>As mentioned above, NoSQL is not just a single technology; it is more an <em>approach</em> than a technology. The image below shows a (new very outdated) overview of many of the database technologies used, including MongoDB, neo4j, ArangoDB, etc. But the NoSQL <em>approach</em> is also about storing csv-files when that makes sense.</p>
+
+<p><img src="/assets/confused-by-the-glut-of-new-databases.jpg" alt="overview NoSQL technologies" /></p>
+
+<h3 id="keep-components-simple">Keep components simple</h3>
+<p>If we look at the extreme case of a legacy Oracle SQL database for clinical studies at e.g. a pharmaceutical company, we will typically see that such system is a single behemoth of a system, which requires several database managers to just keep the server(s) running and operating optimally. In contrast, in a NoSQL setup, we often try to keep the different components as simple as possible.</p>
+
+<h3 id="separation-of-concerns">Separation of concerns</h3>
+<p>An important question to answer here is where to put the functionality of your application? In the last example: do you let the database compute (with e.g. SQL statements) the things you need in the graphical interface directly? Do you let the graphical user interface get the raw data from the database and do all the necessary munging of that data at the user end? Or do you insert a separate layer in between (i.e. the computational layer mentioned above)? It’s all about a separation of concerns.</p>
+
+<p>In general, RDBMS have been around for a long time and are very mature. As a result, a lot of functionality has been added to the database tier. In applications using NoSQL solutions, however, much of the application functionality is in a middle tier.</p>
+
+<p><img src="/assets/tiers.png" alt="tiers" /></p>
+
+<h3 id="thinking-strategically-about-ram-ssd-and-disk">Thinking strategically about RAM, SSD and disk</h3>
+<p>To make sure that the performance of your application is adequate for your purpose, you have to think about where to store your data. Data can be kept in RAM, on a solid-state drive (SSD), the hard disk in your computer, or in a file somewhere on the network. This choice has an immense effect on performance. It’s easy to visualise this: consider that you are in Hasselt</p>
+
+<ul>
+  <li>getting something from RAM = getting it from your backyard</li>
+  <li>getting something from SSD = getting it from somewhere in your neighbourhood</li>
+  <li>getting something from disk = traveling to Saudi Arabia to get it</li>
+  <li>getting something over the network = traveling to Jupiter to get it</li>
+</ul>
+
+<p>It might be clear to you that cleverly keeping things in RAM is a good way to speed up your application or analysis :-) Which brings us to the next point:</p>
+
+<h3 id="keep-your-cache-current-using-consistent-hashing">Keep your cache current using consistent hashing</h3>
+<p>So keeping things in RAM makes it possible to very quickly access them. This is what you do when you load data into a variable in your python/R/SAS/ruby/perl/… code.</p>
+
+<p>Caching is used constantly by the computer you’re using at this moment as well.</p>
+
+<p>An important aspect of caching is calculating a key that can be used to retrieve the data (remember key/value stores?). This can for example be done by calculating a checksum, which looks at each byte of a document and returns a long sequence of letters and numbers. Different algorithms exists for this, such as MD5 or SHA-1. Changing a single bit in a file (this file can be binary or not) will completely change the checksum.</p>
+
+<p>Let’s for example look at the checksum for the file that I’m writing right now. Here are the commands and output to get the MD5 and SHA-1 checksums for this file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>janaerts$ md5 2019-10-31-lambda-architecture.md
+MD5 (2019-10-31-lambda-architecture.md) = a271e75efb769d5c47a6f2d040e811f4
+janaerts$ shasum 2019-10-31-lambda-architecture.md
+2ae358f1ac32cb9ce2081b54efc27dcc83b8c945  2019-10-31-lambda-architecture.md
+</code></pre></div></div>
+
+<p>As you can see, these are quite long strings and MD5 and SHA-1 are indeed two different algorithms to create a checksum. The moment that I wrote the “A” (of “As you can see”) at the beginning of this paragraph, the checksum changed completely. Actually, below are the checksums after adding that single “A”. Clearly, the checksums are completely different.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>janaerts$ md5 2019-10-31-lambda-architecture.md
+MD5 (2019-10-31-lambda-architecture.md) = b597d18879c46c8838ad2085d2c7d2f9
+janaerts$ shasum 2019-10-31-lambda-architecture.md
+45c5a96dd506b884866e00ba9227080a1afd6afc  2019-10-31-lambda-architecture.md
+</code></pre></div></div>
+
+<p>This consistent hashing can for example also be used to assign documents to specific database nodes.</p>
+
+<p>In principle, it <em>is</em> possible that 2 different documents have the same hash value. This is called hash collision. Don’t worry about it too much, though. The MD5 algorithm generates a 128 bit string, which occurs once every 10^38 documents. If you generate a billion documents per second it would take 10 trillion times the age of the universe for a single accidental collision to occur…</p>
+
+<p>Of course a group of researchers at Google tried to break this, and <a href="https://shattered.it/">they were actually successful</a> on February 23th 2017.</p>
+
+<p><img src="/assets/shattered.png" alt="shattered" /></p>
+
+<p>To give you an idea of how difficult this is:</p>
+
+<ul>
+  <li>it had taken them 2 years of research</li>
+  <li>they performed 9,223,372,036,854,775,808 (9 quintillion) compressions</li>
+  <li>they used 6,500 years of CPU computation time for phase 1</li>
+  <li>they used 110 years of CPU computation time for phase 2</li>
+</ul>
+
+<h3 id="acid-vs-base">ACID vs BASE</h3>
+<h4 id="acid">ACID</h4>
+<p>RDBMS systems try to follow the ACID model for reliable database transactions. ACID stands for atomicity, consistency, isolation and durability. The prototypical example of a database that needs to comply to the ACID rules is one which handles bank transactions.</p>
+
+<p><img src="/assets/bank.png" alt="bank" /></p>
+
+<ul>
+  <li><em>Atomicity</em>: Exchange of funds in example must happen as an all-or-nothing transaction</li>
+  <li><em>Consistency</em>: Your database should never generate a report that shows a withdrawal from saving without the corresponding addition to the checking account. In other words: all reporting needs to be blocked during atomic operations.</li>
+  <li><em>Isolation</em>: Each part of the transaction occurs without knowledge of any other transaction</li>
+  <li><em>Durability</em>: Once all aspects of transaction are complete, it’s permanent.</li>
+</ul>
+
+<p>For a bank transaction it is crucial that either all processes (withdraw and deposit) are performed or none.</p>
+
+<p>The software to handle these rules is very complex. In some cases, 50-60% of the codebase for a database can be spent on enforcement of these rules. For this reason, newer databases often do not support database-level transaction management in their first release.</p>
+
+<p>As a ground rule, you can consider ACID pessimistic systems that focus on consistency and integrity of data above all other considerations (e.g. temporarily blocking reporting mechanisms is a reasonable compromise to ensure systems return reliable and accurate information).</p>
+
+<h4 id="base">BASE</h4>
+<p>BASE stands for:</p>
+
+<ul>
+  <li><em>Basic Availability</em>: Information and service capability are “basically available” (e.g. you can always generate a report).</li>
+  <li><em>Soft-state</em>: Some inaccuracy is temporarily allowed and data may change while being used to reduce the amount of consumed resources.</li>
+  <li><em>Eventual consistency</em>: Eventually, when all service logic is executed, the systems is left in a consistent state.
+A good example of a BASE-type system is a database that handles shopping carts in an online store. It is no problem fs the back-end reports are inconsistent for a few minutes (e.g. the total number of items sold is a bit off); it’s much more important that the customer can actually purchase things.</li>
+</ul>
+
+<p>This means that BASE systems are basically optimistic as all parts of the system will eventually catch up and be consistent. BASE systems therefore tend to be much simpler and faster as they don’t have to deal with locking and unlocking resources.</p>
+
+<div class="seriesContext">
+  
+  
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+  
+  
+
+  
+    <a href="nosql-intermezzo-json.html"><button type="button" class="btn btn-primary">Next: Intermezzo - JSON</button></a>
+  
+</div>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2021 Visual Data Analysis Lab. All rights reserved. <br />
+ Site last generated: Nov 22, 2021 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

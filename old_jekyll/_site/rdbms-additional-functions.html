@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" rdbms">
+<title>Additional functions | Data Management</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-custom.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="data-management" href="http://localhost:4000/feed.xml">
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Data Management</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/vda-lab/data-management" target="_blank" rel="noopener">GitHub</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="rdbms_landing_page.html">Relational databases and SQL</a></li>
+                        
+                        
+                        
+                        <li><a href="nosql_landing_page.html">NoSQL</a></li>
+                        
+                        
+                        
+                        <li><a href="lambda_landing_page.html">Lambda architecture</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Additional functions">{title}</a></li>',
+                    noResultsText: '',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">Relational databases and SQL </li>
+  
+  
+  
+      
+  
+      
+  
+  <li>
+      <a title="Data collection" href="#">Data collection</a>
+      <ul>
+          
+          
+          
+          <li><a title="Clinical trials" href="rdbms-clinical-trials.html">Clinical trials</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Epidemiological studies" href="rdbms-epidemiological-studies.html">Epidemiological studies</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="DNA sequencing and genotyping" href="rdbms-dna-sequencing-and-genotyping.html">DNA sequencing and genotyping</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Relational databases" href="#">Relational databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Introduction" href="rdbms-intro.html">Introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="SQLite" href="rdbms-sqlite.html">SQLite</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Database schema normalisation" href="#">Database schema normalisation</a>
+      <ul>
+          
+          
+          
+          <li><a title="Database schema" href="rdbms-database-schema.html">Database schema</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="A student database" href="rdbms-a-student-database.html">A student database</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="A genotype database" href="rdbms-a-genotype-database.html">A genotype database</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Normal forms" href="rdbms-normal-forms.html">Normal forms</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Types of relationships" href="rdbms-types-of-relationships.html">Types of relationships</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Other best practices" href="rdbms-other-best-practices.html">Other best practices</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Referential integrity" href="rdbms-referential-integrity.html">Referential integrity</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Indices" href="rdbms-indices.html">Indices</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Conclusion - key concepts" href="rdbms-conclusion-key-concepts.html">Conclusion - key concepts</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="SQL - Structured Query Language" href="#">SQL - Structured Query Language</a>
+      <ul>
+          
+          
+          
+          <li><a title="SQL introduction" href="rdbms-sql-intro.html">SQL introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Getting data in" href="rdbms-getting-data-in.html">Getting data in</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Getting data out" href="rdbms-getting-data-out.html">Getting data out</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Updating and deleting data" href="rdbms-updating-and-deleting-data.html">Updating and deleting data</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="Additional functions" href="rdbms-additional-functions.html">Additional functions</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Public bioinformatics databases" href="rdbms-public-bioinformatics-databases.html">Public bioinformatics databases</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Views" href="rdbms-views.html">Views</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Drawbacks of relational databases" href="#">Drawbacks of relational databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Drawbacks of relational databases" href="rdbms-drawbacks-of-rdbms.html">Drawbacks of relational databases</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block: -->
+         <!-- <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p> -->
+
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">Additional functions</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <div class="seriesContext">
+  
+  
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+  
+  
+
+  
+    <a href="rdbms-updating-and-deleting-data.html"><button type="button" class="btn btn-primary">Previous: Updating and deleting data</button></a>
+  
+</div>
+
+<h2 id="limit">LIMIT</h2>
+
+<p>If you only want to get the first 10 results back (e.g. to find out if your complicated query does what it should do without running the whole actual query), use LIMIT:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="n">sqlite</span><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">LIMIT</span> <span class="mi">2</span><span class="p">;</span></code></pre></figure>
+
+<h2 id="null">NULL</h2>
+
+<p>SNPs are spread across a chromosome, and might or might not be located within a gene.</p>
+
+<p><img src="/assets/snps_not_in_genes.png" alt="snps not in genes" /></p>
+
+<p>What if you want to search for the SNPs that are not in genes? Imagine that our <code class="language-plaintext highlighter-rouge">snps</code> table has an additional column with the gene name, like this:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">accession</th>
+      <th style="text-align: left">chromosome</th>
+      <th style="text-align: left">position</th>
+      <th style="text-align: left">gene</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+      <td style="text-align: left">gene_A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+      <td style="text-align: left">gene_A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+      <td style="text-align: left">gene_B</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">rs92873</td>
+      <td style="text-align: left">7</td>
+      <td style="text-align: left">7382</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">rs10238</td>
+      <td style="text-align: left">11</td>
+      <td style="text-align: left">291732</td>
+      <td style="text-align: left">gene_C</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">rs92731</td>
+      <td style="text-align: left">17</td>
+      <td style="text-align: left">10283</td>
+      <td style="text-align: left">gene_C</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We cannot <code class="language-plaintext highlighter-rouge">SELECT * FROM snps WHERE gene = "";</code> because that is searching for an empty string which is not the same as a missing value. To get to rs92873 you can issue <code class="language-plaintext highlighter-rouge">SELECT * FROM snps WHERE gene IS NULL;</code> or to get the rest <code class="language-plaintext highlighter-rouge">SELECT * FROM snps WHERE GENE IS NOT NULL;</code>. Note that it is <code class="language-plaintext highlighter-rouge">IS NULL</code> and <strong>not</strong> <code class="language-plaintext highlighter-rouge">= NULL</code>…</p>
+
+<h2 id="and-or">AND, OR</h2>
+
+<p>Your queries might need to <strong>combine different conditions</strong>, as we’ve already seen above:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">AND</code>: both must be true</li>
+  <li><code class="language-plaintext highlighter-rouge">OR</code>: either one is true</li>
+  <li><code class="language-plaintext highlighter-rouge">NOT</code>: reverse the value</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">WHERE</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="s1">'1'</span> <span class="k">AND</span> <span class="k">position</span> <span class="o">&lt;</span> <span class="mi">40000</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">WHERE</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="s1">'1'</span> <span class="k">OR</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="s1">'5'</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">WHERE</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="s1">'1'</span> <span class="k">AND</span> <span class="k">NOT</span> <span class="k">position</span> <span class="o">&lt;</span> <span class="mi">40000</span><span class="p">;</span></code></pre></figure>
+
+<p>The result is affected by the order of the operations. Parentheses indicate that an operation should be performed first. Without parentheses, operations are performed left-to-right.</p>
+
+<p>For example, if a = 3, b = -1 and c = 2, then:</p>
+<ul>
+  <li>(( a &gt; 4 ) AND  ( b &lt; 0 )) OR ( c &gt; 1 )  evaluates to true</li>
+  <li>( a &gt; 4 ) AND (( b &lt; 0 )  OR ( c &gt; 1 )) evaluates to false</li>
+</ul>
+
+<p>De Morgan’s laws apply to SQL. The rules allow the expression of conjunctions and disjunctions purely in terms of each other via negation. For example:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">NOT (A AND B)</code> becomes <code class="language-plaintext highlighter-rouge">NOT A OR NOT B</code></li>
+  <li><code class="language-plaintext highlighter-rouge">NOT (A OR B)</code> becomes <code class="language-plaintext highlighter-rouge">NOT A AND NOT B</code></li>
+</ul>
+
+<h2 id="in">IN</h2>
+<p>The <code class="language-plaintext highlighter-rouge">IN</code> clause defines a set of values. It is a shortcut to combine several entries with an <code class="language-plaintext highlighter-rouge">OR</code> condition.</p>
+
+<p>For example, instead of writing</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="n">customer</span>
+<span class="k">WHERE</span> <span class="n">first_name</span> <span class="o">=</span> <span class="s1">'Tim'</span> <span class="k">OR</span> <span class="n">first_name</span> <span class="o">=</span> <span class="s1">'David'</span> <span class="k">OR</span> <span class="n">first_name</span> <span class="o">=</span> <span class="s1">'Jay'</span><span class="p">;</span></code></pre></figure>
+
+<p>you can use</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="n">customer</span>
+<span class="k">WHERE</span> <span class="n">first_name</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'Tim'</span><span class="p">,</span> <span class="s1">'David'</span><span class="p">,</span> <span class="s1">'Jay'</span><span class="p">);</span></code></pre></figure>
+
+<h2 id="distinct">DISTINCT</h2>
+
+<p>Whenever you want the <strong>unique values</strong> in a column: use DISTINCT in the SELECT clause:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">category</span> <span class="k">FROM</span> <span class="n">animal</span><span class="p">;</span></code></pre></figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Fish</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Dog</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Fish</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Cat</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Cat</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Dog</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Fish</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Dog</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Dog</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Dog</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Fish</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Cat</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Dog</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="n">category</span> <span class="k">FROM</span> <span class="n">animal</span><span class="p">;</span></code></pre></figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">distinct(category)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Bird</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Cat</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Dog</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Fish</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Mammal</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Reptile</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Spider</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>DISTINCT automatically sorts the results.</p>
+
+<h2 id="order-by">ORDER BY</h2>
+<p>The order by clause allows you to, well, order your output. By default, this is in ascending order. To order from large to small, you can add the <code class="language-plaintext highlighter-rouge">DESC</code> tag. It is possible to order by multiple columns, for example first by chromosome and then by position;</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">chromosome</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">accession</span> <span class="k">DESC</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">chromsome</span><span class="p">,</span> <span class="k">position</span><span class="p">;</span></code></pre></figure>
+
+<h2 id="count">COUNT</h2>
+
+<p>For when you want to count things:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">genotypes</span> <span class="k">WHERE</span> <span class="n">genotype_amb</span> <span class="o">=</span> <span class="s1">'G'</span><span class="p">;</span></code></pre></figure>
+
+<h2 id="max-min-avg">MAX(), MIN(), AVG()</h2>
+
+<p>…act as you would expect (only works with numbers, obviously):</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">MAX</span><span class="p">(</span><span class="k">position</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">snps</span><span class="p">;</span></code></pre></figure>
+
+<p>Output is:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">max(position)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">291732</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="as">AS</h2>
+<p>In some cases you might want to rename the output column name. For instance, in the example above you might want to have <code class="language-plaintext highlighter-rouge">maximum_position</code> instead of <code class="language-plaintext highlighter-rouge">max(position)</code>. The <code class="language-plaintext highlighter-rouge">AS</code> keyword can help us with that.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">MAX</span><span class="p">(</span><span class="k">position</span><span class="p">)</span> <span class="k">AS</span> <span class="n">maximum_position</span> <span class="k">FROM</span> <span class="n">snps</span><span class="p">;</span></code></pre></figure>
+
+<h2 id="group-by">GROUP BY</h2>
+
+<p>GROUP BY can be very useful in that it first <strong>aggregates data</strong>. It is often used together with <code class="language-plaintext highlighter-rouge">COUNT</code>, <code class="language-plaintext highlighter-rouge">MAX</code>, <code class="language-plaintext highlighter-rouge">MIN</code> or <code class="language-plaintext highlighter-rouge">AVG</code>:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">genotype_amb</span><span class="p">,</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">genotypes</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">genotype_amb</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="n">genotype_amb</span><span class="p">,</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">AS</span> <span class="k">c</span> <span class="k">FROM</span> <span class="n">genotypes</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">genotype_amb</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">c</span> <span class="k">DESC</span><span class="p">;</span></code></pre></figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">genotype_amb</th>
+      <th style="text-align: left">c</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">G</td>
+      <td style="text-align: left">2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">A</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">K</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">M</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">R</td>
+      <td style="text-align: left">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">MAX</span><span class="p">(</span><span class="k">position</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">chromosome</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">chromosome</span><span class="p">;</span></code></pre></figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">chromosome</th>
+      <th style="text-align: left">MAX(position)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">11223</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="having">HAVING</h2>
+<p>Whereas the <code class="language-plaintext highlighter-rouge">WHERE</code> clause puts conditions on certain columns, the <code class="language-plaintext highlighter-rouge">HAVING</code> clause puts these on groups created by <code class="language-plaintext highlighter-rouge">GROUP BY</code>.</p>
+
+<p>For example, given the following <code class="language-plaintext highlighter-rouge">snps</code> table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">accession</th>
+      <th style="text-align: left">chromosome</th>
+      <th style="text-align: left">position</th>
+      <th style="text-align: left">gene</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+      <td style="text-align: left">gene_A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">rs98765</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">98765</td>
+      <td style="text-align: left">gene_A</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">rs28465</td>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">28465</td>
+      <td style="text-align: left">gene_B</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">rs92873</td>
+      <td style="text-align: left">7</td>
+      <td style="text-align: left">7382</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">rs10238</td>
+      <td style="text-align: left">11</td>
+      <td style="text-align: left">291732</td>
+      <td style="text-align: left">gene_C</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">rs92731</td>
+      <td style="text-align: left">17</td>
+      <td style="text-align: left">10283</td>
+      <td style="text-align: left">gene_C</td>
+    </tr>
+  </tbody>
+</table>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">as</span> <span class="k">c</span>
+<span class="k">FROM</span> <span class="n">snps</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">chromosome</span><span class="p">;</span></code></pre></figure>
+
+<p>will return</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">chromosome</th>
+      <th style="text-align: left">c</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">7</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">11</td>
+      <td style="text-align: left">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">17</td>
+      <td style="text-align: left">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>whereas</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">chromosome</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">as</span> <span class="k">c</span>
+<span class="k">FROM</span> <span class="n">snps</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">chromosome</span>
+<span class="k">HAVING</span> <span class="k">c</span> <span class="o">&gt;</span> <span class="mi">1</span></code></pre></figure>
+
+<p>will return</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">chromosome</th>
+      <th style="text-align: left">c</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The <code class="language-plaintext highlighter-rouge">HAVING</code> clause must follow a <code class="language-plaintext highlighter-rouge">GROUP BY</code>, and precede a possible <code class="language-plaintext highlighter-rouge">ORDER BY</code>.</p>
+
+<h2 id="union-intersect">UNION, INTERSECT</h2>
+
+<p>It is sometimes hard to get the exact rows back that you need using the WHERE clause. In such cases, it might be possible to construct the output based on taking the <strong>union or intersection</strong> of two or more different queries:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">WHERE</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="s1">'1'</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">WHERE</span> <span class="k">position</span> <span class="o">&lt;</span> <span class="mi">40000</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">WHERE</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="s1">'1'</span> <span class="k">INTERSECT</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">snps</span> <span class="k">WHERE</span> <span class="k">position</span> <span class="o">&lt;</span> <span class="mi">40000</span><span class="p">;</span></code></pre></figure>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">id</th>
+      <th style="text-align: left">accession</th>
+      <th style="text-align: left">chromosome</th>
+      <th style="text-align: left">position</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">rs12345</td>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">12345</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="like">LIKE</h2>
+
+<p>Sometimes you want to make fuzzy matches. What if you’re not sure if the ethnicity has a capital or not?</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">individuals</span> <span class="k">WHERE</span> <span class="n">ethnicity</span> <span class="o">=</span> <span class="s1">'African'</span><span class="p">;</span></code></pre></figure>
+
+<p>returns no results…</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">individuals</span> <span class="k">WHERE</span> <span class="n">ethnicity</span> <span class="k">LIKE</span> <span class="s1">'%frican'</span><span class="p">;</span></code></pre></figure>
+
+<p>Note that different databases use different characters as wildcard. For example: <code class="language-plaintext highlighter-rouge">%</code> is a wildcard for MS SQL Server representing any string, and <code class="language-plaintext highlighter-rouge">*</code> is the corresponding wildcard character used in MS Access. Check the documentation for the RDBMS that you’re using (sqlite, MySQL/MariaDB, MS SQL Server, MS Access, Oracle, …) for specifics.</p>
+
+<h2 id="subqueries">Subqueries</h2>
+
+<p>As we mentioned in the beginning, the general setup of a SELECT is:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">&lt;</span><span class="n">column_names</span><span class="o">&gt;</span>
+<span class="k">FROM</span> <span class="o">&lt;</span><span class="k">table</span><span class="o">&gt;</span>
+<span class="k">WHERE</span> <span class="o">&lt;</span><span class="n">condition</span><span class="o">&gt;</span><span class="p">;</span></code></pre></figure>
+
+<p>But as you’ve seen in the examples above, the <strong>output from any SQL query is itself basically a table</strong>. So we can actually <strong>use that output table to run another SELECT</strong>. For example:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="p">(</span>
+       <span class="k">SELECT</span> <span class="o">*</span>
+       <span class="k">FROM</span> <span class="n">snps</span>
+       <span class="k">WHERE</span> <span class="n">chromosome</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">'1'</span><span class="p">,</span><span class="s1">'5'</span><span class="p">))</span>
+<span class="k">WHERE</span> <span class="k">position</span> <span class="o">&lt;</span> <span class="mi">40000</span><span class="p">;</span></code></pre></figure>
+
+<p>Of course, you can use UNION and INTERSECT in the subquery as well…</p>
+
+<p>Another example:</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span> <span class="p">(</span>
+       <span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="n">genotype_amb</span>
+       <span class="k">FROM</span> <span class="n">genotypes</span><span class="p">);</span></code></pre></figure>
+
+<div class="seriesContext">
+  
+  
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+  
+  
+
+  
+    <a href="rdbms-public-bioinformatics-databases.html"><button type="button" class="btn btn-primary">Next: Public bioinformatics databases</button></a>
+  
+</div>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2021 Visual Data Analysis Lab. All rights reserved. <br />
+ Site last generated: Nov 22, 2021 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

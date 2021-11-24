@@ -1,0 +1,1366 @@
+== NoSQL and ArangoDB - Introduction
+image:nosql_distilled_book.jpg[]
+
+As described in Sadalage and Fowler's book "NoSQL Distilled", RDBMS have definitely proven their worth since the 1980s. Some of their strengths include:
+
+- they can store large amounts of data that are easily queryable
+- transactional mechanisms make concurrency safe: different individuals/systems can access a database at the same time and alter data without fear of corrupting that data
+- SQL: a (almost) standard query language that is supported by all database management systems
+
+There are however shortcomings of RDBMS, which we will describe below.
+
+=== Issues with relational databases
+The 2000s has seen a boom in the amount of data generated and stored. There are basically two approaches to cope with this: _scale up_ or _scale out_. What you do when scaling _up_ is to just buy a bigger server on which we can run the database server. This works up to a point, but (a) there are clear limits in size, and (b) it is very expensive. In the other option, scaling _out_, we take multiple commodity (and therefore cheap) machines and set them up as a cluster where each of the machines has to store only part of the data. Unfortunately, RDBMS are not designed with this in mind.
+
+==== Scalability and clusters
+===== Querying data
+Best practices in relational database design call for a normalised design (see in our [previous post](REF)). This means that the different concepts in the data are separated out into tables, and can be _joined_ together again in a query. Unfortunately, joins can be very expensive. For example, the Ensembl database (www.ensembl.org) is a fully normalised omics database, containing a total of 74 tables. For example, to get the exon positions for a given gene, one needs to run 3 joins.
+
+image:rdbms-joins.png[]
+
+(Actually: note that this ends at `seq_region` and not at chromosome. To get to the chromosome actually requires two more joins but those are too complex to explain in the context of this session...)
+
+The query to get the exon positions for `FAM39B protein`:
+
+[source,sql]
+----
+SELECT e.seq_region_start
+FROM gene g, transcript t, exon_transcript et, exon e
+WHERE g.description = 'FAM39B protein'
+AND g.gene_id = t.gene_id
+AND t.transcript_id = et.transcript_id
+AND et.exon_id = e.exon_id;
+----
+
+===== Writing data
+Suppose that you begin to store genomic mutations in a mysql database. All goes well, until you notice that the database becomes too large for the computer you are running mysql on. There are different solutions for this:
+
+. Buy a bigger computer (= _vertical scaling_) which will typically be much more expensive
+. _Shard_ your data across different databases on different computers (= _horizontal scaling_): data for chromosome 1 is stored in a mysql database on computer 1, chromosome 2 is stored in a mysql database on computer 2, etc. Unfortunately, this does mean that in your application code (i.e. when you're trying to access this data from R or python), you need to know what computer to connect to. It gets worse if you later notice that one of these other servers becomes the bottleneck. Then you'd have to get additional computers and e.g. store the first 10% of chromosome 1 on computer 1, the next 10% on computer 2, etc. Again: this makes it very complicated in your R and/or python scripts as you have to know what is stored where.
+
+image:scalability.png[]
+
+==== Impedance mismatch
+When discussing relational databases, we went through the exercise of normalising our database scheme to make sure that, among other things, we minimise the emergence of inconsistencies of the data, and allow ourselves to ask the database any question. But this is actually strange, right? We first deconstruct the data that we receive into normalised tables, only to need table joins to get anything useful back out. Also, any value in the database needs to be simple, and can for example should not be stored as a nested record or a list. For example, you would not store the children of a couple like this:
+
+[%header,format=csv]
+|===
+id,mother,father,children
+1,John D,Jane D,[Tim;Tom;Tina]
+|===
+
+In contrast, a normalised way of storing this could be:
+
+**individuals**
+
+[%header,format=csv]
+|===
+id,name
+1,John D
+2,Jane D
+3,Tim
+4,Tom
+5,Tina
+|===
+
+**relationships**
+
+[%header,format=csv]
+|===
+id,individual_id1,individual_id2,type
+1,3,1,child_of
+2,4,1,child_of
+3,5,1,child_of
+4,3,2,child_of
+5,4,2,child_of
+6,5,2,child_of
+7,1,2,married_to
+|===
+
+That is called the _impedance mismatch_: there is a mismatch between how you think about the data, and how it needs to be stored in the relational database. The example below shows how all information that conceptually belongs to the same order is split up over multiple tables. This means that the developer needs to constantly switch between his/her mental model of the _application_ and that of the _database_ which can become very frustrating.
+
+image:impedance_mismatch.png[]
+_Impedance mismatch (taken from "NoSQL Distilled", Sadalage & Fowler)_
+
+==== Relational data
+Here's an extreme example of impedance mismatch. Imagine you have a social graph and the data is stored in a relational database. People have names, and know other people. Every "know" is reciprocal (so if I know you then you know me too).
+
+image:friends-relational.png[]
+
+Let's see what it means to follow relationships in a RDBMS. What would this look like if we were searching for friends of James?
+
+[source,sql]
+----
+SELECT knowee FROM friends
+WHERE knower IN (
+  SELECT knowee FROM friends
+  WHERE knower = 'James'
+  )
+UNION
+SELECT knower FROM friends
+WHERE knowee IN (
+  SELECT knower FROM friends
+  WHERE knowee = 'James'
+  );
+----
+
+Quite verbose. What if we'd want to go one level deeper: all friends of friends of James?
+
+[source,sql]
+----
+SELECT knowee FROM friends
+WHERE knower IN (
+  SELECT knowee FROM friends
+  WHERE knower IN (
+    SELECT knowee FROM friends
+    WHERE knower = 'James'
+    )
+  UNION
+  SELECT knower FROM friends
+  WHERE knowee IN (
+    SELECT knower FROM friends
+    WHERE knowee = 'James'
+    )
+  )
+UNION
+SELECT knower FROM friends
+WHERE knowee IN (
+  SELECT knower FROM friends
+  WHERE knowee IN (
+    SELECT knower FROM friends
+    WHERE knowee = 'James'
+    )
+  UNION
+  SELECT knowee FROM friends
+  WHERE knower IN (
+    SELECT knowee FROM friends
+    WHERE knower = 'James'
+    )
+  );
+----
+
+This clearly does not scale, and we'll have to look for another solution.
+
+=== General NoSQL concepts
+==== The end of SQL?
+So does this mean that we should leave SQL behind? No. What we'll be looking at is _polyglot persistence_: depending on what data you're working with, some of that might still be stored in an SQL database, while other parts are stored in a document store and graph database (see below). So instead of having a single database, we can end up with a collection of databases to support a single application.
+
+image:polyglot_persistence_fromto.png[]
+_Source: Sadalage & Fowler, 2012_
+
+The figure below shows how in the hypothetical case of a retailer's web application we might be using a combination of 8 different database technologies to store different types of information. Note that RDBMS are still part of the picture!
+
+image:polyglot_persistence.png[]
+_Source: https://martinfowler.com/articles/nosql-intro-original.pdf_
+
+The term NoSQL was coined as the name and hashtag for a conference in 2009 about "open-source, distributed, non-relational databases" (source: Sadalage & Fowler, 2012). But as Sadalage & Fowler state: "there is no generally accepted definition, nor an authority to provide one". But in general, they
+
+- don't use SQL
+- are often driven by the need to run on clusters or a different data model (e.g. graphs)
+- are often schema-less: you can add fields to records without having to define changes in structure first (using e.g. `ALTER TABLE`)
+
+==== General NoSQL concepts
+NoSQL databases have received increasing attention in the more and more data-driven world. They allow for modelling of more complex data in a more scalable and agile way. Although it is impossible to lump all NoSQL technologies on a single heap, there are some concepts that apply.
+
+===== NoSQL is not just one technology
+As mentioned above, NoSQL is not just a single technology; it is more an _approach_ than a technology. The image below shows a (new very outdated) overview of many of the database technologies used, including MongoDB, neo4j, ArangoDB, etc. But the NoSQL _approach_ is also about storing csv-files when that makes sense.
+
+image:confused-by-the-glut-of-new-databases.jpg[]
+
+===== Keep components simple
+If we look at the extreme case of a legacy Oracle SQL database for clinical studies at e.g. a pharmaceutical company, we will typically see that such system is a single behemoth of a system, which requires several database managers to just keep the server(s) running and operating optimally. In contrast, in a NoSQL setup, we often try to keep the different components as simple as possible.
+
+===== Separation of concerns
+An important question to answer here is where to put the functionality of your application? In the last example: do you let the database compute (with e.g. SQL statements) the things you need in the graphical interface directly? Do you let the graphical user interface get the raw data from the database and do all the necessary munging of that data at the user end? Or do you insert a separate layer in between (i.e. the computational layer mentioned above)? It’s all about a separation of concerns.
+
+In general, RDBMS have been around for a long time and are very mature. As a result, a lot of functionality has been added to the database tier. In applications using NoSQL solutions, however, much of the application functionality is in a middle tier.
+
+image:tiers.png[]
+
+===== Thinking strategically about RAM, SSD and disk
+To make sure that the performance of your application is adequate for your purpose, you have to think about where to store your data. Data can be kept in RAM, on a solid-state drive (SSD), the hard disk in your computer, or in a file somewhere on the network. This choice has an immense effect on performance. It’s easy to visualise this: consider that you are in Hasselt
+
+- getting something from RAM = getting it from your backyard
+- getting something from SSD = getting it from somewhere in your neighbourhood
+- getting something from disk = traveling to Saudi Arabia to get it
+- getting something over the network = traveling to Jupiter to get it
+
+It might be clear to you that cleverly keeping things in RAM is a good way to speed up your application or analysis :-) Which brings us to the next point:
+
+===== Keep your cache current using consistent hashing
+So keeping things in RAM makes it possible to very quickly access them. This is what you do when you load data into a variable in your python/R/SAS/ruby/perl/… code.
+
+Caching is used constantly by the computer you’re using at this moment as well.
+
+An important aspect of caching is calculating a key that can be used to retrieve the data (remember key/value stores?). This can for example be done by calculating a checksum, which looks at each byte of a document and returns a long sequence of letters and numbers. Different algorithms exists for this, such as MD5 or SHA-1. Changing a single bit in a file (this file can be binary or not) will completely change the checksum.
+
+Let’s for example look at the checksum for the file that I’m writing right now. Here are the commands and output to get the MD5 and SHA-1 checksums for this file:
+
+```
+janaerts$ md5 2019-10-31-lambda-architecture.md
+MD5 (2019-10-31-lambda-architecture.md) = a271e75efb769d5c47a6f2d040e811f4
+janaerts$ shasum 2019-10-31-lambda-architecture.md
+2ae358f1ac32cb9ce2081b54efc27dcc83b8c945  2019-10-31-lambda-architecture.md
+```
+
+As you can see, these are quite long strings and MD5 and SHA-1 are indeed two different algorithms to create a checksum. The moment that I wrote the “A” (of “As you can see”) at the beginning of this paragraph, the checksum changed completely. Actually, below are the checksums after adding that single “A”. Clearly, the checksums are completely different.
+
+```
+janaerts$ md5 2019-10-31-lambda-architecture.md
+MD5 (2019-10-31-lambda-architecture.md) = b597d18879c46c8838ad2085d2c7d2f9
+janaerts$ shasum 2019-10-31-lambda-architecture.md
+45c5a96dd506b884866e00ba9227080a1afd6afc  2019-10-31-lambda-architecture.md
+```
+
+This consistent hashing can for example also be used to assign documents to specific database nodes.
+
+In principle, it _is_ possible that 2 different documents have the same hash value. This is called hash collision. Don’t worry about it too much, though. The MD5 algorithm generates a 128 bit string, which occurs once every 10^38 documents. If you generate a billion documents per second it would take 10 trillion times the age of the universe for a single accidental collision to occur…
+
+Of course a group of researchers at Google tried to break this, and [they were actually successful](https://shattered.it/) on February 23th 2017.
+
+image:shattered.png[]
+
+To give you an idea of how difficult this is:
+
+- it had taken them 2 years of research
+- they performed 9,223,372,036,854,775,808 (9 quintillion) compressions
+- they used 6,500 years of CPU computation time for phase 1
+- they used 110 years of CPU computation time for phase 2
+
+===== ACID vs BASE
+====== ACID
+RDBMS systems try to follow the ACID model for reliable database transactions. ACID stands for atomicity, consistency, isolation and durability. The prototypical example of a database that needs to comply to the ACID rules is one which handles bank transactions.
+
+image:bank.png[]
+
+- _Atomicity_: Exchange of funds in example must happen as an all-or-nothing transaction
+- _Consistency_: Your database should never generate a report that shows a withdrawal from saving without the corresponding addition to the checking account. In other words: all reporting needs to be blocked during atomic operations.
+- _Isolation_: Each part of the transaction occurs without knowledge of any other transaction
+- _Durability_: Once all aspects of transaction are complete, it’s permanent.
+
+For a bank transaction it is crucial that either all processes (withdraw and deposit) are performed or none.
+
+The software to handle these rules is very complex. In some cases, 50-60% of the codebase for a database can be spent on enforcement of these rules. For this reason, newer databases often do not support database-level transaction management in their first release.
+
+As a ground rule, you can consider ACID pessimistic systems that focus on consistency and integrity of data above all other considerations (e.g. temporarily blocking reporting mechanisms is a reasonable compromise to ensure systems return reliable and accurate information).
+
+====== BASE
+BASE stands for:
+
+- _Basic Availability_: Information and service capability are “basically available” (e.g. you can always generate a report).
+- _Soft-state_: Some inaccuracy is temporarily allowed and data may change while being used to reduce the amount of consumed resources.
+- _Eventual consistency_: Eventually, when all service logic is executed, the systems is left in a consistent state.
+A good example of a BASE-type system is a database that handles shopping carts in an online store. It is no problem fs the back-end reports are inconsistent for a few minutes (e.g. the total number of items sold is a bit off); it’s much more important that the customer can actually purchase things.
+
+This means that BASE systems are basically optimistic as all parts of the system will eventually catch up and be consistent. BASE systems therefore tend to be much simpler and faster as they don’t have to deal with locking and unlocking resources.
+
+=== Intermezzo - JSON
+Before we proceed, we'll have a quick look at the JSON ("JavaScript Object Notation") text format, which is often used in different database systems. JSON follows the same principle as XML, in that it describes the data in the object itself. An example JSON object:
+
+[source,javascript]
+----
+{ code:"I0D54A",
+  name:"Big Data",
+  lecturer:"Jan Aerts",
+  keywords:["data management","NoSQL","big data"],
+  students:[ {student_id:"u0123456", name:"student 1"},
+             {student_id:"u0234567", name:"student 2"},
+             {student_id:"u0345678", name:"student 3"}]}
+----
+
+JSON has very simple syntax rules:
+
+- Data is in key/value pairs. Each is in quotes, separated by a colon. In some cases you might omit the quotes around the key, but not always.
+- Data is separated by commas.
+- Curly braces hold objects.
+- Square brackets hold arrays.
+
+JSON values can be numbers, strings, booleans, arrays (i.e. lists), objects or NULL; JSON arrays can contain multiple values (including JSON objects); JSON objects contain one or more key/value pairs.
+
+These are two JSON arrays:
+[source,javascript]
+----
+["data management","NoSQL","big data"]
+
+[{student_id:"u0123456", name:"student 1"},
+ {student_id:"u0234567", name:"student 2"},
+ {student_id:"u0345678", name:"student 3"}]
+----
+
+And a simple JSON object:
+
+[source,javascript]
+----
+{student_id:"u0345678", name:"student 3"}
+----
+
+And objects can be nested as in the first example.
+
+== Key/value stores
+Key/value stores are a very simple type of database. The only thing they do, is link an arbitrary blob of data (the value) to a key (a string). This blob of data can be a piece of text, an image, etc. It is not possible top run queries. Key-value stores therefore basically act as dictionaries:
+
+image:gouge.png[]
+
+A key/value store only allows 3 operations: `put`, `get` and `delete`. Again: you can _not_ query.
+
+image:keyvalue-1.png[]
+
+For example:
+
+image:keyvalue-2.png[]
+
+This type of database is very scalable, and allows for fast retrieval of values regardless of the number of items in the database. In addition, you can store whatever you want as a value; you don't have to specify the data type for that value.
+
+There basically exist only 2 rules when using a key/value store:
+
+. Keys should be unique: you can _never_ have two things with the same key.
+. Queries on values are not possible: you cannot select a key/value pair based on something that is in the value. This is different from e.g. a relational database, where you use a `WHERE` clause to constrain a result set. The value should be considered as opaque.
+
+image:keyvalue-3.png[]
+
+Although (actually: because) they are so simple, there are very specific use cases for key/value stores, for example to store webpages: the key is the URL, the value is the HTML. If you go to a webpage that you visited before, your web browser will first check if it has stored the contents of that website locally beforehand, before doing the costly action of downloading the webpage over the internet.
+
+=== Implementations
+
+Many implementations of key/value stores exist, probably the easiest to use being Redis (http://redis.io). Try it out on http://try.redis.io. ArangoDB (www.arangodb.org) is a multi-model database which also allows to store key/values (see below).
+
+== Document-oriented databases
+=== Introduction
+In contrast to relational databases (RDBMS) which define their columns at the _table_ level, document-oriented databases (also called document stores) define their fields at the _document_ level. You can imagine that a single row in a RDBMS table corresponds to a single document where the keys in the document correspond to the column names in the RDBMS. Let's look at an example table in a RDBMS containing information about buildings:
+
+[%header,format=csv]
+|===
+id, name, address, city, type, nr_rooms, primary_or_secondary
+1, building1, street1, city1, hotel, 15,
+2, building2, street2, city2, school,, primary
+3, building3, street3, city3, hotel, 52,
+4, building4, street4, city4, church,,
+5, building5, street5, city5, house,,,
+..., ..., ..., ..., ..., ..., ...
+|===
+
+This is a far from ideal way for storing this data because many cells will remain empty based on the type of building their rows represent: the `primary_or_secondary` column will be empty for every single building except for schools. Also: what if we want to add a new row for a type of building that we don't have yet? For example: a shop for which we also need to store the weekly closing day. To be able to do that, we'd need to first alter the whole table by adding a new column.
+
+In document-oriented databases, these keys are however stored with the documents themselves. A typical way to represent this is as in JSON format, and can be represented as such:
+
+[source,javascript]
+----
+[
+  { id: 1, name: "building1", address: "street1", city: "city1",
+    type: "hotel", nr_rooms: 15 },
+  { id: 2, name: "building2", address: "street2", city: "city2",
+    type: "school", primary_or_secondary: "primary" },
+  { id: 3, name: "building3", address: "street3", city: "city3",
+    type: "hotel", nr_rooms: 52 },
+  { id: 4, name: "building4", address: "street4", city: "city4",
+    type: "church" },
+  { id: 5, name: "building5", address: "street5", city: "city5",
+    type: "house" },
+  { id: 6, name: "building6", address: "street6", city: "city6",
+    type: "shop", closing_day: "Monday" }
+]
+----
+
+Notice that in the document for a house (`id` of 5), there is no mention of `primary_of_secondary` because it is not relevant as it is for a hotel.
+
+=== Concepts
+==== Naming things: collections and documents
+The way that things are named in document stores is a bit different than in RDBMS, but in general a _collection_ in a document store corresponds to a _table_ in a RDBMS, and a _document_ corresponds to a _row_.
+
+As a comparison, consider the following examples of a relational database vs a document database for storing blog data.
+
+===== Blog information stored in RDBMS
+
+_Table_ `posts`
+[%header,format=csv]
+|===
+id, author_id, date, title, text
+1, 4, 4-5-2020, COVID-19 lockdown, It seems that...
+4, 4, 5-5-2020, Schools closed, As the number of COVID-19 cases is growing ...
+..., ..., ..., ..., ...
+|===
+
+_Table_ `authors`
+
+[%header,format=csv]
+|===
+id, name, email
+1, Santa Claus, santa.claus@northpole.org
+2, Easter Bunny, easterbunny@easter.org
+..., ..., ...
+|===
+
+Each _table_ has _rows_.
+
+===== Blog information stored in document database
+
+_Collection_ `posts`
+
+[source,javascript]
+----
+{ title: "COVID-19 lockdown", date: "4-5-2020",
+  author: { name: "Geert Molenberghs", email: "geert@gmail.com" },
+  text: "It seems that..." },
+{ title: "Schools closed", date: "5-5-2020",
+  author: { name: "Geert Molenberghs", email: "geert@gmail.com" },
+  text: "As the number of COVID-19 cases is growing, ..."}
+----
+
+This is _one_ _collection_ with two _documents_.
+
+==== Documents are schemaless
+As mentioned [before]({{ site.baseurl }}/nosql-general-concepts.html), one of the important differences between RDBMS and document databases, is that documents are _schemaless_. Actually, we should say that they have a _flexible schema_. What does this mean? Consider the case where we are collecting data on bird migrations (as for example [https://www.belgianbirdalerts.be/](https://www.belgianbirdalerts.be/)). In an RDMBS, we could put this information in a `sightings` table.
+
+`sightings`
+
+[%header,format=csv]
+|===
+id, species_la, species_en, date_time, municipality
+1, Emberiza pusilla, Little Bunting, 30-09-2020 15:37, Zeebrugge (BE)
+2, Sylvia nisoria, Barred Warbler, 2020-10-01 13:45, Zeebrugge (BE)
+..., ..., ..., ..., ...
+|===
+
+What if we want to store the Dutch name as well? Then we'd need to alter the table schema to have a new column to hold that information: `ALTER TABLE sightings ADD species_du TEXT;`. After adding this column and updating the value in that particular column, we get the following:
+
+`sightings`
+
+[%header,format=csv]
+|===
+id, species_la, species_en, species_du, date_time, municipality
+1, Emberiza pusilla, Little Bunting, Dwerggors, 30-09-2020 15:37, Zeebrugge (BE)
+2, Sylvia nisoria, Barred Warbler, Sperwergrasmus, 2020-10-01 13:45, Zeebrugge (BE)
+..., ..., ..., ..., ...
+|===
+
+So far so good: this table still looks clean. Now imagine that we want to improve the reporting, and actually include the longitude and latitude instead of just the municipality. Also, we want to split up the date from the time. To do this, we have to alter the schema of the `sightings` table to include these new columns. Only after we changed this schema, we can input data using the new information:
+
+`sightings`
+
+[%header,format=csv]
+|===
+id, species_la, species_en, species_du, date_time, municipality, date, time, lat, long
+1, Emberiza pusilla, Little Bunting, Dwerggors, 30-09-2020 15:37, Zeebrugge (BE),,,,
+2, Sylvia nisoria, Barred Warbler, Sperwergrasmus, 2020-10-01 13:45, Zeebrugge (BE),,,,
+..., ..., ..., ..., ..., ..., ..., ..., ..., ...
+56, Elanus caeruleus, Black-winged Kite, Grijze Wouw,,, 2020-10-02, 15:15, 50.96577, 3.92744
+57, Ficedula parva, Red-breasted Flycatcher, Kleine Vliegenvanger,,, 2020-10-04, 10:34, 51.33501, 3.23154
+58, Phalaropus lobatus, Red-necked Phalarope, Grauwe Franjepoot,,, 2020-10-04, 10:48, 51.14660, 2.73363
+59, Locustella certhiola, Pallas's Grasshopper Warbler, Siberische Sprinkhaanzanger,,, 2020-10-04, 11:53, 51.33950, 3.22775
+..., ..., ..., ..., ..., ..., ..., ..., ..., ...
+|===
+
+Executing an `ALTER TABLE` on a relational database is a _huge_ step. Having a well-defined schema is core to a RDBMS, so changing it should not be done lightly.
+
+In contrast, nothing would need to be done to store this new information if we had been using a document-database. Consider our initial data:
+
+[source,javascript]
+----
+{ id: 1,
+  species_la: "Emberiza pusilla", species_en: "Little Bunting",
+  date_time: "30-09-2020 15:37", municipality: "Zeebrugge, BE"},
+{ id: 2,
+  species_la: "Sylvia nisoria", species_en: "Barred Warbler",
+  date_time: "2020-10-01 13:45", municipality: "Zeebrugge, BE"},
+...
+----
+
+If we want to change from reporting municipality to latitude and longitude, we just add those instead on new documents:
+[source,javascript]
+----
+{ id: 1,
+  species_la: "Emberiza pusilla", species_en: "Little Bunting",
+  date_time: "30-09-2020 15:37", municipality: "Zeebrugge, BE" },
+{ id: 2,
+  species_la: "Sylvia nisoria", species_en: "Barred Warbler",
+  date_time: "2020-10-01 13:45", municipality: "Zeebrugge, BE" },
+...
+{ id: 56,
+  species_la: "Elanus caeruleus", species_en: "Black-winged Kite", species_du: "Grijze Wouw",
+  date: "2020-10-02", time: "15:15",
+  lat: 50.96577, long: 3.92744 },
+{ id: 57,
+  species_la: "Ficedula parva", species_en: "Red-breasted Flycatcher", species_du: "Kleine Vliegenvanger",
+  date: "2020-10-04", time: "10:34",
+  lat: 51.33501, long: 3.23154 },
+...
+----
+
+===== Explicit vs implicit schema
+Important: Even though a document database does not enforce a strict schema, there is still an _implicit schema_: it's the combination of keys and possible values that can be present in a document. The application (or you) need to know that the English species name is stored with the key `species_en`. It should not be a mix of `species_en` in some cases, `species_english` in others, or `english_name` or `english_species_name`, etc. That would make it impossible to for example get a list of all species that were sighted.
+
+==== Embedding vs referencing
+When modelling data in a relational database, we typically try to create a _normalised database schema_. In such schema, different concepts are stored in different tables, and information is linked by referencing rows in different tables.
+
+Consider the example of a blog. This information concerns different concepts: the blog itself, posts on that blog, authors, comments, and tags. This can be modelled like this in a relational database:
+
+image:blog_rdbms_schema.png[]
+
+Each concept is stored in a separate table. To get all comments on posts written by John Doe, we can do this (we won't go into actual schemas here):
+
+[source,sql]
+----
+SELECT c.date, c.comment
+FROM authors a, blog_entries b, comments c
+WHERE a.id = b.author_id
+AND b.id = c.entry_id
+AND a.name = "John Doe";
+----
+
+In document databases, we have to find a balance between _embedding_ and _referencing_.
+
+On the one extreme end, we can follow the same approach as in relational databases, and create a separate collection for each concept. So there would be a collection for `blogs`, one for `blog_entries`, for `authors`, for `comments` and `tags`. At the other extreme end, we can _embed_ some of this information. For example, a single blog entry can have the author name and email, the comments and tags _inside_ it.
+
+A referencing-heavy approach:
+
+image:joining.png[width=50%]
+
+A mixed reference-embed approach:
+
+image:linking-embedding.png[width=50%]
+
+===== On cross-collection queries
+In many document database-implementations (e.g. mongodb) it is not possible to query across collections, which can make using referenced data much more difficult. A query in mongodb, for example, will look like this (don't worry about the exact syntax; it should be clear what this tries to do):
+[source,javascript]
+----
+db.comments.find({author_id: 5})
+----
+
+This will return all comments written by the author with ID 5. To get all comments on posts written by author John Doe we would have to do the following if we'd use a full referencing approach:
+
+- Find out what the ID is of "John Doe": `db.authors.find({name: "John Doe"})`. Let's say that this returns the document `{id: 8, name: "John Doe", twitter: "JohnDoe18272"}`.
+- Find all blog entries written by him: `db.blog_entries.find({author_id: 8})`. Let's say that this returns the following list of blog posts:
+
+[source,javascript]
+----
+[{id: 26, author_id: 8, date: 2020-08-17,
+  title: "A nice vacation", text: "..."},
+ {id: 507, author_id: 8, date: 2020-08-23,
+  title: "How I broke my leg", text: "..."}]
+----
+
+- Find all the comments that are linked to one of these posts: `db.comments.find({blog_entry_id: [26,507]})`.
+
+As you can see, we need 3 different queries to get that information, which means that the database is accessed 3 times. In contrast, with embedding all the relevant information can be extracted with just a single query. Let's say that information is stored like this:
+[source,javascript]
+----
+[{id: 26, author: { name: "John Doe", twitter: "JohnDoe18272" },
+  date: 2020-08-17,
+  title: "A nice vacation", text: "...",
+  comments: [ {date: ..., author: {...},
+              {date: ..., author: {...}}
+  ]},
+ {id: 507, author: { name: "John Doe", twitter: "JohnDoe18272" },
+  date: 2020-08-23,
+  title: "How I broke my leg", text: "...",
+  comments: [ {date: ..., author: {...},
+              {date: ..., author: {...}}
+  ]},
+  {id: 507, author: { name: "Superman", twitter: "Clark" },
+   date: 2020-09-03,
+   title: "A view from the sky", text: "...",
+   comments: [ {date: ..., author: {...},
+               {date: ..., author: {...}}
+   ]},
+   ...
+]
+----
+
+Now to get all comments on posts written by John Doe, you only need a single query: `db.blog_entries.find({name:"John Doe"})` and therefore a single trip to the database.
+
+BTW: Notice how the author information is duplicated in this example. Again: find a _balance_ between linking and embedding...
+
+===== Document-databases are often aggregation-oriented
+This possibility for embedding makes that document databases have an aspect of aggregation-orientation to them. Whereas in RDBMS new information is pulled apart and stored in different tables, in a document database all this information can be stored together.
+
+For example, consider a system that needs to store genotyping information. With genotyping, part of an person's DNA is read and an A, C, T or G is assigned to particular positions in the genome (single nucleotide polymorphisms or SNPs). In a relational database model, it looks like this:
+
+image:primary_foreign_keys.png[]
+
+`individuals` table:
+
+[%header,format=csv]
+|===
+id, name, ethnicity
+1, individual_A, caucasian
+2, individual_B, caucasian
+|===
+
+`snps` table:
+
+[%header,format=csv]
+|===
+id, name, chromosome, position
+1, rs12345, 1, 12345
+2, rs98765, 1, 98765
+3, rs28465, 5, 23456
+|===
+
+`genotypes` table:
+
+[%header,format=csv]
+|===
+id, snp_id, individual_id, genotype, ambiguity_code
+1, 1, 1, A/A, A
+2, 2, 1, A/G, R
+3, 3, 1, G/T, K
+4, 1, 2, A/C, M
+5, 2, 2, G/G, G
+6, 3, 2, G/G, G
+|===
+
+To get all information for `individual_A` we need to write a join that gets information from different tables:
+[source,sql]
+----
+SELECT i.name, i.ethnicity, s.name, s.chromosome, s.position, g.genotype
+FROM individuals i, snps s, genotypes g
+WHERE i.id = g.individual_id
+AND s.id = g.snp_id
+AND i.name = 'individual_A';
+----
+
+In a document database, we can store this by individual, for example in a `genotype_documents` collection:
+
+[source,javascript]
+----
+{ id: 1, name: "individual_A", ethnicity: "caucasian",
+         genotypes: [ { name: "rs12345", chromosome: 1, position: 12345, genotype: "A/A" },
+                      { name: "rs9876", chromosome: 1, position: 9876, genotype: "A/G" },
+                      { name: "rs28465", chromosome: 5, position: 23456, genotype: "G/T" }]}
+{ id: 1, name: "individual_B", ethnicity: "caucasian",
+         genotypes: [ { name: "rs12345", chromosome: 1, position: 12345, genotype: "A/C" },
+                      { name: "rs9876", chromosome: 1, position: 9876, genotype: "G/G" },
+                      { name: "rs28465", chromosome: 5, position: 23456, genotype: "G/G" }]}
+----
+
+In this case, it is much easier to get all information for `individual_A`. Such query could simply be: `db.genotype_documents({name: 'individual_A'})`. This is because **_all data is aggregated by individual_**.
+
+But what if we want all genotypes that were recorded for SNP `rs9876` across all individuals? In SQL, the query would be very similar to the one for `individual_A`:
+[source,sql]
+----
+SELECT i.name, i.ethnicity, s.name, s.chromosome, s.position, g.genotype
+FROM individuals i, snps s, genotypes g
+WHERE i.id = g.individual_id
+AND s.id = g.snp_id
+AND s.name = 'rs9876';
+----
+
+We do however loose the advantage of the individual-centric model completely with our document database: a query (although it might look simple) will have to extract a little piece of information from every single document in the database which is extremely costly. If we knew we were going to ask this question, it'd have been better to model the data like this:
+
+[source,javascript]
+----
+{ id: 1, name: "rs12345", chromosome: 1, position: 12345,
+         genotypes: [ { name: "individual_A", genotype: "A/A"},
+                      { name: "individual_B", genotype: "A/C"} ] },
+{ id: 1, name: "rs9876", chromosome: 1, position: 9876,
+         genotypes: [ { name: "individual_A", genotype: "A/G"},
+                      { name: "individual_B", genotype: "G/G"} ] },
+{ id: 1, name: "rs28465", chromosome: 1, position: 23456,
+         genotypes: [ { name: "individual_A", genotype: "G/T"},
+                      { name: "individual_B", genotype: "G/G"} ] }
+----
+
+So do you model your data by individual or by SNP? That depends...
+
+- If you know beforehand that you'll be querying by individual and not by SNP, use the first version.
+- If by SNP, use the latter.
+- You could model in a similar way as the relational database with separate collections for `individuals`, `snps` and `genotypes`. In other words: using linking rather than embedding.
+- You could do _both_, but not as the master dataset. In this case, you have a master dataset from which you recalculate these two different versions of the same data on a regular basis (daily, weekly, ..., depending on the update frequency). This latter approach fits in the Lambda Architecture that we'll talk about later.
+
+==== Homogeneous vs heterogeneous collections
+Now should every collection be about one specific thing, or not? Above, we asked the question if every concept should be separate in their own collection or if we want to embed information, or if we want to merge different objects into a single document. Still, the documents within a collection would still be the same. Whether or not we embed the author information in the blog entries, the `blog_entries` collection is still about blog entries.
+
+This is however not mandatory, and nothing keeps you from putting all kinds of documents all together in the same collection. Consider the example of a large multi-day conference with many speakers, who hold different talks in different rooms.
+
+===== Homogeneous design
+In a homogeneous design, we put our speakers, rooms and talks in different collections:
+
+_speakers_
+[source,javascript]
+----
+[ { id: 1, name: "John Doe", twitter: "JohnDoe18272" },
+  { id: 2, name: "Superman", twitter: "Clark" },
+  ... ]
+----
+
+_rooms_
+[source,javascript]
+----
+[ { id: 1, name: "1st floor left", floor: 1, capacity: 80},
+  { id: 2, name: "lecture hall 2", floor: 1, capacity: 200},
+  ... ]
+----
+
+_talks_
+[source,javascript]
+----
+[ { id: 1, speaker_id: 1, room_id: 4, time: "10am", title: "Fun with deep learning" },
+  { id: 2, speaker_id: 1, room_id: 2, time: "2pm", title: "How I solved world hunger"},
+  ... ]
+----
+
+===== Heterogeneous design
+The above is a perfectly valid approach for storing this type of data. In some cases, however, you might anticipate that you often want to have information from different types. Let's say that you expect to want to find everything that is related to room 4. In the above setup, you'd have to run 3 different queries; one for each collection.
+
+Another approach is to actually put all that information together. To make sure that we can still query specific types of information (e.g. just the speakers), let's add an additional key `type` (can be anything). Let's call the collection `agenda`:
+
+[source,javascript]
+----
+[ { id: 1, type: "speaker", speaker_id: 1, name: "John Doe", twitter: "JohnDoe18272" },
+  { id: 2, type: "speaker", speaker_id: 2, name: "Superman", twitter: "Clark" },
+  { id: 3, type: "room", room_id: 1, name: "1st floor left", floor: 1, capacity: 80},
+  { id: 4, type: "room", room_id: 2, name: "lecture hall 2", floor: 1, capacity: 200},
+  { id: 5, type: "talk", speaker_id: 1, room_id: 4, time: "10am", title: "Fun with deep learning" },
+  { id: 6, type: "talk", speaker_id: 1, room_id: 2, time: "2pm", title: "How I solved world hunger"},
+  ... ]
+----
+
+Now to get all information available for room with ID 2, we just get `db.agenda.find({room_id: 2})` which will return speakers, rooms and talks:
+[source,javascript]
+----
+[ { id: 4, type: "room", room_id: 2, name: "lecture hall 2", floor: 1, capacity: 200},
+  { id: 6, type: "talk", speaker_id: 1, room_id: 2, time: "2pm", title: "How I solved world hunger"},
+  ... ]
+----
+
+To just get the talks that are given in that room (so not the room itself) we just add the additional constraint on `type`: `db.agenda.find({room_id: 2, type: "talk"})`.
+
+_Source of some of this information: Ryan Crawcour & David Makogon_
+
+=== Data modeling
+==== Think about how you will use the data
+The starting point for modelling your data is different between an RDBMS and a document database. With an RDBMS, you typically start from the _data_; with a document database, you typically start from the _application_.
+
+Think about how we will use the data, and how they will be accessed. Consider, for example, a movie dataset with actors and movies. For each actor we have their name , date of birth and the movies they acted in. For each movie, we have the title, release year, and tagline. There are different ways in which we can model this data in a document database, depending on what the intended use will be. So what do you want to _do_ with this data? Do you want to answer questions about the actors? Or about the movies?
+
+So the two obvious approaches are _movie-centric_
+[source,javascript]
+----
+{ movie: "As Good As It Gets",
+  released: 1997,
+  tagline: "A comedy from the heart that goes for the throat",
+  actors: [{ name: "Jack Nicholson", born: 1937 },
+           { name: "Cuba Gooding Jr.", born: 1968 },
+           { name: "Helen Hunt", born: 1963 },
+           { name: "Greg Kinnear", born: 1963 }]},
+{ movie: "A Few Good Men",
+  released: 1992,
+  tagline: "In the heart of the nation's capital, ...",
+  actors: [{ name: "Jack Nicholson", born: 1937 },
+           { name: "Demi Moore", born: 1962 },
+           { name: "Cuba Gooding Jr.", born: 1968 },
+           { name: "Tom Cruise", born: 1962 }]}
+----
+
+or _actor-centric_:
+
+[source,javascript]
+----
+{ name: "Jack Nicholson", born: 1937,
+  movies: [{ name: "As Good As It Gets", released: 1997,
+             tagline: "A comedy from the heart that goes for the throat" },
+           { name: "A Few Good Men", released: 1992,
+             tagline: "In the heart of the nation's capital, ..."}]},
+{ name: "Cuba Gooding Jr.", born: 1968,
+  movies: [{ name: "As Good As It Gets", released: 1997,
+             tagline: "A comedy from the heart that goes for the throat" },
+           { name: "A Few Good Men", released: 1992,
+             tagline: "In the heart of the nation's capital, ..."},
+           { name: "What Dreams May Come", released: 1998,
+             tagline: "After life there is more. The end is just the beginning."}]},
+{ name: "Tom Cruise", born: 1962,
+  movies: [{ name: "A Few Good Men", released: 1992,
+             tagline: "In the heart of the nation's capital, ..."},
+           { name: "Jerry Maguire", released: 2000,
+             tagline: "The rest of his life begins now."}]}
+----
+
+Searching using an actor-centric query in a movie-centric database will be very inefficient. If we want to know in how movies Jack Nicholson played using the first approach above, we have to go through _all_ documents and check which has him mentioned in the list of actors. Using the second approach above, we only have to get the single document about him and we have all the information.
+
+Another option is to use _links_ or _references_. The `actors` collection could then be:
+[source,javascript]
+----
+{ _key: "JNich", name: "Jack Nicholson", born: 1937,
+                 movies ["AGAIG","AFGM"]}
+{ _key: "TCrui", name: "Tom Cruise", born: 1962,
+                 movies: ["AFGM","JM"]}
+----
+
+and the `movies` collection:
+[source,javascript]
+----
+{ _key: "AGAIG", title: "As Good As It Gets", release: 1997,
+                tagline: "A comedy from the heart that goes for the throat",
+                actors: ["JNich", "CGood", "HHunt", "GKinn"]},
+{ _key: "AFGM", title: "A Few Good Men", release: 1992,
+                tagline: "In the heart of the nation's capital, ...",
+                actors: ["JNich", "DMoor", "CGood", "TCrui"]}
+----
+
+In this case the `movies` or `actors` key in the document refers to the `_key` in the other collection.
+
+The above are just some of the ways to model your data. Below, we'll go deeper into how you can approach different types of relationships between documents.
+
+==== Relationships between documents
+So when do you embed, and when do you reference?
+
+===== 1-to-1 relationships
+If you have a 1-to-1 relationship, just add a key-value pair in the document. For example, an individual having only a single twitter account would just have that account added as a key-value pair:
+
+[source,javascript]
+----
+{ name: "Elon Musk",
+  born: 1971,
+  twitter: "@elonmusk" }
+----
+
+image:musk_twitter.png[width=33%]
+
+===== 1-to-few relationships
+If you have a 1-to-few relationship (i.e. a 1-to-many where the "many" is not "too many"), it's easiest to _embed_ the information in a list. For example for Elon Musk's citizenships:
+
+[source,javascript]
+----
+{ name: "Elon Musk",
+  born: 1971,
+  twitter: "@elonmusk",
+  citizenships: [
+    { country: "South Africa", since: 1971 },
+    { country: "Canada", since: 1971 },
+    { country: "USA", since: 2002 }
+  ]}
+----
+
+===== 1-to-many relationships
+The above works as long as you don't have thousands of elements in such an array. Consider a car; which apparently on average consists of 30,000 parts. We don't want to store all information for each parts in a huge array. Because each element in that array will have information like it's name, number, cost, provider, how many we need, etc. In this case, we can choose to use _references_ instead of embedding.
+
+image:carparts.jpg[]
+
+`cars` collection:
+[source,javascript]
+----
+{ _key: "car1",
+  name: "left-handed Tesla Model S",
+  manufacturer: "Tesla",
+  catalog_number: 12345,
+  parts: ["p1","p3","p17",...]}
+----
+
+`parts` collection:
+[source,javascript]
+----
+{ _key: "p1",
+  partno: "123-ABC-987",
+  name: "nr 4 bolt",
+  qty: 105,
+  cost: 0.54 },
+{ _key: "p3",
+  partno: "826-CKW-732",
+  name: "nr 6 grommet",
+  qty: 68,
+  cost: 0.52 },
+...
+----
+
+===== 1-to-immense relationships
+This works fine, until you're in the situation where you have a huge number of elements. You should _never_ use an array that is basically unbounded, so that grows really big. For example, think about sensors that store information every second, or server logs.
+
+[source,javascript]
+----
+{ id: "server_17",
+  location: "server room 2",
+  messages: [
+    { date: "Oct 14 07:50:29",
+      message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+    { date: "Oct 14 07:50:35",
+      message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+    { date: "Oct 14 07:50:37",
+      message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+    { date: "Oct 14 07:50:39",
+      message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+    { date: "Oct 14 07:50:39",
+      message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+    { date: "Oct 14 07:50:42",
+      message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+    { date: "Oct 14 07:50:39",
+      message: "Failed to bootstrap path  /System/Library, error = 2: No such file or directory" },
+    { date: "Oct 14 07:50:43",
+      message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+    ...
+  ]}
+----
+
+A better approach here is to use a _reverse reference_, where the _host_ is referenced. That brings the log messages themselves first-grade documents.
+
+`servers` collection:
+[source,javascript]
+----
+{ id: "server_17",
+  location: "server room 2" }
+----
+
+`logs` collections:
+[source,javascript]
+----
+{ date: "Oct 14 07:50:29", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:35", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:37", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:39", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:39", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:42", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:39", host: "server_17",
+  message: "Failed to bootstrap path  /System/Library, error = 2: No such file or directory" },
+{ date: "Oct 14 07:50:43", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+...
+----
+
+===== many-to-many relationships
+A possible approach to follow with many-to-many relationships is to create _reciprocal references_: the links are present twice. For example, authors and books: a single author can write multiple books; a single book can have multiple authors.
+
+`books` collection:
+[source,javascript]
+----
+{ id: "go", ISBN13: "9780060853983",
+  title: "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch",
+  authors: ["tprat","ngaim"] },
+{ id: "gp", ISBN13: "9780060502935",
+  title: "Going Postal (Discworld #33)",
+  authors: ["tprat"] },
+{ id: "sg", ISBN13: "9780552152976",
+  title: "Small Gods (Discworld #13)",
+  authors: ["tprat"] },
+{ id: "tsa", ISBN13: "9780060842352",
+  title: "The Stupidest Angel: A Heartwarming Tale of Christmas Terror",
+  authors: ["cmoor"] }
+----
+
+`authors` collection:
+[source,javascript]
+----
+{ id: "tprat", name: "Terry Pratchett", books: ["go","gp","sg"] },
+{ id: "ngaim", name: "Neil Gaiman", books: ["go"] },
+{ id: "cmoor", name: "Christopher Moore", books: ["tsa"] }
+----
+
+*Big word of caution*: This approach can quickly lead to inconsistencies if not handled well. What if an author has written a certain book, but that book does not mention that author?
+
+Another option is to use a collection specific for the links, similar to a linking table in an RDBMS:
+
+`books` collection:
+[source,javascript]
+----
+{ id: "go", ISBN13: "9780060853983",
+  title: "Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch" },
+{ id: "gp", ISBN13: "9780060502935",
+  title: "Going Postal (Discworld #33)" },
+{ id: "sg", ISBN13: "9780552152976",
+  title: "Small Gods (Discworld #13)" },
+{ id: "tsa", ISBN13: "9780060842352",
+  title: "The Stupidest Angel: A Heartwarming Tale of Christmas Terror" }
+----
+
+`authors` collection:
+[source,javascript]
+----
+{ id: "tprat", name: "Terry Pratchett" },
+{ id: "ngaim", name: "Neil Gaiman" },
+{ id: "cmoor", name: "Christopher Moore" }
+----
+
+`authorships` collection:
+[source,javascript]
+----
+{ author: "tprat", book: "go" },
+{ author: "tprat", book: "gp" },
+{ author: "tprat", book: "sg" },
+{ author: "ngaim", book: "go" },
+{ author: "cmoor", book: "tsa" },
+----
+
+===== Other considerations
+====== Use embedding for...
+
+- _things that are queried together should be stored together_. In the blog example, it will be uncommon that you'd want to have a list of comments without them being linked to the blog entry itself. In this case, the comments can be embedded in the blog entry.
+- _things with similar volatility_ (i.e. their rate of change is similar). For example, an `author` can have several social IDs on Facebook, Linkedin, Twitter, etc. These things will not change a lot so it makes sense to store them _inside_ the `author` document, rather than having a separate collection `social_networks` and link the information between documents.
+- _set of values or subdocuments that are bounded_ (1-to-few relationship). For example, the number of tags for a blog entry will not be immense, and be static so we can embed that.
+
+Data embedding has several advantages:
+
+- The embedded objects are returned in the same query as the parent object, meaning that only 1 trip to the database is necessary. In the example above, if you'd query for a blog entry, you get the comments and tags with it for free.
+- Objects in the same collection are generally stored sequentially on disk, leading to fast retrieval.
+- If the document model matches your domain, it is much easier to understand than a normalised relational database.
+
+====== Use referencing for...
+
+- _1-to-many relationships_. For example, a single author can write multiple blog posts. We don't want to copy the author's name, email, social network usernames, picture, etc into every single blog entry.
+- _many-to-many relationships_. What is a single author has written multiple blog posts, and blog posts can be co-written by many authors?
+- _related data that changes with different volatility_. Let's say that we also record "likes" and "shares" for blog posts. That information is much less important and changes much quicker than the blog entry itself. Instead of constantly updating the blog document, it's safer to keep this outside.
+
+Typically you would _combine embedding and referencing_.
+
+==== Conclusion
+Data modelling in document-oriented databases is _not_ straightforward and there is no single solution. It all depends on what you want to do. This is different from data modelling in RDBMS where you can work towards a normalised database schema.
+
+=== Data modeling patterns
+According to Wikipedia, "a [...] design pattern is a general, reusable solution to a commonly occurring problem". This is also true for designing the data model (of data schema) in document databases. Below, we will go over some of these design patterns. A more complete list and explanation is available on e.g. the [MongoDB blog](https://www.mongodb.com/blog/post/building-with-patterns-a-summary). Many of the examples below also come from that source.
+
+==== Attribute pattern
+In the attribute pattern, we group similar fields (i.e. with the same value type) into a single array. Consider for example the following document on the movie "Star Wars":
+
+[source,javascript]
+----
+{ title: "Star Wars",
+  new_title: "Star Wars: Episode IV - A New Hope",
+  director: "George Lucas",
+  release_US: "1977-05-20",
+  release_France: "1977-10-19",
+  release_Italy: "1977-10-20",
+  ...
+}
+----
+
+To make quick searches on the release date we'd have to put an index on every single key that starts with `release_`. Another approach is to put these together in a separate attribute:
+
+[source,javascript]
+----
+{ title: "Star Wars",
+  new_title: "Star Wars: Episode IV - A New Hope",
+  director: "George Lucas",
+  releases: [
+    { country: "US", date: "1977-05-20" },
+    { country: "France", date: "1977-10-19" },
+    { country: "Italy", date: "1977-10-20" },
+    ...
+  ]
+}
+----
+
+In this case we only have to make a combined index on `releases.country` and `releases.date`.
+
+==== Bucket pattern
+Do you always want to store each datapoint in a separate document? You don't have to. A good example is time-series data, e.g. from sensors. If those sensors return a value every second, you will end up with a _lot_ of documents. Especially if you're not necessarily interested in that resolution it makes sense to bucket the data.
+
+For example, you _could_ store data from a temperature sensor like this:
+[source,javascript]
+----
+{ sensor_id: 1,
+  datetime: "2020-10-12 10:10:58",
+  value: 27.3 },
+{ sensor_id: 1,
+  datetime: "2020-10-12 10:10:59",
+  value: 27.3 },
+{ sensor_id: 1,
+  datetime: "2020-10-12 10:11:00",
+  value: 27.4 },
+{ sensor_id: 1,
+  datetime: "2020-10-12 10:11:01",
+  value: 27.4 },
+...
+----
+
+But obviously we're not really interested in the per-second readings. A more proper time period could be e.g. each 5 minutes. Your document would - using the bucket pattern - then look like this:
+[source,javascript]
+----
+{ sensor_id: 1,
+  start: "2020-10-12 10:10:00",
+  end: "2020-10-12 10:15:00",
+  readings: [
+    { timestamp: "2020-10-12 10:10:01", value: 27.3 },
+    { timestamp: "2020-10-12 10:10:02", value: 27.3 },
+    { timestamp: "2020-10-12 10:10:03", value: 27.3 },
+    ...
+    { timestamp: "2020-10-12 10:14:59", value: 27.4 },
+  ]
+}
+----
+
+This has several advantages:
+
+- it fits more with the time granularity that we are thinking in
+- it will be easy to compute aggregations in this granularity
+- if we see that we don't need the high-resolution data after a while, we can safely delete the `readings` part if we need to (e.g. to safe on storage space)
+
+==== Computed pattern
+Using buckets is actually a great segue into the computed pattern.
+
+It is not unusual that you end up extracting information from a database and immediately make simple or complex calculations. At that point you can make the decision to store the pre-computed values in the database as well. Technically you're duplicating data (the original fields plus a derived field), but it might speed up your application a lot.
+
+In the bucket pattern example above, we want to always look at the average temperature in those 5-minute intervals. We can calculate that every time we fetch the data from the database, but we can actually pre-calculate it as well and store that result in the document itself.
+
+[source,javascript]
+----
+{ sensor_id: 1,
+  start: "2020-10-12 10:10:00",
+  end: "2020-10-12 10:15:00",
+  readings: [
+    { timestamp: "2020-10-12 10:10:01", value: 27.3 },
+    { timestamp: "2020-10-12 10:10:02", value: 27.3 },
+    { timestamp: "2020-10-12 10:10:03", value: 27.3 },
+    ...
+    { timestamp: "2020-10-12 10:14:59", value: 27.4 },
+  ]
+  avg_reading: 27.326
+}
+----
+
+==== Extended reference
+We use the extended reference when we need many joins to bring together frequently accessed data. For example, consider information on customers and orders. Because this is a many-to-many relationship, we would use a referencing approach, and store a particular customer and one of their orders like this (yet another example from the MongoDB website):
+
+In the `customers` collection:
+[source,javascript]
+----
+{ _id: "cust_123",
+  name: "Katrina Pope",
+  address: "123 Main Str",
+  city: "Somewhere",
+  country: "Someplace",
+  dateofbirth: "1992-11-03",
+  social_networks: [
+    { twitter: "@me123" }]
+}
+----
+
+In the `orders` collection:
+[source,javascript]
+----
+{ _id: "order_1827",
+  date: "2019-02-18",
+  customer_id: "cust_123",
+  order: [
+    { product: "paper", qty: 1, cost: 3.49 },
+    { product: "pen", qty: 5, cost: 0.99 }
+  ]}
+----
+
+Now to know where the order should be shipped, we always need to make a join with the `customers` table to get the address. Using the extended reference pattern, we copy the necessary information (but nothing more) into the order itself:
+
+In the `customers` collection:
+[source,javascript]
+----
+{ _id: "cust_123",
+  name: "Katrina Pope",
+  address: "123 Main Str",
+  city: "Somewhere",
+  country: "Someplace",
+  dateofbirth: "1992-11-03",
+  social_networks: [
+    { twitter: "@me123" }]
+}
+----
+
+In the `orders` collection, we now also have the `shipping_address` key which is a copy of information from the `customers` table:
+[source,javascript]
+----
+{ _id: "order_1827",
+  date: "2019-02-18",
+  customer_id: "cust_123",
+  shipping_address: {
+    name: "Katrina Pope",
+    address: "123 Main Str",
+    city: "Somewhere",
+    country: "Someplace"
+  },
+  order: [
+    { product: "paper", qty: 1, cost: 3.49 },
+    { product: "pen", qty: 5, cost: 0.99 }
+  ]}
+----
+
+==== Polymorphic pattern
+As we've seen before, we can create heterogeneous collections where different types of things or concepts are stored in the same collection. But even if each document is of the same type of thing, we might still need a different scheme for different documents. So this is true for documents that are similar but not identical. An example for athletes: each has a name, date of birth, etc, but only tennis players have the key `grand_slams_won`.
+
+[source,javascript]
+----
+{ name: "Serena Williams",
+  date_of_birth: "1981-09-26",
+  country: "US",
+  nr_grand_slams_won: 23,
+  highest_atp_ranking: 1 },
+{ name: "Kim Clijsters",
+  date_of_birth: "1983-06-08",
+  country: "Belgium",
+  nr_grand_slams_won: 4,
+  highest_atp_ranking: 1 },
+{ name: "Alberto Contador",
+  date_of_birth: "1982-12-06",
+  country: "Spain",
+  nr_tourdefrance_won: 2,
+  teams: ["Discovery Channel","Astana","Saxo Bank"] },
+{ name: "Bernard Hinault",
+  date_of_birth: "1954-11-14",
+  country: "France",
+  nr_tourdefrance_won: 5,
+  teams: ["Gitane","Renault","La Vie Claire"] },
+...
+----
+
+==== Inverse referencing pattern
+This is what we saw in the data modelling section for 1-to-immense relationships. Instead of e.g. storing log messages in a server document, store the server in the log messages:
+
+`servers` collection:
+[source,javascript]
+----
+{ id: "server_17",
+  location: "server room 2" }
+----
+
+`logs` collections:
+[source,javascript]
+----
+{ date: "Oct 14 07:50:29", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:35", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:37", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:39", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:39", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:42", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+{ date: "Oct 14 07:50:39", host: "server_17",
+  message: "Failed to bootstrap path  /System/Library, error = 2: No such file or directory" },
+{ date: "Oct 14 07:50:43", host: "server_17",
+  message: "com.apple.xpc.launchd[1] <Notice>: Service exited due to SIGKILL" },
+...
+----
+
+=== Difference with key/value stores
+In a way, document stores are similar to key/value stores. You could think of the automatically generated key in the document store to resemble the key in the key/value store, and the rest of the document being the value. However, there _is_ a major difference: in key/value stores, documents can only be retrieved using their key and the documents are not searchable themselves. In contrast, the key in document stores is almost never used explicitely of even seen.
+
+=== Document database implementations
+A quick look at the Wikipedia page for https://en.wikipedia.org/wiki/Document-oriented_database#Implementations["Document-oriented database"] quickly shows us that there is a long list (>30) implementations. Each of these has their own strengths and use cases. They include https://allegrograph.com/[AllegroGraph], http://arangodb.com/[ArangoDB], https://couchdb.apache.org/[CouchDB], https://www.mongodb.com/[MongoDB], http://orientdb.org/[OrientDB], http://rethinkdb.com/[RethinkDB] and so on.
+
+image:logo_allegrograph.png[]image:logo_arangodb.png[]image:logo_couchdb.png[]image:logo_mongodb.png[]image:logo_orientdb.png[]image:logo_rethinkdb.png[]
+
+Probably the best known document store is mongodb (http://mongodb.com). This database system is single-model in that it does not handle key/values and graphs; it's only meant for storing documents. Further in this tutorial we will however use ArangoDB because we can use it for different types of data (including graphs and key/values).
+
+== Graph databases
+=== Introduction
+Graphs are used in a wide range of applications, from fraud detection (see the Panama Papers) and anti-terrorism and social marketing to drug interaction research and genome sequencing.
+
+image:hairball.png[]
+
+Graphs or networks are data structures where the most important information is the _relationship_ between entities rather than the entities themselves, such as friendship relationships. Whereas in relational databases you typically aggregate operations on sets, in graph databases you'll more typically hop around relationships between records. Graphs are very expressive, and any type of data can be modelled as one (although that is no guarantee that a particular graph is fit for purpose).
+
+Graphs come in all shapes and forms. Links can be directed or undirected, weighted or unweighted. They can be directed acyclic graphs (where no loops exist), consist of one or more connected components, and actually consist of multiple graphs themselves. The latter (so-called multi-layer networks) can e.g. be a first network representing friendships between people, a second network representing cities and how they are connected through public transportation, and both being linked by which people work in which cities.
+
+image:graph-types.png[]
+
+=== Nomenclature
+A graph consists of vertices (aka nodes, aka objects) and edges (aka links, aka relations), where an edge is a connection between two vertices. Both vertices and edges can have properties.
+
+\[G = (V,E)\]
+
+Any graph can be described using different metrics:
+
+* _order_ of a graph = number of nodes
+* _size_ of a graph = number of edges
+* graph _density_ = how much its nodes are connected. In a dense graph, the number of edges is close to the maximal number of edges (i.e. a fully-connected graph).
+** for undirected graphs, this is:
+\[\frac{2 |E|}{|V|(|V|-1)}\]
+** for directed graphs, this is:
+\[\frac{|E|}{|V|(|V|-1)}\]
+* the _degree_ of a node = how many edges are connected to the node. This can be separated into _in-degree_ and _out-degree_, which are - respectively - the number of incoming and outgoing edges.
+* the _distance_ between two nodes = the number of edges in the shortest path between them
+* the _diameter_ of a graph = the maximum distance in a graph
+* a _d-regular_ graph = a graph where the maximum degree is the same as the minimum degree _d_
+* a _path_ = a sequence of edges that connects a sequence of different vertices
+* a _connected graph_ = a graph in which there exists a direct connection between any two vertices
+
+=== Centralities
+Another important way of describing nodes is based on their _centrality_, i.e. how _central_ they are in the network. There exist different versions of this centrality:
+
+* _degree centrality_: how many other vertices a given vertex is connected to. This is the same as node degree.
+* _betweenness centrality_: how many critical paths go through this node? In other words: without these nodes, there would be no way for to neighbours to communicate.
+\[
+C_{B}(i)=\frac{\sum\limits_{j \neq k} g_{jk} (i)}{g_{jk}} \xrightarrow[]{normalize} C'_B = \frac{C_B(i)}{(n-1)(n-2)/2}\] , where the denominator is the number of vertex pairs excluding the vertex itself. \(g_jk(i)\) is number of shortest paths between \(j\) and \(k\), going through i; \(g_jk\) is the total number of shortest paths between \(j\) and \(k\).
+* _closeness centrality_: how much is the node in the "middle" of things, not too far from the center. This is the inverse total distance to all other nodes.
+\[C_C(i) = \frac{1}{\sum\limits_{j=1}^N d(i,j)} \xrightarrow[]{normalize} C'_C(i) = \frac{C_C(i)}{N-1}\]
+
+In the image below, nodes in A are coloured based on betweenness centrality, in B based on closeness centrality, and in D on degree centrality.
+
+image:centralities.png[]
+
+=== Graph mining
+Graphs are very generic data structures, but are amenable to very complex analyses. These include the following.
+
+==== Community detection
+A community in a graph is a group of nodes that are densely connected internally. You can imagine that e.g. in social networks we can identify groups of friends this way.
+
+image:graph-communities.png[]
+
+Several approaches exist to finding communities:
+
+* _null models_: a community is a set of nodes for which the connectivity deviates the most from the null model
+* _block models_: identify blocks of nodes with common properties
+* _flow models_: a community is a set of nodes among which a flow persists for a long time once entered
+
+The _infomap_ algorithm is an example of a flow model (for a demo, see http://www.mapequation.org/apps/MapDemo.html).
+
+==== Link prediction
+When data is acquired from a real-world source, this data might be incomplete and links that should actually be there are not in the dataset. For example, you gather historical data on births, marriages and deaths from church and city records. There is therefore a high chance that you don't have all data. Another domain where this is important is in protein-protein interactions.
+
+Link prediction can be done in different ways, and can happen in a dynamic or static setting. In the _dynamic setting_, we try to predict the likelihood of a future association between two nodes; in the _static setting_, we try to infer missing links. These algorithms are based on a similarity matrix between the network nodes, which can take different forms:
+
+* _graph distance_: the length of the shortest path between 2 nodes
+* _common neighbours_: two strangers who have a common friend may be introduced by that friend
+* _Jaccard's coefficient_: the probability that 2 nodes have the same neighbours
+* _frequency-weighted common neighbours (Adamic/Adar predictor_): counts common features (e.g. links), but weighs rare features more heavily
+* _preferential attachment_: new link between nodes with high number of links is more likely than between nodes with low number of links
+* _exponential damped path counts (Katz measure)_: the more paths there are between two nodes and the shorter these paths are, the more similar the nodes are
+* _hitting time_: random walk starts at node A => expected number of steps required to reach node B
+* _rooted pagerank_: idem, but periodical reset to prevent that 2 nodes that are actually close are connected through long deviation
+
+==== Subgraph mapping
+Subgraph mining is another type of query that is very important in e.g. bioinformatics. Some example patterns:
+
+- [A] three-node feedback loop
+- [B] tree chain
+- [C] four-node feedback loop
+- [D] feedforward loop
+- [E] bi-parallel pattern
+- [F] bi-fan
+
+image:network-motifs.png[]
+
+It is for example important when developing a drug for a certain disease by knocking out the effect of a gene that that gene is not in a bi-parallel pattern (`V2` in image `E` above) because activation of node `V4` is saved by `V3`.
+
+=== Data modeling
+In general, vertices are used to represent _things_ and edges are used to represent _connections_. Vertex properties can include e.g. metadata such as timestamp, version number etc; edges properties often include the weight of a connection, but can also cover things like the quality of a relationship and other metadata of that relationship.
+
+Below is an example of a graph:
+image:graph.png[]
+
+Basically all types of data can be modelled as a graph. Consider our buildings table from above:
+
+[%header,format=csv]
+|===
+id, name, address, city, type, nr_rooms, primary_or_secondary
+1, building1, street1, city1, hotel, 15,
+2, building2, street2, city2, school, , primary
+3, building3, street3, city3, hotel, 52,
+4, building4, street4, city4, church,,
+5, building5, street5, city5, house,,
+..., ..., ..., ..., ..., ..., ...
+|===
+
+This can also be represented as a network, where:
+
+- every building is a vertex
+- every value for a property is a vertex as well
+- the column becomes the relation
+
+For example, the information for the first building can be represented as such:
+
+image:examplegraph.png[]
+
+There is actually a formal way of describing this called RDF, but we won't go into that here...

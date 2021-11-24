@@ -1,20 +1,12 @@
-= Relational Database Management Systems
-:author: Jan Aerts
-:email: jan.aerts@uhasselt.be
-// :toc: preamble
-:toc: left
-:sectnums: true
-:source-highlighter: highlight.js
-:imagesdir: assets
-
+== Relational Database Management Systems
 This is a _practical_ introduction to relational database management systems and SQL. The text is written focussing on how you can get things done, and does not go into the theoretical and technical backgrounds. The online version of this text is available at http://vda-lab.github.io/data-management
 
 Working with data almost invariably involves working with relational databases and SQL (Structured Query Language). They have a decades-old history and are very established. In this section, we go over the why and how of this type of database.
 
 Let’s look at some example life science fields where we collect data to make the rest of the session a bit more concrete.
 
-== Examples of data
-=== Clinical trials
+=== Examples of data
+==== Clinical trials
 A clinical trial is a study involving the assessment of one or more regimens used in treating or preventing a specific illness or disease (McFadden, 2007). The design, aim, number of patients etc. depend on the phase of the clinical trial. Different types of data are collected:
 
 - _Administrative data_ describes information to uniquely identify a patient and their contact details. Often, the name cannot be used due to the fact that multiple people can have the same name, but more importantly to ensure minimal identifiability (privacy); therefore a unique patient ID is generated at enrolment. In addition, information like the name of the trial and name of the center in large multicenter trials are recorded.
@@ -35,7 +27,7 @@ Below are two annotated pages from a CRF. The red annotations are meant for the 
 image:CRF_1.png[]
 image:CRF_2.png[]
 
-=== Epidemiological studies
+==== Epidemiological studies
 Epidemiology is described as "the study of the occurrence and distribution of health-related states or events in specified populations, including the study of determinants influencing such states, and the application of this knowledge to control the health problems" (Dictionary of Epidemiology, Porta 2008). It covers a very broad and diverse line of research:
 
 * experimental vs observational studies
@@ -51,7 +43,7 @@ Generally a codebook or data dictionary that describes all data sources (collect
 
 image:datadictionary.png[]
 
-=== DNA sequencing and genotyping
+==== DNA sequencing and genotyping
 The importance of DNA sequencing and genotyping is steadily increasing within research and health care. In genotyping, one reads the nucleotides at specific positions in the genome to check if the patient has an allele that for example constitutes a higher risk to certain diseases, or that indicates higher or lower sensitivity to certain medication.
 
 For example, mutations in the BRCA1 and BRCA2 genes change a person's chance of getting breast cancer (see http://arup.utah.edu/database/BRCA/Variants/BRCA2.php for a list of possible mutations in BRCA2 and their pathogenicity). One of the many harmful mutations is a mutation at position 32,316,517 on chromosome 13 (in exon 2 of BRCA2) that changes a C to an A, resulting in a stop codon.
@@ -76,16 +68,16 @@ image:genotype_table.png[]
 This table contains the information for 3 polymorphisms (called rs12345, rs98765 and rs28465) for 2 individuals (individual_A and individual_B). Typically, thousands of polymorphisms are recorded for thousands of individuals.
 A particular type of polymorphism is the single nucleotide polymorphism (SNP), which will be why tables below will be called `snps`.
 
-== Relational databases
+=== Relational databases
 
 There is a wide variety of database systems to store data, but the most-used in the relational database management system (RDBMS). These basically consist of tables that contain rows (which represent instance data) and columns (representing properties of that data). Any table can be thought of as an Excel-sheet.
 
 Relational databases are the most wide-spread paradigm used to store data. They use the concept of tables with each **row** containing an **instance of the data**, and each **column** representing different **properties** of that instance of data. Different implementations exist, include ones by Oracle and MySQL. For many of these (including Oracle and MySQL), you need to run a database server in the background. People (or you) can then connect to that server via a client. In this session, however, we'll use **SQLite3**. SQLite is used by Firefox, Chrome, Android, Skype, ...
 
-=== SQLite
+==== SQLite
 The relational database management system (RDBMS) that we will use is **SQLite**. It is very lightweight and easy to set up.
 
-==== Using SQLite on the linux command line
+===== Using SQLite on the linux command line
 
 To create a new database that you want to give the name 'new_database.sqlite', just call `sqlite3` with the new database name. `sqlite3 new_database.sqlite` The name of that file does not have to end with `.sqlite`, but it helps you to remember that this is an SQLite database. If you add tables and data in that database and quit, the data will automatically be saved.
 
@@ -100,18 +92,18 @@ Some useful commands:
 * `.mode column` => Align output data in columns instead of output as comma-separated values
 * `.quit`
 
-==== Using DB Browser for SQLite
+===== Using DB Browser for SQLite
 
 If you like to use a graphical user interface (or don't work on a linux or OSX computer), you can use the DB Browser for SQLite which you can download [here](https://sqlitebrowser.org/).
 
 Note: In all code snippets that follow below, the `sqlite>` at the front represents the sqlite prompt, and should *not* be typed in...
 
-== Database schema and normalisation
+=== Database schema and normalisation
 
 We’ll look into two examples to guide us through developing a good database schema. The database schema is basically the description of what the database looks like: what are the names of the tables, what are the columns in those tables, and how are these connected between tables?
 
-=== A student database
-==== The simplest version
+==== A student database
+===== The simplest version
 
 Let's say we want to store which students follow the S&DM course. We want to keep track of their first name, last name, student ID, and whether or not they follow the course. This should allow for some easy queries, such as listing all people who take the course, or returning the number of people who do so.
 In this case, a _flat database_ would suffice; i.e. a _single_ table can hold all information.
@@ -128,7 +120,7 @@ Sarah, Smith, S0002, REG
 ..., ..., ..., ...
 |===
 
-==== A slightly less simple setting
+===== A slightly less simple setting
 Consider that we want to store which students follow which courses in MSc Statistics. So we'd like to keep:
 
 - first name, last name, student ID
@@ -184,7 +176,7 @@ Sarah, Smith, S0002, Main Street, 1, 1234, SmallVillage, REG
 
 What if Martin Van Deun moves from Some Street 1 in MajorCity to Another Street 42 in AnotherCity? Then we would have to edit all the rows in this table that contain this information, which almost guarantees that you will end up with inconsistencies.
 
-=== A genotype database
+==== A genotype database
 Let's look at another example. Let's say you want to store individuals and their genotypes. In Excel, you could create a sheet that looks like this with genotypes for 3 polymorphisms in 2 individuals:
 
 [%header,format=csv]
@@ -287,7 +279,7 @@ image:dbbrowser_3.png[]
 
 Done! For every new SNP we just add a new column, right? Wrong... In contrast to the student example above where there are - let's say - 100 courses, a genotyping experiment can return results for _millions_ of positions. Imaging having a table with millions of columns.
 
-=== Normal forms
+==== Normal forms
 There are some good practices in developing relational database schemes which make it easier to work with the data afterwards. Some of these practices are represented in the "normal forms".
 
 Let's consider the following table listing individuals, SNPs and genotypes. This is genetic data. As you know, everyone has very similar DNA (otherwise we wouldn't be human), but there are a lot of positions in that genome (about 1/1000) where people differ from each other (otherwise we would all be clones). A "single nucleotide polymorphism" (or "SNP") is such a position in the genome. A "genotype" is the actual nucleotides that someone has in his/her genome at that particular position. And because we have 2 copies of each chromosome, a genotype consists of 2 letters (A, C, G and T).
@@ -299,7 +291,7 @@ individual_A, caucasian, A/A, 1;12345, COPD;asthma, A/G, 1;98765, G/T, 5;28465
 individual_B, caucasian, A/C, 1;12345, COPD;asthma, G/G, 1;98765, G/G, 5;28465
 |===
 
-==== First normal form
+===== First normal form
 
 To get to the first normal form:
 
@@ -335,7 +327,7 @@ image:1NF.png[]
 
 Everything is still contained in a single table, which will change when we go to the second normal form.
 
-==== Second normal form
+===== Second normal form
 
 * **Schema is in First Normal form**
 * **There are no partial dependencies**
@@ -404,7 +396,7 @@ The new schema:
 
 image:2NF.png[]
 
-==== Third normal form
+===== Third normal form
 
 * **Look for rows that are the same except for a non-key column**
 
@@ -481,7 +473,7 @@ id, snp_id, disease_id
 2, 1, 2
 |===
 
-===== The final database
+====== The final database
 
 In the end, we have the following tables:
 
@@ -539,7 +531,7 @@ The schema itself:
 
 image:3NF.png[]
 
-==== Types of table relationships
+===== Types of table relationships
 To come back to the one-to-many relationships... So how do you know in which table to create the foreign key? Should there be an `individual_id` in the `genotypes` table? Or a `genotype_id` in the `individuals` table? That all depends on the **type of relationship** between two tables. This type can be:
 
 - **one-to-one**, for example an single ISBN number can be linked to a single book and vice versa.
@@ -617,7 +609,7 @@ The information in these tables says that:
 - Terry Pratchett wrote "Going Postal" and "Small Gods" by himself
 - Christopher Moore was the single authors of "The Stupidest Angel"
 
-=== Other best practices
+==== Other best practices
 There are some additional guidelines that you can use in creating your database schema, although different people use different guidelines. Everyone ends up with their own approach. What _I_ do:
 
 * **No capitals** in table or column names
@@ -627,14 +619,14 @@ There are some additional guidelines that you can use in creating your database 
 
 In some cases, I digress from the rule of "every table name is plural", especially if a table is really meant to link to other tables together. A table genotypes which has an id, sample_id, snp_id, and genotype could e.g. also be called `sample2snp`.
 
-=== Referential integrity
+==== Referential integrity
 In a SQL database, it is important that there are no tables that contain a foreign key which cannot be resolved. For example in the `genotypes` table above, there should not be a row where the `individual_id` is `9` because there does not exist a record in the `individuals` table with an `id` of `9`.
 
 This might occur when you originally have that record in the `individuals` table, but removed it (either accidentally or on purpose). Large database management systems like Oracle actually will complain when you try to do that, and do not allow you to remove that row before any row referencing it in another table is removed first. As SQLite is lightweight, however, you will have to take care of this yourself.
 
 This also means that when loading data, you should first load the `individuals` and `snps` tables, and only load the `genotypes` table afterwards, because the ids of the specific individuals and snps is otherwise not known yet.
 
-=== Indices
+==== Indices
 
 There might be columns that you will often use for filtering. For example, you expect to regularly run queries that include a filter on ethnicity. To speed things up you can create an index on that column.
 
@@ -643,7 +635,7 @@ There might be columns that you will often use for filtering. For example, you e
 CREATE INDEX idx_ethnicity ON genotypes (ethnicity);
 ----
 
-== SQL - Structured Query Language
+=== SQL - Structured Query Language
 Any interaction with data in RDBMS can happen through the Structured Query Language (SQL): create tables, insert data, search data, ... There are two subparts of SQL:
 
 ***DDL - Data Definition Language:***
@@ -682,8 +674,8 @@ UNION, INTERSECT
 
 We'll look closer at getting data into a database and then querying it, using these four SQL commands.
 
-=== Getting data in
-==== INSERT INTO
+==== Getting data in
+===== INSERT INTO
 
 There are several ways to load data into a database. The method used above is the most straightforward but inadequate if you have to load a large amount of data.
 
@@ -696,17 +688,17 @@ INSERT INTO <table_name> (<column_1>, <column_2>, <column_3>)
                          VALUES (<value_1>, <value_2>, <value_3>);
 ----
 
-==== Importing a datafile
+===== Importing a datafile
 But this becomes an issue if you have to load 1,000s of records. Luckily, it's possible to load data from a **comma-separated file** straight into a table. Suppose you want to load 3 more individuals, but don't want to type the insert commands straight into the sql prompt. Create a file (e.g. called `data.csv`) that looks like this:
 
   individual_C,african
   individual_D,african
   individual_C,asian
 
-==== Using DB Browser
+===== Using DB Browser
 Using the DB Browser, you can just go to `File` -> `Import` -> `Table from CSV File...`. Note that when you import a file like that, the system will automatically create the `rowid` column that will serve as the primary key.
 
-==== On the command line
+===== On the command line
 SQLite contains a `.import` command to load this type of data. Syntax: `.import <file> <table>`. So you could issue:
 
 [source,sql]
@@ -743,12 +735,12 @@ id, name, ethnicity
 5, individual_E, asian
 |===
 
-=== Getting data out
+==== Getting data out
 It may seem counter-intuitive to first break down the data into multiple tables using the normal forms as described above, in order to having to combine them afterwards again in a SQL query. The reason for this is simple: it allows you to ask the data any question much more easily, instead of being restricted to the format of the original data.
 
 image:normalisation-queries.png[]
 
-==== Queries
+===== Queries
 
 Why do we need queries? Because natural languages (e.g. English) are too vague: with complex questions, it can be hard to verify that the question
 was interpreted correctly, and that the answer we received is truly
@@ -789,7 +781,7 @@ Questions that we can ask:
 - What are the most/least common genotypes?
 - ...
 
-===== Single tables
+====== Single tables
 
 It is very simple to query a single table. The **basic syntax** is:
 
@@ -846,7 +838,7 @@ FROM individuals
 GROUP BY ethnicity;
 ----
 
-====== Combining tables
+======= Combining tables
 
 In the second normal form we separated several aspects of the data in different tables. Ultimately, we want to combine that information of course. This is where the primary and foreign keys come in. Suppose you want to list all different SNPs, with the alleles that have been found in the population:
 
@@ -976,7 +968,7 @@ WHERE i.id = g.individual_id
 AND s.id = g.snp_id;
 ----
 
-===== JOIN
+====== JOIN
 
 Sometimes, though, we have to join tables in a different way. Suppose that our snps table contains SNPs that are nowhere mentioned in the genotypes table, but we still want to have them mentioned in our output:
 
@@ -1057,16 +1049,16 @@ rs98765, R
 
 A full outer join, finally, return all rows from the left table, and all rows from the right table, matching any rows that should be.
 
-==== Export to file
+===== Export to file
 
 Often you will want to export the output you get from an SQL-query to a file (e.g. CSV) on your operating system so that you can use that data for external analysis in R or for visualisation. This is easy to do. Suppose that we want to export the first 5 lines of the snps table into a file called `5_snps.csv`.
 
-===== Using DB Browser
+====== Using DB Browser
 There's a button for that...
 
 image:dbbrowser_4.png[]
 
-===== On the command line
+====== On the command line
 You do that like this:
 
 [source,sql]
@@ -1079,10 +1071,10 @@ SELECT * FROM snps LIMIT 5;
 
 If you now exit the sqlite prompt (with `.quit`), you should see a file in the directory where you were that is called `5_snps.csv`.
 
-=== Updating and deleting data
+==== Updating and deleting data
 Sometimes you will want to update or delete data in a table. The SQL code to do this uses a `WHERE` clause that is exactly the same as for a regular `SELECT`. A very important tip: first do a `SELECT` on your table with the `WHERE` clause that you'll use for the update or deletion just to make sure that you'll change the correct rows. When you've made changes to the wrong rows you won't be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](https://vda-lab.github.io/2019/10/lambda-architecture)).
 
-==== UPDATE
+===== UPDATE
 Imagine that we've been storing the information on our individuals as above, but have not been consistent in capitalising the ethnicity. In some cases, a person can be of `asian` descent; in other cases he or she can be `Asian`. The same would go for the other ethnicities. To clean this up, let's put everything in lower case. For argument's sake we'll only look at `Asian` here. First let's check what we should get with a `SELECT`.
 
 [source,sql]
@@ -1118,7 +1110,7 @@ SET genotype_amb = 'R'
 WHERE genotype == 'A/G';
 ----
 
-==== DELETE
+===== DELETE
 `DELETE` is similar to `UPDATE` but simpler: you don't use the `SET` pragma. Same as with updating data, make sure that your `WHERE` clause is correct! Test this with a `SELECT` beforehand.
 
 The general syntax:
@@ -1137,8 +1129,8 @@ DELETE FROM genotypes
 WHERE genotype_amb == 'N';
 ----
 
-=== Additional functions
-==== LIMIT
+==== Additional functions
+===== LIMIT
 
 If you only want to get the first 10 results back (e.g. to find out if your complicated query does what it should do without running the whole actual query), use LIMIT:
 
@@ -1147,7 +1139,7 @@ If you only want to get the first 10 results back (e.g. to find out if your comp
 sqlite> SELECT * FROM snps LIMIT 2;
 ----
 
-==== NULL
+===== NULL
 
 SNPs are spread across a chromosome, and might or might not be located within a gene.
 
@@ -1168,7 +1160,7 @@ id, accession, chromosome, position, gene
 
 We cannot `SELECT * FROM snps WHERE gene = "";` because that is searching for an empty string which is not the same as a missing value. To get to rs92873 you can issue `SELECT * FROM snps WHERE gene IS NULL;` or to get the rest `SELECT * FROM snps WHERE GENE IS NOT NULL;`. Note that it is `IS NULL` and **not** `= NULL`...
 
-==== AND, OR
+===== AND, OR
 
 Your queries might need to **combine different conditions**, as we've already seen above:
 
@@ -1195,7 +1187,7 @@ De Morgan's laws apply to SQL. The rules allow the expression of conjunctions an
 - `NOT (A AND B)` becomes `NOT A OR NOT B`
 - `NOT (A OR B)` becomes `NOT A AND NOT B`
 
-==== IN
+===== IN
 The `IN` clause defines a set of values. It is a shortcut to combine several entries with an `OR` condition.
 
 For example, instead of writing
@@ -1215,7 +1207,7 @@ FROM customer
 WHERE first_name IN ('Tim', 'David', 'Jay');
 ----
 
-==== DISTINCT
+===== DISTINCT
 
 Whenever you want the **unique values** in a column: use DISTINCT in the SELECT clause:
 
@@ -1262,7 +1254,7 @@ Spider
 
 DISTINCT automatically sorts the results.
 
-==== ORDER BY
+===== ORDER BY
 The order by clause allows you to, well, order your output. By default, this is in ascending order. To order from large to small, you can add the `DESC` tag. It is possible to order by multiple columns, for example first by chromosome and then by position:
 [source,sql]
 ----
@@ -1271,7 +1263,7 @@ SELECT * FROM snps ORDER BY accession DESC;
 SELECT * FROM snps ORDER BY chromsome, position;
 ----
 
-==== COUNT
+===== COUNT
 
 For when you want to count things:
 
@@ -1280,7 +1272,7 @@ For when you want to count things:
 SELECT COUNT(*) FROM genotypes WHERE genotype_amb = 'G';
 ----
 
-==== MAX(), MIN(), AVG()
+===== MAX(), MIN(), AVG()
 
 ...act as you would expect (only works with numbers, obviously):
 
@@ -1297,7 +1289,7 @@ max(position)
 291732
 |===
 
-==== AS
+===== AS
 In some cases you might want to rename the output column name. For instance, in the example above you might want to have `maximum_position` instead of `max(position)`. The `AS` keyword can help us with that.
 
 [source,sql]
@@ -1305,7 +1297,7 @@ In some cases you might want to rename the output column name. For instance, in 
 SELECT MAX(position) AS maximum_position FROM snps;
 ----
 
-==== GROUP BY
+===== GROUP BY
 
 GROUP BY can be very useful in that it first **aggregates data**. It is often used together with `COUNT`, `MAX`, `MIN` or `AVG`:
 
@@ -1347,7 +1339,7 @@ chromosome, MAX(position)
 5, 28465
 |===
 
-==== HAVING
+===== HAVING
 Whereas the `WHERE` clause puts conditions on certain columns, the `HAVING` clause puts these on groups created by `GROUP BY`.
 
 For example, given the following `snps` table:
@@ -1401,7 +1393,7 @@ chromosome, c
 
 The `HAVING` clause must follow a `GROUP BY`, and precede a possible `ORDER BY`.
 
-==== UNION, INTERSECT
+===== UNION, INTERSECT
 
 It is sometimes hard to get the exact rows back that you need using the WHERE clause. In such cases, it might be possible to construct the output based on taking the **union or intersection** of two or more different queries:
 
@@ -1418,7 +1410,7 @@ id, accession, chromosome, position
 1, rs12345, 1, 12345
 |===
 
-==== LIKE
+===== LIKE
 
 Sometimes you want to make fuzzy matches. What if you're not sure if the ethnicity has a capital or not?
 
@@ -1436,7 +1428,7 @@ SELECT * FROM individuals WHERE ethnicity LIKE '%frican';
 
 Note that different databases use different characters as wildcard. For example: `%` is a wildcard for MS SQL Server representing any string, and `*` is the corresponding wildcard character used in MS Access. Check the documentation for the RDBMS that you're using (sqlite, MySQL/MariaDB, MS SQL Server, MS Access, Oracle, ...) for specifics.
 
-==== Subqueries
+===== Subqueries
 
 As we mentioned in the beginning, the general setup of a SELECT is:
 
@@ -1471,7 +1463,7 @@ FROM (
        FROM genotypes);
 ----
 
-=== Public bioinformatics databases
+==== Public bioinformatics databases
 Sqlite is a light-weight system for running relational databases. If you want to make your data available to other people it's often better to use systems such as MySQL. The data behind the Ensembl and UCSC genome browsers, for example, is stored in a relational database and directly accessible through SQL as well.
 
 If you install a mysql client (see www.mariadb.org or www.mysql.com), you can access these public databases as well. Another option is to run mysql using docker.
@@ -1503,7 +1495,7 @@ NM_017460, CYP3A4, chr7, -, 99756966, 99784184, 99758132, 99784081
 
 _Note: Installing the complete mysql system will install the server and client, and it can be difficult to remove if necessary afterwards. An alternative is to install it using [docker](http://www.docker.com). Run the server with `docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest` and connect to it using `docker exec -it some-mysql bash`. You can then access the Ensembl and UCSC databases as described above._
 
-=== Views
+==== Views
 By decomposing data into different tables as we described above (and using the different normal forms), we can significantly improve maintainability of our database and make sure that it does not contain inconsistencies. But at the other hand, this means it's a lot of hassle to look at the actual data: to know what the genotype is for SNP `rs12345` in `individual_A` we cannot just look it up in a single table, but have to write a complicated query which joins 3 tables together. The query would look like this:
 
 [source,sql]
@@ -1552,7 +1544,7 @@ The difference with an actual table is, however, that the result of the view is 
 
 Note: to make sure that I can tell by the name if something is a table or a view, I always add a `v_` in front of the name that I give to the view.
 
-==== Pivot tables
+===== Pivot tables
 In some cases, you want to violate the 1st normal form, and have different columns represent the same type of data. A typical example is when you want to analyze your data in R using a dataframe. Let's say we have expression values for different genes in different individuals. Being good programmers, we saved this data in the database like this:
 
 [%header,format=csv]
@@ -1589,18 +1581,18 @@ FROM expressions
 GROUP BY gene;
 ----
 
-== Drawbacks of relational databases
+=== Drawbacks of relational databases
 Relational databases are great. They can be a big help in storing and organizing your data. But they are not the ideal solution in all situations.
 
-=== Scalability
+==== Scalability
 Relational databases are only scalable in a limited way. The fact that you try to normalise your data means that your data is distributed over different tables. Any query on that data often requires extensive joins. This is OK, until you have tables with millions of rows. A join can in that case a *very* long time to run.
 
 [Although outside of the scope of this lecture.] One solution sometimes used is to go for a star-schema rather than a fully normalised schema. Or using a NoSQL database management system that is horizontally scalable (document-oriented, column-oriented or graph databases).
 
-=== Modeling
+==== Modeling
 Some types of information are difficult to model when using a relational paradigm. In a relational database, different records can be linked across tables using foreign keys. If you're however really interested in the relations themselved (*e.g.* social graphs, protein-protein-interaction, ...) you are much better of to use a real graph database (*e.g.* neo4j) instead of a relational database. In a graph database finding all neighbours-of-neighbours in a graph of 50 members (basically) takes as long as in a graph with 50 million members.
 
-=== Drawback exercise
+==== Drawback exercise
 Suppose you want to model a social graph. People have names, and know other people. Every "know" is reciprocal (so if I know you then you know me). The data might look like this:
 
   Tim knows Terry

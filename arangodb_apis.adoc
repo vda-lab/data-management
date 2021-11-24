@@ -1,0 +1,29 @@
+== ArangoDB APIs
+You'll often jump straight into the web interface or `arangosh` to do quick searches, but you will eventually also want to access that data from you analysis software, i.c. R. Most database systems have drivers for R, including ArangoDB: see https://gitlab.com/krpack/arango-driver[here]. The same is true for python (multiple libraries even, including https://github.com/saeschdivara/ArangoPy[ArangoPy] and https://github.com/Joowani/python-arango[python-arango]) and https://github.com/arangodb/arangojs[javascript], for example.
+
+=== ArangoDB and R
+See the links for documentation on how to use ArangoDB from R and other languages. Just as an illustration: here's a document query in R:
+[source,R]
+----
+all.cities <- cities %>% all_documents()
+all.persons <- persons %>% all_documents()
+
+if(all.cities$London$getValues()$capital){
+  print("London is still the capital of UK")
+} else {
+  print("What's happening there???")
+}
+----
+
+And a graph query:
+
+[source,R]
+----
+london.residence <- residenceGraph %>%
+  traversal(vertices = c(all.cities$London), depth = 2)
+london.residence %>% visualize()
+----
+
+will return:
+
+image:aRangodb-graph.png[]

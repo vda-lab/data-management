@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content=" nosql">
+<title>Loading data | Data Management</title>
+<link rel="stylesheet" href="css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+<link rel="stylesheet" href="css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="css/customstyles.css">
+<link rel="stylesheet" href="css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="css/theme-custom.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="js/jquery.navgoco.min.js"></script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+<script src="js/toc.js"></script>
+<script src="js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="data-management" href="http://localhost:4000/feed.xml">
+
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$'] ],
+    processEscapes: true,
+  }
+});
+MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
+	  alert("Math Processing Error: "+message[1]);
+	});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="index.html">&nbsp;<span class="projectTitle"> Data Management</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/vda-lab/data-management" target="_blank" rel="noopener">GitHub</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li><a href="rdbms_landing_page.html">Relational databases and SQL</a></li>
+                        
+                        
+                        
+                        <li><a href="nosql_landing_page.html">NoSQL</a></li>
+                        
+                        
+                        
+                        <li><a href="lambda_landing_page.html">Lambda architecture</a></li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+                
+                <!--comment out this block if you want to hide search-->
+                <li>
+                    <!--start search-->
+                    <div id="search-demo-container">
+                        <input type="text" id="search-input" placeholder="">
+                        <ul id="results-container"></ul>
+                    </div>
+                    <script src="js/jekyll-search.js" type="text/javascript"></script>
+                    <script type="text/javascript">
+                            SimpleJekyllSearch.init({
+                                searchInput: document.getElementById('search-input'),
+                                resultsContainer: document.getElementById('results-container'),
+                                dataSource: 'search.json',
+                                searchResultTemplate: '<li><a href="{url}" title="Loading data">{title}</a></li>',
+                    noResultsText: '',
+                            limit: 10,
+                            fuzzy: true,
+                    })
+                    </script>
+                    <!--end search-->
+                </li>
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle">NoSQL databases </li>
+  
+  
+  
+      
+  
+      
+  
+  <li>
+      <a title="Issues with relational databases" href="#">Issues with relational databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Scalability and clusters" href="nosql-scalability-and-clusters.html">Scalability and clusters</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Impedance mismatch" href="nosql-impedance-mismatch.html">Impedance mismatch</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Relational data" href="nosql-relational-data.html">Relational data</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="General NoSQL concepts" href="#">General NoSQL concepts</a>
+      <ul>
+          
+          
+          
+          <li><a title="General NoSQL concepts" href="nosql-general-concepts.html">General NoSQL concepts</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Intermezzo - JSON" href="#">Intermezzo - JSON</a>
+      <ul>
+          
+          
+          
+          <li><a title="Intermezzo - JSON" href="nosql-intermezzo-json.html">Intermezzo - JSON</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Key/value stores" href="#">Key/value stores</a>
+      <ul>
+          
+          
+          
+          <li><a title="Key/value stores" href="nosql-keyvalue-stores.html">Key/value stores</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Document-oriented databases" href="#">Document-oriented databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Introduction" href="nosql-document-databases-introduction.html">Introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Concepts" href="nosql-document-databases-concepts.html">Concepts</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Data modelling" href="nosql-document-databases-data-modelling.html">Data modelling</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Data modelling patterns" href="nosql-document-databases-data-modelling-patterns.html">Data modelling patterns</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Difference with key/value stores" href="nosql-difference-with-keyvalue-stores.html">Difference with key/value stores</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Implementations" href="nosql-document-databases-implementations.html">Implementations</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="Graph databases" href="#">Graph databases</a>
+      <ul>
+          
+          
+          
+          <li><a title="Introduction" href="nosql-graph-databases-introduction.html">Introduction</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Nomenclature" href="nosql-graph-databases-nomenclature.html">Nomenclature</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Centralities" href="nosql-graph-databases-centralities.html">Centralities</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Graph mining" href="nosql-graph-databases-mining.html">Graph mining</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Data modelling" href="nosql-graph-databases-data-modelling.html">Data modelling</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="ArangoDB" href="#">ArangoDB</a>
+      <ul>
+          
+          
+          
+          <li><a title="A multi-model database" href="nosql-arangodb-multimodel-database.html">A multi-model database</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Starting with ArangoDB" href="nosql-starting-with-arangodb.html">Starting with ArangoDB</a></li>
+          
+          
+          
+          
+          
+          
+          <li class="active"><a title="Loading data" href="nosql-arangodb-loading-data.html">Loading data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Querying key/value data" href="nosql-arangodb-querying-keyvalue-data.html">Querying key/value data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Querying document data" href="nosql-arangodb-querying-document-data.html">Querying document data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Querying graph data" href="nosql-arangodb-querying-graph-data.html">Querying graph data</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="Improving performance" href="nosql-arangodb-improving-performance.html">Improving performance</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+  
+  <li>
+      <a title="ArangoDB APIs" href="#">ArangoDB APIs</a>
+      <ul>
+          
+          
+          
+          <li><a title="APIs" href="nosql-arangodb-apis.html">APIs</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="ArangoDB and R" href="nosql-arangodb-and-r.html">ArangoDB and R</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a title="ArangoDB and python" href="nosql-arangodb-and-python.html">ArangoDB and python</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block: -->
+         <!-- <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p> -->
+
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+   <h1 class="post-title-main">Loading data</h1>
+</div>
+
+
+
+<div class="post-content">
+
+   
+
+    
+
+
+    
+
+   <div class="seriesContext">
+  
+  
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+  
+  
+
+  
+    <a href="nosql-starting-with-arangodb.html"><button type="button" class="btn btn-primary">Previous: Starting with ArangoDB</button></a>
+  
+</div>
+
+<h2 id="document-data">Document data</h2>
+<p>Let’s load some data. Download the list of airports in the US from <a href="http://vda-lab.github.io/assets/airports.json">http://vda-lab.github.io/assets/airports.json</a>. This file looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="nl">"_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00M"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Thigpen "</span><span class="p">,</span><span class="w"> </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bay Springs"</span><span class="p">,</span><span class="w"> </span><span class="nl">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MS"</span><span class="p">,</span><span class="w"> </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USA"</span><span class="p">,</span><span class="w">
+ </span><span class="nl">"lat"</span><span class="p">:</span><span class="w"> </span><span class="mf">31.95376472</span><span class="p">,</span><span class="w"> </span><span class="nl">"long"</span><span class="p">:</span><span class="w"> </span><span class="mf">-89.23450472</span><span class="p">,</span><span class="w"> </span><span class="nl">"vip"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="nl">"_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00R"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Livingston Municipal"</span><span class="p">,</span><span class="w"> </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Livingston"</span><span class="p">,</span><span class="w"> </span><span class="nl">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w"> </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USA"</span><span class="p">,</span><span class="w">
+ </span><span class="nl">"lat"</span><span class="p">:</span><span class="w"> </span><span class="mf">30.68586111</span><span class="p">,</span><span class="w"> </span><span class="nl">"long"</span><span class="p">:</span><span class="w"> </span><span class="mf">-95.01792778</span><span class="p">,</span><span class="w"> </span><span class="nl">"vip"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="nl">"_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00V"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Meadow Lake"</span><span class="p">,</span><span class="w"> </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Colorado Springs"</span><span class="p">,</span><span class="w"> </span><span class="nl">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CO"</span><span class="p">,</span><span class="w"> </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USA"</span><span class="p">,</span><span class="w">
+ </span><span class="nl">"lat"</span><span class="p">:</span><span class="w"> </span><span class="mf">38.94574889</span><span class="p">,</span><span class="w"> </span><span class="nl">"long"</span><span class="p">:</span><span class="w"> </span><span class="mf">-104.5698933</span><span class="p">,</span><span class="w"> </span><span class="nl">"vip"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">}</span><span class="w">
+</span><span class="err">...</span></code></pre></figure>
+
+<p>Remember from above that document databases often use JSON as their format. To load this into ArangoDB:</p>
+<ol>
+  <li>Create a new collection (<code class="language-plaintext highlighter-rouge">Collections</code> -&gt; <code class="language-plaintext highlighter-rouge">Add Collection</code>) with the name <code class="language-plaintext highlighter-rouge">airports</code>. The <code class="language-plaintext highlighter-rouge">type</code> should be <code class="language-plaintext highlighter-rouge">document</code>.<br /><img src="/assets/arangodb_createcollection.png" width="400px" /></li>
+  <li>Click on the collection, and then the <code class="language-plaintext highlighter-rouge">Upload documents from JSON file</code> button at the top. <img src="/assets/arangodb_upload.png" alt="" /></li>
+  <li>Select the <code class="language-plaintext highlighter-rouge">airports.json</code> file that you just downloaded onto your computer.</li>
+</ol>
+
+<p>You should end up with something like this:</p>
+
+<p><img src="/assets/arangodb_airports.png" width="600px" /></p>
+
+<p>Notice that every document has a <code class="language-plaintext highlighter-rouge">_key</code> defined.</p>
+
+<h2 id="link-data">Link data</h2>
+<p>In addition to <code class="language-plaintext highlighter-rouge">_key</code>, ArangoDB documents can have other special keys. In a graph context, links are nothing more than regular documents, but which have a <code class="language-plaintext highlighter-rouge">_from</code> and <code class="language-plaintext highlighter-rouge">_to</code> key to refer to other documents that are the nodes. So links in ArangoDB are basically also just documents, but with the special keys <code class="language-plaintext highlighter-rouge">_from</code> and <code class="language-plaintext highlighter-rouge">_to</code>. This means that we can also query them as documents (which is what we will actually do in “<a href="#62-querying-document-data">6.2 Querying document data</a>”).</p>
+
+<p><img src="/assets/nodes_and_link.png" alt="" /></p>
+
+<p>We have a flight dataset, that you can download from <a href="http://vda-lab.github.io/assets/flights.json">http://vda-lab.github.io/assets/flights.json</a>. Similar to loading the airports dataset, we go to the <code class="language-plaintext highlighter-rouge">Collections</code> page in the webinterface, and click <code class="language-plaintext highlighter-rouge">Upload</code>. This time, however, we need to set the type to <code class="language-plaintext highlighter-rouge">Edge</code> rather than <code class="language-plaintext highlighter-rouge">Document</code>.</p>
+
+<p><img src="/assets/arangodb_createcollection_edges.png" width="600px" /></p>
+
+<p>This is what a single flight looks like:</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1834"</span><span class="p">,</span><span class="w"> </span><span class="nl">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"flights/1834"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"_from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"airports/ATL"</span><span class="p">,</span><span class="w"> </span><span class="nl">"_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"airports/CHS"</span><span class="p">,</span><span class="w"> </span><span class="nl">"_rev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"_ZRp7f-S---"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Year"</span><span class="p">:</span><span class="w"> </span><span class="mi">2008</span><span class="p">,</span><span class="w"> </span><span class="nl">"Month"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nl">"Day"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nl">"DayOfWeek"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"DepTimeUTC"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2008-01-01T05:02:00.000Z"</span><span class="p">,</span><span class="w"> </span><span class="nl">"ArrTimeUTC"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2008-01-01T05:57:00.000Z"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"UniqueCarrier"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FL"</span><span class="p">,</span><span class="w"> </span><span class="nl">"FlightNum"</span><span class="p">:</span><span class="w"> </span><span class="mi">579</span><span class="p">,</span><span class="w"> </span><span class="nl">"TailNum"</span><span class="p">:</span><span class="w"> </span><span class="s2">"N937AT"</span><span class="p">,</span><span class="w"> </span><span class="nl">"Distance"</span><span class="p">:</span><span class="w"> </span><span class="mi">259</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<div class="seriesContext">
+  
+  
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      
+      
+  
+  
+
+  
+    <a href="nosql-arangodb-querying-keyvalue-data.html"><button type="button" class="btn btn-primary">Next: Querying key/value data</button></a>
+  
+</div>
+
+
+
+    <div class="tags">
+        
+    </div>
+
+
+
+
+</div>
+
+<hr class="shaded"/>
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+               &copy;2021 Visual Data Analysis Lab. All rights reserved. <br />
+ Site last generated: Nov 22, 2021 <br />
+<p><img src="images/company_logo.png" alt="Company logo"/></p>
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>

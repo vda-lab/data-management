@@ -1,0 +1,19 @@
+destination: _site/
+url: "http://127.0.0.1:4011"
+baseurl: "/lambda-pdf"
+port: 4011
+output: pdf
+product: rdbms
+print_title: Lambda architecture
+output: pdf
+defaults:
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page_print"
+      comments: true
+      search: true
+
+pdf_sidebar: lambda_sidebar
