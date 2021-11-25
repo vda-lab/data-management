@@ -316,7 +316,7 @@ FOR a IN airports
   RETURN a
 ----
 
-Important to note: all steps in the `FOR` loop are executed from top to bottom. So the order in which they appear is important (see further).
+IMPORTANT: All steps in the `FOR` loop are executed from top to bottom. So the order in which they appear is important (see further).
 
 ==== `SORT`ing the results
 [source,sql]

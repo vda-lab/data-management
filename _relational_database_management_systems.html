@@ -3545,7 +3545,19 @@ SELECT * FROM snps LIMIT 5;</code></pre>
 <div class="sect3">
 <h4 id="_updating_and_deleting_data">1.4.3. Updating and deleting data</h4>
 <div class="paragraph">
-<p>Sometimes you will want to update or delete data in a table. The SQL code to do this uses a <code>WHERE</code> clause that is exactly the same as for a regular <code>SELECT</code>. A very important tip: first do a <code>SELECT</code> on your table with the <code>WHERE</code> clause that you&#8217;ll use for the update or deletion just to make sure that you&#8217;ll change the correct rows. When you&#8217;ve made changes to the wrong rows you won&#8217;t be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](<a href="https://vda-lab.github.io/2019/10/lambda-architecture)" class="bare">https://vda-lab.github.io/2019/10/lambda-architecture)</a>).</p>
+<p>Sometimes you will want to update or delete data in a table. The SQL code to do this uses a <code>WHERE</code> clause that is exactly the same as for a regular <code>SELECT</code>.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+First do a <code>SELECT</code> on your table with the <code>WHERE</code> clause that you&#8217;ll use for the update or deletion just to make sure that you&#8217;ll change the correct rows. When you&#8217;ve made changes to the wrong rows you won&#8217;t be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](<a href="https://vda-lab.github.io/2019/10/lambda-architecture)" class="bare">https://vda-lab.github.io/2019/10/lambda-architecture)</a>).
+</td>
+</tr>
+</table>
 </div>
 <div class="sect4">
 <h5 id="_update">UPDATE</h5>

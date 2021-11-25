@@ -949,7 +949,7 @@ A possible approach to follow with many-to-many relationships is to create _reci
 { id: "cmoor", name: "Christopher Moore", books: ["tsa"] }
 ----
 
-*Big word of caution*: This approach can quickly lead to inconsistencies if not handled well. What if an author has written a certain book, but that book does not mention that author?
+CAUTION: This approach can quickly lead to inconsistencies if not handled well. What if an author has written a certain book, but that book does not mention that author?
 
 Another option is to use a collection specific for the links, similar to a linking table in an RDBMS:
 
