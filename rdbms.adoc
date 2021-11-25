@@ -1072,7 +1072,9 @@ SELECT * FROM snps LIMIT 5;
 If you now exit the sqlite prompt (with `.quit`), you should see a file in the directory where you were that is called `5_snps.csv`.
 
 ==== Updating and deleting data
-Sometimes you will want to update or delete data in a table. The SQL code to do this uses a `WHERE` clause that is exactly the same as for a regular `SELECT`. A very important tip: first do a `SELECT` on your table with the `WHERE` clause that you'll use for the update or deletion just to make sure that you'll change the correct rows. When you've made changes to the wrong rows you won't be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](https://vda-lab.github.io/2019/10/lambda-architecture)).
+Sometimes you will want to update or delete data in a table. The SQL code to do this uses a `WHERE` clause that is exactly the same as for a regular `SELECT`.
+
+TIP: First do a `SELECT` on your table with the `WHERE` clause that you'll use for the update or deletion just to make sure that you'll change the correct rows. When you've made changes to the wrong rows you won't be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](https://vda-lab.github.io/2019/10/lambda-architecture)).
 
 ===== UPDATE
 Imagine that we've been storing the information on our individuals as above, but have not been consistent in capitalising the ethnicity. In some cases, a person can be of `asian` descent; in other cases he or she can be `Asian`. The same would go for the other ethnicities. To clean this up, let's put everything in lower case. For argument's sake we'll only look at `Asian` here. First let's check what we should get with a `SELECT`.

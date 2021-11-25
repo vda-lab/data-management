@@ -487,7 +487,7 @@ If we want to change from reporting municipality to latitude and longitude, we j
 ----
 
 ===== Explicit vs implicit schema
-Important: Even though a document database does not enforce a strict schema, there is still an _implicit schema_: it's the combination of keys and possible values that can be present in a document. The application (or you) need to know that the English species name is stored with the key `species_en`. It should not be a mix of `species_en` in some cases, `species_english` in others, or `english_name` or `english_species_name`, etc. That would make it impossible to for example get a list of all species that were sighted.
+IMPORTANT: Even though a document database does not enforce a strict schema, there is still an _implicit schema_: it's the combination of keys and possible values that can be present in a document. The application (or you) need to know that the English species name is stored with the key `species_en`. It should not be a mix of `species_en` in some cases, `species_english` in others, or `english_name` or `english_species_name`, etc. That would make it impossible to for example get a list of all species that were sighted.
 
 ==== Embedding vs referencing
 When modelling data in a relational database, we typically try to create a _normalised database schema_. In such schema, different concepts are stored in different tables, and information is linked by referencing rows in different tables.
@@ -949,7 +949,7 @@ A possible approach to follow with many-to-many relationships is to create _reci
 { id: "cmoor", name: "Christopher Moore", books: ["tsa"] }
 ----
 
-*Big word of caution*: This approach can quickly lead to inconsistencies if not handled well. What if an author has written a certain book, but that book does not mention that author?
+CAUTION: This approach can quickly lead to inconsistencies if not handled well. What if an author has written a certain book, but that book does not mention that author?
 
 Another option is to use a collection specific for the links, similar to a linking table in an RDBMS:
 

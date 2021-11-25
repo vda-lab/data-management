@@ -978,8 +978,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="sect4">
 <h5 id="_explicit_vs_implicit_schema">Explicit vs implicit schema</h5>
-<div class="paragraph">
-<p>Important: Even though a document database does not enforce a strict schema, there is still an <em>implicit schema</em>: it&#8217;s the combination of keys and possible values that can be present in a document. The application (or you) need to know that the English species name is stored with the key <code>species_en</code>. It should not be a mix of <code>species_en</code> in some cases, <code>species_english</code> in others, or <code>english_name</code> or <code>english_species_name</code>, etc. That would make it impossible to for example get a list of all species that were sighted.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Even though a document database does not enforce a strict schema, there is still an <em>implicit schema</em>: it&#8217;s the combination of keys and possible values that can be present in a document. The application (or you) need to know that the English species name is stored with the key <code>species_en</code>. It should not be a mix of <code>species_en</code> in some cases, <code>species_english</code> in others, or <code>english_name</code> or <code>english_species_name</code>, etc. That would make it impossible to for example get a list of all species that were sighted.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1669,8 +1678,17 @@ AND s.name = 'rs9876';</code></pre>
 { id: "cmoor", name: "Christopher Moore", books: ["tsa"] }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p><strong>Big word of caution</strong>: This approach can quickly lead to inconsistencies if not handled well. What if an author has written a certain book, but that book does not mention that author?</p>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+This approach can quickly lead to inconsistencies if not handled well. What if an author has written a certain book, but that book does not mention that author?
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Another option is to use a collection specific for the links, similar to a linking table in an RDBMS:</p>
