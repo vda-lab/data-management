@@ -14,7 +14,7 @@ The 2000s has seen a boom in the amount of data generated and stored. There are 
 
 ==== Scalability and clusters
 ===== Querying data
-Best practices in relational database design call for a normalised design (see in our [previous post](REF)). This means that the different concepts in the data are separated out into tables, and can be _joined_ together again in a query. Unfortunately, joins can be very expensive. For example, the Ensembl database (www.ensembl.org) is a fully normalised omics database, containing a total of 74 tables. For example, to get the exon positions for a given gene, one needs to run 3 joins.
+Best practices in relational database design call for a normalised design (see section "Relational Database Management Systems"). This means that the different concepts in the data are separated out into tables, and can be _joined_ together again in a query. Unfortunately, joins can be very expensive. For example, the Ensembl database (www.ensembl.org) is a fully normalised omics database, containing a total of 74 tables. For example, to get the exon positions for a given gene, one needs to run 3 joins.
 
 image:rdbms-joins.png[]
 
@@ -409,7 +409,7 @@ _Collection_ `posts`
 This is _one_ _collection_ with two _documents_.
 
 ==== Documents are schemaless
-As mentioned [before]({{ site.baseurl }}/nosql-general-concepts.html), one of the important differences between RDBMS and document databases, is that documents are _schemaless_. Actually, we should say that they have a _flexible schema_. What does this mean? Consider the case where we are collecting data on bird migrations (as for example [https://www.belgianbirdalerts.be/](https://www.belgianbirdalerts.be/)). In an RDMBS, we could put this information in a `sightings` table.
+As mentioned above, one of the important differences between RDBMS and document databases, is that documents are _schemaless_. Actually, we should say that they have a _flexible schema_. What does this mean? Consider the case where we are collecting data on bird migrations (as for example https://www.belgianbirdalerts.be/). In an RDMBS, we could put this information in a `sightings` table.
 
 `sightings`
 
@@ -1009,7 +1009,7 @@ Typically you would _combine embedding and referencing_.
 Data modelling in document-oriented databases is _not_ straightforward and there is no single solution. It all depends on what you want to do. This is different from data modelling in RDBMS where you can work towards a normalised database schema.
 
 === Data modeling patterns
-According to Wikipedia, "a [...] design pattern is a general, reusable solution to a commonly occurring problem". This is also true for designing the data model (of data schema) in document databases. Below, we will go over some of these design patterns. A more complete list and explanation is available on e.g. the [MongoDB blog](https://www.mongodb.com/blog/post/building-with-patterns-a-summary). Many of the examples below also come from that source.
+According to Wikipedia, "a [...] design pattern is a general, reusable solution to a commonly occurring problem". This is also true for designing the data model (of data schema) in document databases. Below, we will go over some of these design patterns. A more complete list and explanation is available on e.g. the https://www.mongodb.com/blog/post/building-with-patterns-a-summary[MongoDB blog]. Many of the examples below also come from that source.
 
 ==== Attribute pattern
 In the attribute pattern, we group similar fields (i.e. with the same value type) into a single array. Consider for example the following document on the movie "Star Wars":
