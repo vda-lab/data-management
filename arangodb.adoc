@@ -65,9 +65,10 @@ Let's load some data. Download the list of airports in the US from http://vda-la
 
 Remember from above that document databases often use JSON as their format. To load this into ArangoDB:
 
-. Create a new collection (`Collections` -> `Add Collection`) with the name `airports`. The `type` should be `document`. image:arangodb_createcollection.png[]
-. Click on the collection, and then the `Upload documents from JSON file` button at the top. image:arangodb_upload.png[]
-. Select the `airports.json` file that you just downloaded onto your computer.
+1. Create a new collection (`Collections` -> `Add Collection`) with the name `airports`. The `type` should be `document`. image:arangodb_createcollection.png[]
+2. Click on the collection, and then the `Upload documents from JSON file` button at the top. 
+image:arangodb_upload.png[]
+3. Select the `airports.json` file that you just downloaded onto your computer.
 
 You should end up with something like this:
 
