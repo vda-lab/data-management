@@ -1,7 +1,6 @@
 = Data Management
 :author: Jan Aerts
 :email: jan.aerts@uhasselt.be
-// :toc: preamble
 :toc: left
 :sectnums: true
 :source-highlighter: highlight.js
