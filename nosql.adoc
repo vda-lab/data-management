@@ -1,4 +1,4 @@
-== NoSQL and ArangoDB - Introduction
+== NoSQL: an introduction
 image:nosql_distilled_book.jpg[]
 
 As described in Sadalage and Fowler's book "NoSQL Distilled", RDBMS have definitely proven their worth since the 1980s. Some of their strengths include:
