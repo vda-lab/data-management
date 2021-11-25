@@ -1,5 +1,129 @@
-== ArangoDB APIs
+== ArangoDB interfaces
 You'll often jump straight into the web interface or `arangosh` to do quick searches, but you will eventually also want to access that data from you analysis software, i.c. R. Most database systems have drivers for R, including ArangoDB: see https://gitlab.com/krpack/arango-driver[here]. The same is true for python (multiple libraries even, including https://github.com/saeschdivara/ArangoPy[ArangoPy] and https://github.com/Joowani/python-arango[python-arango]) and https://github.com/arangodb/arangojs[javascript], for example.
+
+=== Arangosh
+The `arangosh` interface is a commandline interface that is similar to that of `mongodb`. It is helpful to run e.g. `pregel` queries, which are distributed algorithms for graph processing, including algorithms for page rank, community detection, shortest path, centrality, etc.
+
+==== Starting arangosh
+To start `arangosh` you will have to find out where the command is located on your system. On OSX, this is in `/Applications/ArangoDB3-CLI.app/Contents/Resources/arangosh`. You'll have to provide the server, username and database as well. Imagine that we have our server running on our own machine (i.e. `localhost`), we have an account named `jandot` and the database is called `DATMNG`. The following command will get you into the shell:
+
+  /Applications/ArangoDB3-CLI.app/Contents/Resources/arangosh --server.endpoint tcp://localhost:8529 --server.username jandot --server.database DATMNG --server.authentication true
+
+After typing in your password, you will be welcomed with this screen:
+
+image::arangosh-welcome.png[]
+
+... and you're ready to go.
+
+==== Regular arangosh commands
+Definitely have a look at the tutorial, by typing `tutorial`. Here are some examples:
+
+`db._collections()`:: Lists all collections
+`db.airports.count()`:: Returns the number of airports
+`db.airports.all()`:: Returns all airports
+`db.airports.byExample({vip:true}).toArray()`:: Returns all airports that have a VIP lounge
+`db._query('FOR a IN airports LIMIT 2 RETURN a').toArray()`:: Using AQL, return 2 airports
+
+==== Running pregel commands
+To run any pregel command, we need to have an actual graph. In all our examples with airports and flights we have just used the flights (i.e. edge) collection directly. Now how do we make the graph? Click on the "Graph" tab on the left, and provide the edge and vertex collections.
+
+image:arangodb_create_graph_1.png[width=50%]
+image:arangodb_create_graph_2.png[width=50%]
+
+Next we need to load pregel into the shell:
+
+  var pregel = require("@arangodb/pregel");
+
+To run an algorithm (e.g. pagerank) on the graph, we `start` it. See https://www.arangodb.com/docs/stable/graphs-pregel.html for details on the different algorithms and parameters that can be set.
+
+  pregel.start("pagerank", "flights", {maxGSS: 100, threshold: 0.00000001, resultField: "rank"})
+
+The above command runs pagerank, and automatically saves the output in the `airports` collection in the `rank` field. Before running the algorithm, the document `airports/JFK` looks like this:
+
+[source,javascript]
+----
+  {
+    "_key": "JFK",
+    "_id": "airports/JFK",
+    "_rev": "_dTbZpQO--L",
+    "name": "John F Kennedy Intl",
+    "city": "New York",
+    "state": "NY",
+    "country": "USA",
+    "lat": 40.63975111,
+    "long": -73.77892556,
+    "vip": true
+  }
+----
+
+After running the algorithm, it becomes
+
+[source,javascript]
+----
+  {
+    "_key": "JFK",
+    "_id": "airports/JFK",
+    "_rev": "_dTbZpQO--L",
+    "name": "John F Kennedy Intl",
+    "city": "New York",
+    "state": "NY",
+    "country": "USA",
+    "lat": 40.63975111,
+    "long": -73.77892556,
+    "vip": true,
+    "rank": 0.0011399610666558146
+  }
+----
+
+As another example, let's see if there are any communities in this flights dataset:
+
+  pregel.start("labelpropagation", "flights", {maxGSS: 100, resultField: "community"});
+
+Many of the airports appear to be in their own community, but let's look at which non-singleton communities are created:
+
+[source,sql]
+----
+FOR a IN airports
+COLLECT community = a.community WITH COUNT INTO cnt
+FILTER cnt > 1
+RETURN {community: community, count:cnt}
+----
+
+The result:
+[%header,format=csv]
+|===
+community,count
+839,9
+1267,184
+1736,85
+2920,7
+|===
+
+Which 7 airports are in community `2920`?
+
+[source,sql]
+----
+FOR a IN airports
+COLLECT community = a.community WITH COUNT INTO cnt
+FILTER cnt > 1
+RETURN {community: community, count:cnt}
+----
+
+They are:
+
+[%header,format=csv]
+|===
+code,name
+ANC,Ted Stevens Anchorage International
+BRW,Wiley Post Will Rogers Memorial
+KTN,Ketchikan International
+OME,Nome
+PSG,James C. Johnson Petersburg
+SIT,Sitka
+YAK,Yakutat
+|===
+
+image:arangodb_pregel_map.png[width=50%]
 
 === ArangoDB and R
 See the links for documentation on how to use ArangoDB from R and other languages. Just as an illustration: here's a document query in R:

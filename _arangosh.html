@@ -441,7 +441,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
              .nav-footer{text-align: center; margin-top: auto;}
              .nav-footer > p > a {white-space: nowrap;}</style>
 </head>
-<body id="_nosql_an_introduction" class="article toc2 toc-left">
+<body id="_arangosh" class="article toc2 toc-left">
 <div id="header">
 <h1>Data Management</h1>
 <div class="details">
@@ -453,15 +453,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><span class="toc-root"><a href="index.html">Data Management</a></span></p><ul class="sectlevel1">
 <li><a href="_relational_database_management_systems.html">1. Relational Database Management Systems</a>
 </li>
-<li><a href="_nosql_an_introduction.html"><span class="toc-current">2. NoSQL: an introduction</span></a>
-<ul class="sectlevel2">
-<li><a href="_nosql_an_introduction.html#_issues_with_relational_databases">2.1. Issues with relational databases</a>
-</li>
-<li><a href="_nosql_an_introduction.html#_general_nosql_concepts">2.2. General NoSQL concepts</a>
-</li>
-<li><a href="_nosql_an_introduction.html#_intermezzo_json">2.3. Intermezzo - JSON</a>
-</li>
-</ul>
+<li><a href="_nosql_an_introduction.html">2. NoSQL: an introduction</a>
 </li>
 <li><a href="_keyvalue_stores.html">3. Key/value stores</a>
 </li>
@@ -473,579 +465,104 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_arangodb_interfaces.html">7. ArangoDB interfaces</a>
 </li>
+<li><a href="_arangosh.html"><span class="toc-current">8. Arangosh</span></a>
+<ul class="sectlevel2">
+<li><a href="_arangosh.html#_starting_arangosh">8.1. Starting arangosh</a>
+</li>
+<li><a href="_arangosh.html#_running_pregel_commands">8.2. Running pregel commands</a>
+</li>
+<li><a href="_arangosh.html#_arangodb_and_r">8.3. ArangoDB and R</a>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_nosql_an_introduction">2. NoSQL: an introduction</h2>
+<h2 id="_arangosh">8. Arangosh</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><span class="image"><img src="assets/nosql_distilled_book.jpg" alt="nosql distilled book"></span></p>
-</div>
-<div class="paragraph">
-<p>As described in Sadalage and Fowler&#8217;s book "NoSQL Distilled", RDBMS have definitely proven their worth since the 1980s. Some of their strengths include:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>they can store large amounts of data that are easily queryable</p>
-</li>
-<li>
-<p>transactional mechanisms make concurrency safe: different individuals/systems can access a database at the same time and alter data without fear of corrupting that data</p>
-</li>
-<li>
-<p>SQL: a (almost) standard query language that is supported by all database management systems</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>There are however shortcomings of RDBMS, which we will describe below.</p>
+<p>The <code>arangosh</code> interface is a commandline interface that is similar to that of <code>mongodb</code>. It is helpful to run e.g. <code>pregel</code> queries, which are distributed algorithms for graph processing, including algorithms for page rank, community detection, shortest path, centrality, etc.</p>
 </div>
 <div class="sect2">
-<h3 id="_issues_with_relational_databases">2.1. Issues with relational databases</h3>
+<h3 id="_starting_arangosh">8.1. Starting arangosh</h3>
 <div class="paragraph">
-<p>The 2000s has seen a boom in the amount of data generated and stored. There are basically two approaches to cope with this: <em>scale up</em> or <em>scale out</em>. What you do when scaling <em>up</em> is to just buy a bigger server on which we can run the database server. This works up to a point, but (a) there are clear limits in size, and (b) it is very expensive. In the other option, scaling <em>out</em>, we take multiple commodity (and therefore cheap) machines and set them up as a cluster where each of the machines has to store only part of the data. Unfortunately, RDBMS are not designed with this in mind.</p>
-</div>
-<div class="sect3">
-<h4 id="_scalability_and_clusters">2.1.1. Scalability and clusters</h4>
-<div class="sect4">
-<h5 id="_querying_data">Querying data</h5>
-<div class="paragraph">
-<p>Best practices in relational database design call for a normalised design (see section "Relational Database Management Systems"). This means that the different concepts in the data are separated out into tables, and can be <em>joined</em> together again in a query. Unfortunately, joins can be very expensive. For example, the Ensembl database (www.ensembl.org) is a fully normalised omics database, containing a total of 74 tables. For example, to get the exon positions for a given gene, one needs to run 3 joins.</p>
+<p><code>/Applications/ArangoDB3-CLI.app/Contents/Resources/arangosh --server.endpoint tcp://localhost:8529 --server.username jandot --server.database DATMNG --server.authentication true</code></p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="assets/rdbms-joins.png" alt="rdbms joins"></span></p>
+<p>You will be welcomed with this screen:</p>
 </div>
-<div class="paragraph">
-<p>(Actually: note that this ends at <code>seq_region</code> and not at chromosome. To get to the chromosome actually requires two more joins but those are too complex to explain in the context of this session&#8230;&#8203;)</p>
-</div>
-<div class="paragraph">
-<p>The query to get the exon positions for <code>FAM39B protein</code>:</p>
-</div>
-<div class="listingblock">
+<div class="imageblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">SELECT e.seq_region_start
-FROM gene g, transcript t, exon_transcript et, exon e
-WHERE g.description = 'FAM39B protein'
-AND g.gene_id = t.gene_id
-AND t.transcript_id = et.transcript_id
-AND et.exon_id = e.exon_id;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_writing_data">Writing data</h5>
-<div class="paragraph">
-<p>Suppose that you begin to store genomic mutations in a mysql database. All goes well, until you notice that the database becomes too large for the computer you are running mysql on. There are different solutions for this:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Buy a bigger computer (= <em>vertical scaling</em>) which will typically be much more expensive</p>
-</li>
-<li>
-<p><em>Shard</em> your data across different databases on different computers (= <em>horizontal scaling</em>): data for chromosome 1 is stored in a mysql database on computer 1, chromosome 2 is stored in a mysql database on computer 2, etc. Unfortunately, this does mean that in your application code (i.e. when you&#8217;re trying to access this data from R or python), you need to know what computer to connect to. It gets worse if you later notice that one of these other servers becomes the bottleneck. Then you&#8217;d have to get additional computers and e.g. store the first 10% of chromosome 1 on computer 1, the next 10% on computer 2, etc. Again: this makes it very complicated in your R and/or python scripts as you have to know what is stored where.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/scalability.png" alt="scalability"></span></p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_impedance_mismatch">2.1.2. Impedance mismatch</h4>
-<div class="paragraph">
-<p>When discussing relational databases, we went through the exercise of normalising our database scheme to make sure that, among other things, we minimise the emergence of inconsistencies of the data, and allow ourselves to ask the database any question. But this is actually strange, right? We first deconstruct the data that we receive into normalised tables, only to need table joins to get anything useful back out. Also, any value in the database needs to be simple, and can for example should not be stored as a nested record or a list. For example, you would not store the children of a couple like this:</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">id</th>
-<th class="tableblock halign-left valign-top">mother</th>
-<th class="tableblock halign-left valign-top">father</th>
-<th class="tableblock halign-left valign-top">children</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">John D</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Jane D</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">[Tim;Tom;Tina]</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>In contrast, a normalised way of storing this could be:</p>
-</div>
-<div class="paragraph">
-<p><strong>individuals</strong></p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">id</th>
-<th class="tableblock halign-left valign-top">name</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">John D</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Jane D</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tim</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tom</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tina</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p><strong>relationships</strong></p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">id</th>
-<th class="tableblock halign-left valign-top">individual_id1</th>
-<th class="tableblock halign-left valign-top">individual_id2</th>
-<th class="tableblock halign-left valign-top">type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">child_of</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">child_of</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">child_of</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">child_of</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">child_of</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">child_of</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">married_to</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>That is called the <em>impedance mismatch</em>: there is a mismatch between how you think about the data, and how it needs to be stored in the relational database. The example below shows how all information that conceptually belongs to the same order is split up over multiple tables. This means that the developer needs to constantly switch between his/her mental model of the <em>application</em> and that of the <em>database</em> which can become very frustrating.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/impedance_mismatch.png" alt="impedance mismatch"></span>
-<em>Impedance mismatch (taken from "NoSQL Distilled", Sadalage &amp; Fowler)</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_relational_data">2.1.3. Relational data</h4>
-<div class="paragraph">
-<p>Here&#8217;s an extreme example of impedance mismatch. Imagine you have a social graph and the data is stored in a relational database. People have names, and know other people. Every "know" is reciprocal (so if I know you then you know me too).</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/friends-relational.png" alt="friends relational"></span></p>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s see what it means to follow relationships in a RDBMS. What would this look like if we were searching for friends of James?</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">SELECT knowee FROM friends
-WHERE knower IN (
-  SELECT knowee FROM friends
-  WHERE knower = 'James'
-  )
-UNION
-SELECT knower FROM friends
-WHERE knowee IN (
-  SELECT knower FROM friends
-  WHERE knowee = 'James'
-  );</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Quite verbose. What if we&#8217;d want to go one level deeper: all friends of friends of James?</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-sql hljs" data-lang="sql">SELECT knowee FROM friends
-WHERE knower IN (
-  SELECT knowee FROM friends
-  WHERE knower IN (
-    SELECT knowee FROM friends
-    WHERE knower = 'James'
-    )
-  UNION
-  SELECT knower FROM friends
-  WHERE knowee IN (
-    SELECT knower FROM friends
-    WHERE knowee = 'James'
-    )
-  )
-UNION
-SELECT knower FROM friends
-WHERE knowee IN (
-  SELECT knower FROM friends
-  WHERE knowee IN (
-    SELECT knower FROM friends
-    WHERE knowee = 'James'
-    )
-  UNION
-  SELECT knowee FROM friends
-  WHERE knower IN (
-    SELECT knowee FROM friends
-    WHERE knower = 'James'
-    )
-  );</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This clearly does not scale, and we&#8217;ll have to look for another solution.</p>
+<img src="assets/arangosh-welcome.png" alt="arangosh welcome">
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_general_nosql_concepts">2.2. General NoSQL concepts</h3>
-<div class="sect3">
-<h4 id="_the_end_of_sql">2.2.1. The end of SQL?</h4>
-<div class="paragraph">
-<p>So does this mean that we should leave SQL behind? No. What we&#8217;ll be looking at is <em>polyglot persistence</em>: depending on what data you&#8217;re working with, some of that might still be stored in an SQL database, while other parts are stored in a document store and graph database (see below). So instead of having a single database, we can end up with a collection of databases to support a single application.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/polyglot_persistence_fromto.png" alt="polyglot persistence fromto"></span>
-<em>Source: Sadalage &amp; Fowler, 2012</em></p>
-</div>
-<div class="paragraph">
-<p>The figure below shows how in the hypothetical case of a retailer&#8217;s web application we might be using a combination of 8 different database technologies to store different types of information. Note that RDBMS are still part of the picture!</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/polyglot_persistence.png" alt="polyglot persistence"></span>
-<em>Source: <a href="https://martinfowler.com/articles/nosql-intro-original.pdf" class="bare">https://martinfowler.com/articles/nosql-intro-original.pdf</a></em></p>
-</div>
-<div class="paragraph">
-<p>The term NoSQL was coined as the name and hashtag for a conference in 2009 about "open-source, distributed, non-relational databases" (source: Sadalage &amp; Fowler, 2012). But as Sadalage &amp; Fowler state: "there is no generally accepted definition, nor an authority to provide one". But in general, they</p>
-</div>
+<h3 id="_running_pregel_commands">8.2. Running pregel commands</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>don&#8217;t use SQL</p>
+<p>Data needs to be a graph</p>
 </li>
 <li>
-<p>are often driven by the need to run on clusters or a different data model (e.g. graphs)</p>
+<p>loading pregel</p>
 </li>
 <li>
-<p>are often schema-less: you can add fields to records without having to define changes in structure first (using e.g. <code>ALTER TABLE</code>)</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_general_nosql_concepts_2">2.2.2. General NoSQL concepts</h4>
-<div class="paragraph">
-<p>NoSQL databases have received increasing attention in the more and more data-driven world. They allow for modelling of more complex data in a more scalable and agile way. Although it is impossible to lump all NoSQL technologies on a single heap, there are some concepts that apply.</p>
-</div>
-<div class="sect4">
-<h5 id="_nosql_is_not_just_one_technology">NoSQL is not just one technology</h5>
-<div class="paragraph">
-<p>As mentioned above, NoSQL is not just a single technology; it is more an <em>approach</em> than a technology. The image below shows a (new very outdated) overview of many of the database technologies used, including MongoDB, neo4j, ArangoDB, etc. But the NoSQL <em>approach</em> is also about storing csv-files when that makes sense.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/confused-by-the-glut-of-new-databases.jpg" alt="confused by the glut of new databases"></span></p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_keep_components_simple">Keep components simple</h5>
-<div class="paragraph">
-<p>If we look at the extreme case of a legacy Oracle SQL database for clinical studies at e.g. a pharmaceutical company, we will typically see that such system is a single behemoth of a system, which requires several database managers to just keep the server(s) running and operating optimally. In contrast, in a NoSQL setup, we often try to keep the different components as simple as possible.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_separation_of_concerns">Separation of concerns</h5>
-<div class="paragraph">
-<p>An important question to answer here is where to put the functionality of your application? In the last example: do you let the database compute (with e.g. SQL statements) the things you need in the graphical interface directly? Do you let the graphical user interface get the raw data from the database and do all the necessary munging of that data at the user end? Or do you insert a separate layer in between (i.e. the computational layer mentioned above)? It’s all about a separation of concerns.</p>
-</div>
-<div class="paragraph">
-<p>In general, RDBMS have been around for a long time and are very mature. As a result, a lot of functionality has been added to the database tier. In applications using NoSQL solutions, however, much of the application functionality is in a middle tier.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/tiers.png" alt="tiers"></span></p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_thinking_strategically_about_ram_ssd_and_disk">Thinking strategically about RAM, SSD and disk</h5>
-<div class="paragraph">
-<p>To make sure that the performance of your application is adequate for your purpose, you have to think about where to store your data. Data can be kept in RAM, on a solid-state drive (SSD), the hard disk in your computer, or in a file somewhere on the network. This choice has an immense effect on performance. It’s easy to visualise this: consider that you are in Hasselt</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>getting something from RAM = getting it from your backyard</p>
-</li>
-<li>
-<p>getting something from SSD = getting it from somewhere in your neighbourhood</p>
-</li>
-<li>
-<p>getting something from disk = traveling to Saudi Arabia to get it</p>
-</li>
-<li>
-<p>getting something over the network = traveling to Jupiter to get it</p>
+<p>running pregel</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>It might be clear to you that cleverly keeping things in RAM is a good way to speed up your application or analysis :-) Which brings us to the next point:</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_keep_your_cache_current_using_consistent_hashing">Keep your cache current using consistent hashing</h5>
-<div class="paragraph">
-<p>So keeping things in RAM makes it possible to very quickly access them. This is what you do when you load data into a variable in your python/R/SAS/ruby/perl/… code.</p>
-</div>
-<div class="paragraph">
-<p>Caching is used constantly by the computer you’re using at this moment as well.</p>
-</div>
-<div class="paragraph">
-<p>An important aspect of caching is calculating a key that can be used to retrieve the data (remember key/value stores?). This can for example be done by calculating a checksum, which looks at each byte of a document and returns a long sequence of letters and numbers. Different algorithms exists for this, such as MD5 or SHA-1. Changing a single bit in a file (this file can be binary or not) will completely change the checksum.</p>
-</div>
-<div class="paragraph">
-<p>Let’s for example look at the checksum for the file that I’m writing right now. Here are the commands and output to get the MD5 and SHA-1 checksums for this file:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">janaerts$ md5 2019-10-31-lambda-architecture.md
-MD5 (2019-10-31-lambda-architecture.md) = a271e75efb769d5c47a6f2d040e811f4
-janaerts$ shasum 2019-10-31-lambda-architecture.md
-2ae358f1ac32cb9ce2081b54efc27dcc83b8c945  2019-10-31-lambda-architecture.md</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>As you can see, these are quite long strings and MD5 and SHA-1 are indeed two different algorithms to create a checksum. The moment that I wrote the “A” (of “As you can see”) at the beginning of this paragraph, the checksum changed completely. Actually, below are the checksums after adding that single “A”. Clearly, the checksums are completely different.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">janaerts$ md5 2019-10-31-lambda-architecture.md
-MD5 (2019-10-31-lambda-architecture.md) = b597d18879c46c8838ad2085d2c7d2f9
-janaerts$ shasum 2019-10-31-lambda-architecture.md
-45c5a96dd506b884866e00ba9227080a1afd6afc  2019-10-31-lambda-architecture.md</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This consistent hashing can for example also be used to assign documents to specific database nodes.</p>
-</div>
-<div class="paragraph">
-<p>In principle, it <em>is</em> possible that 2 different documents have the same hash value. This is called hash collision. Don’t worry about it too much, though. The MD5 algorithm generates a 128 bit string, which occurs once every 10^38 documents. If you generate a billion documents per second it would take 10 trillion times the age of the universe for a single accidental collision to occur…</p>
-</div>
-<div class="paragraph">
-<p>Of course a group of researchers at Google tried to break this, and [they were actually successful](<a href="https://shattered.it/" class="bare">https://shattered.it/</a>) on February 23th 2017.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/shattered.png" alt="shattered"></span></p>
-</div>
-<div class="paragraph">
-<p>To give you an idea of how difficult this is:</p>
+<p><code>pregel.start("pagerank", "flights", {maxGSS: 100, threshold: 0.00000001, resultField: "rank"})</code></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>it had taken them 2 years of research</p>
-</li>
-<li>
-<p>they performed 9,223,372,036,854,775,808 (9 quintillion) compressions</p>
-</li>
-<li>
-<p>they used 6,500 years of CPU computation time for phase 1</p>
-</li>
-<li>
-<p>they used 110 years of CPU computation time for phase 2</p>
+<p>Results are automatically written to nodes (i.e. document collection, i.c. airports) in result field</p>
 </li>
 </ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_acid_vs_base">ACID vs BASE</h5>
-<div class="sect5">
-<h6 id="_acid">ACID</h6>
-<div class="paragraph">
-<p>RDBMS systems try to follow the ACID model for reliable database transactions. ACID stands for atomicity, consistency, isolation and durability. The prototypical example of a database that needs to comply to the ACID rules is one which handles bank transactions.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/bank.png" alt="bank"></span></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><em>Atomicity</em>: Exchange of funds in example must happen as an all-or-nothing transaction</p>
-</li>
-<li>
-<p><em>Consistency</em>: Your database should never generate a report that shows a withdrawal from saving without the corresponding addition to the checking account. In other words: all reporting needs to be blocked during atomic operations.</p>
-</li>
-<li>
-<p><em>Isolation</em>: Each part of the transaction occurs without knowledge of any other transaction</p>
-</li>
-<li>
-<p><em>Durability</em>: Once all aspects of transaction are complete, it’s permanent.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>For a bank transaction it is crucial that either all processes (withdraw and deposit) are performed or none.</p>
-</div>
-<div class="paragraph">
-<p>The software to handle these rules is very complex. In some cases, 50-60% of the codebase for a database can be spent on enforcement of these rules. For this reason, newer databases often do not support database-level transaction management in their first release.</p>
-</div>
-<div class="paragraph">
-<p>As a ground rule, you can consider ACID pessimistic systems that focus on consistency and integrity of data above all other considerations (e.g. temporarily blocking reporting mechanisms is a reasonable compromise to ensure systems return reliable and accurate information).</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_base">BASE</h6>
-<div class="paragraph">
-<p>BASE stands for:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><em>Basic Availability</em>: Information and service capability are “basically available” (e.g. you can always generate a report).</p>
-</li>
-<li>
-<p><em>Soft-state</em>: Some inaccuracy is temporarily allowed and data may change while being used to reduce the amount of consumed resources.</p>
-</li>
-<li>
-<p><em>Eventual consistency</em>: Eventually, when all service logic is executed, the systems is left in a consistent state.
-A good example of a BASE-type system is a database that handles shopping carts in an online store. It is no problem fs the back-end reports are inconsistent for a few minutes (e.g. the total number of items sold is a bit off); it’s much more important that the customer can actually purchase things.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>This means that BASE systems are basically optimistic as all parts of the system will eventually catch up and be consistent. BASE systems therefore tend to be much simpler and faster as they don’t have to deal with locking and unlocking resources.</p>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_intermezzo_json">2.3. Intermezzo - JSON</h3>
+<h3 id="_arangodb_and_r">8.3. ArangoDB and R</h3>
 <div class="paragraph">
-<p>Before we proceed, we&#8217;ll have a quick look at the JSON ("JavaScript Object Notation") text format, which is often used in different database systems. JSON follows the same principle as XML, in that it describes the data in the object itself. An example JSON object:</p>
+<p>See the links for documentation on how to use ArangoDB from R and other languages. Just as an illustration: here&#8217;s a document query in R:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">{ code:"I0D54A",
-  name:"Big Data",
-  lecturer:"Jan Aerts",
-  keywords:["data management","NoSQL","big data"],
-  students:[ {student_id:"u0123456", name:"student 1"},
-             {student_id:"u0234567", name:"student 2"},
-             {student_id:"u0345678", name:"student 3"}]}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>JSON has very simple syntax rules:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Data is in key/value pairs. Each is in quotes, separated by a colon. In some cases you might omit the quotes around the key, but not always.</p>
-</li>
-<li>
-<p>Data is separated by commas.</p>
-</li>
-<li>
-<p>Curly braces hold objects.</p>
-</li>
-<li>
-<p>Square brackets hold arrays.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>JSON values can be numbers, strings, booleans, arrays (i.e. lists), objects or NULL; JSON arrays can contain multiple values (including JSON objects); JSON objects contain one or more key/value pairs.</p>
-</div>
-<div class="paragraph">
-<p>These are two JSON arrays:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">["data management","NoSQL","big data"]
+<pre class="highlightjs highlight"><code class="language-R hljs" data-lang="R">all.cities &lt;- cities %&gt;% all_documents()
+all.persons &lt;- persons %&gt;% all_documents()
 
-[{student_id:"u0123456", name:"student 1"},
- {student_id:"u0234567", name:"student 2"},
- {student_id:"u0345678", name:"student 3"}]</code></pre>
+if(all.cities$London$getValues()$capital){
+  print("London is still the capital of UK")
+} else {
+  print("What's happening there???")
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>And a simple JSON object:</p>
+<p>And a graph query:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">{student_id:"u0345678", name:"student 3"}</code></pre>
+<pre class="highlightjs highlight"><code class="language-R hljs" data-lang="R">london.residence &lt;- residenceGraph %&gt;%
+  traversal(vertices = c(all.cities$London), depth = 2)
+london.residence %&gt;% visualize()</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>And objects can be nested as in the first example.</p>
+<p>will return:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="assets/aRangodb-graph.png" alt="aRangodb graph"></span></p>
 </div>
 </div>
 </div>
 </div>
 <div class="paragraph nav-footer">
-<p>← Previous: <a href="_relational_database_management_systems.html">Relational Database Management Systems</a> | ↑ Up: <a href="index.html">Data Management</a> | Next: <a href="_keyvalue_stores.html">Key/value stores</a> →</p>
+<p>← Previous: <a href="_arangodb_interfaces.html">ArangoDB interfaces</a> | ↑ Up: <a href="index.html">Data Management</a></p>
 </div>
 </div>
 <div id="footer">
