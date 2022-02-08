@@ -323,7 +323,7 @@ individual_B, caucasian, rs28465, G/G, 5, 28465,
 
 The new schema:
 
-image:1NF.png[]
+image:1NF.png[width=20%]
 
 Everything is still contained in a single table, which will change when we go to the second normal form.
 
@@ -394,7 +394,7 @@ id, individual_id, snp_id, genotype
 
 The new schema:
 
-image:2NF.png[]
+image:2NF.png[width=50%]
 
 ===== Third normal form
 

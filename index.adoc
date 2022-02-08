@@ -1,13 +1,13 @@
 = Data Management
 :author: Jan Aerts
-:email: jan.aerts@uhasselt.be
+:email: jan.aerts@vda-lab.io
 :toc: left
 :sectnums: true
 :source-highlighter: highlight.js
 :imagesdir: assets
 :stem: latexmath
 
-Welcome to the course material for the Software and Data Management course at UHasselt. The contents of this post is licensed as CC-BY: feel free to copy/remix/tweak/... it, but please credit your source.
+This is the course material for the Software and Data Management course at UHasselt. The contents of this post is licensed as CC-BY: feel free to copy/remix/tweak/... it, but please credit your source.
 
 image:ccby.png[]
 
