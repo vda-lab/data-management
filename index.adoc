@@ -7,7 +7,7 @@
 :imagesdir: assets
 :stem: latexmath
 
-The contents of this post is licensed as CC-BY: feel free to copy/remix/tweak/... it in a non-commercial setting, but please credit your source.
+The contents of this post is licensed as CC-BY-NC: feel free to copy/remix/tweak/... it in a non-commercial setting, but please credit your source.
 
 image:ccbync.png[width=10%]
 
