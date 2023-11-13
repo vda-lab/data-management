@@ -1689,3 +1689,19 @@ SELECT COUNT(*) FROM (
 ----
 
 You can imagine that there must be better ways of doing this. Remember this example when you'll learn about graph databases...
+
+=== Python API to sqlite
+To access sqlite databases from python, you can use the `sqlite3` library, available https://docs.python.org/3/library/sqlite3.html[here]. See the https://docs.python.org/3/library/sqlite3.html[this site] for documentation on how to use the library.
+
+Example use:
+
+[source,python]
+----
+import sqlite3
+connection = sqlite3.connect("tutorial.db")
+cursor = connection.cursor()
+
+for row in cur.execute("SELECT year, title FROM movie ORDER BY year"):
+    print(row)
+----
+

@@ -461,6 +461,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="_relational_database_management_systems.html#_drawbacks_of_relational_databases">1.5. Drawbacks of relational databases</a>
 </li>
+<li><a href="_relational_database_management_systems.html#_python_api_to_sqlite">1.6. Python API to sqlite</a>
+</li>
 </ul>
 </li>
 <li><a href="_nosql_an_introduction.html">2. NoSQL: an introduction</a>
@@ -4737,6 +4739,25 @@ WHERE knower IN (
 </div>
 <div class="paragraph">
 <p>You can imagine that there must be better ways of doing this. Remember this example when you&#8217;ll learn about graph databases&#8230;&#8203;</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_python_api_to_sqlite">1.6. Python API to sqlite</h3>
+<div class="paragraph">
+<p>To access sqlite databases from python, you can use the <code>sqlite3</code> library, available <a href="https://docs.python.org/3/library/sqlite3.html">here</a>. See the <a href="https://docs.python.org/3/library/sqlite3.html">this site</a> for documentation on how to use the library.</p>
+</div>
+<div class="paragraph">
+<p>Example use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">import sqlite3
+connection = sqlite3.connect("tutorial.db")
+cursor = connection.cursor()
+
+for row in cur.execute("SELECT year, title FROM movie ORDER BY year"):
+    print(row)</code></pre>
 </div>
 </div>
 </div>
