@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.16">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="author" content="Jan Aerts">
 <title>Data Management</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
@@ -85,10 +85,10 @@ code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;
 ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
 ul,ol{margin-left:1.5em}
 ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
-ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
-ul.square{list-style-type:square}
 ul.circle{list-style-type:circle}
 ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
 ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
 dl dt{margin-bottom:.3125em;font-weight:bold}
 dl dd{margin-bottom:1.25em}
@@ -194,7 +194,8 @@ body.toc2.toc-right{padding-left:0;padding-right:20em}}
 #content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
 details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
 details{margin-left:1.25rem}
-details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;-webkit-tap-highlight-color:transparent}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
 details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
 details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
 details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
@@ -208,13 +209,10 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
@@ -236,9 +234,8 @@ pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
 table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
 table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
 table.linenotable td.code{padding-left:.75em}
-table.linenotable td.linenos{border-right:1px solid;opacity:.35;padding-right:.5em}
-pre.pygments .lineno{border-right:1px solid;opacity:.35;display:inline-block;margin-right:.75em}
-pre.pygments .lineno::before{content:"";margin-right:-.125em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
 .quoteblock{margin:0 1em 1.25em 1.5em;display:table}
 .quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
 .quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
@@ -275,7 +272,7 @@ table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-c
 table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
 table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
 table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
-table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
 th.halign-left,td.halign-left{text-align:left}
 th.halign-right,td.halign-right{text-align:right}
 th.halign-center,td.halign-center{text-align:center}
@@ -291,10 +288,11 @@ ol{margin-left:1.75em}
 ul li ol{margin-left:1.5em}
 dl dd{margin-left:1.125em}
 dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
-ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
 ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
 ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
 ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
 ul.checklist>li>p:first-child{margin-left:-1em}
 ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
 ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
@@ -337,8 +335,6 @@ sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
 #footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
 #footnotes .footnote:last-of-type{margin-bottom:0}
 #content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
-.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
-.gist .file-data>table td.line-data{width:99%}
 div.unbreakable{page-break-inside:avoid}
 .big{font-size:larger}
 .small{font-size:smaller}
@@ -395,7 +391,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -448,7 +444,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>Data Management</h1>
 <div class="details">
 <span id="author" class="author">Jan Aerts</span><br>
-<span id="email" class="email"><a href="mailto:jan.aerts@vda-lab.io">jan.aerts@vda-lab.io</a></span><br>
+<span id="email" class="email"><a href="mailto:jan.aerts@kuleuven.be">jan.aerts@kuleuven.be</a></span><br>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -493,93 +489,86 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Working with data almost invariably involves working with relational databases and SQL (Structured Query Language). They have a decades-old history and are very established. In this section, we go over the why and how of this type of database.</p>
 </div>
 <div class="paragraph">
-<p>Let’s look at some example life science fields where we collect data to make the rest of the session a bit more concrete.</p>
+<p>Let&#8217;s look at some example life science fields where we collect data to make the rest of the session a bit more concrete.</p>
 </div>
 <div class="sect2">
 <h3 id="_examples_of_data">1.1. Examples of data</h3>
 <div class="sect3">
-<h4 id="_clinical_trials">1.1.1. Clinical trials</h4>
+<h4 id="_microbiome_data">1.1.1. Microbiome data</h4>
 <div class="paragraph">
-<p>A clinical trial is a study involving the assessment of one or more regimens used in treating or preventing a specific illness or disease (McFadden, 2007). The design, aim, number of patients etc. depend on the phase of the clinical trial. Different types of data are collected:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><em>Administrative data</em> describes information to uniquely identify a patient and their contact details. Often, the name cannot be used due to the fact that multiple people can have the same name, but more importantly to ensure minimal identifiability (privacy); therefore a unique patient ID is generated at enrolment. In addition, information like the name of the trial and name of the center in large multicenter trials are recorded.</p>
-</li>
-<li>
-<p><em>Research data</em> is all information needed to answer study objective(s) in the protocol, including measurements of endpoints, relevant dates (study entry, treatment administration), etc. The amount of research data to be collected varies widely. It is important to collect only relevant data, as not all clinically relevant data is relevant research data. For example, exact timing of intervention may be relevant for clinical care (record in medical file), but not to answer research questions. Collection of irrelevant data increases time and effort to collect, enter, and process this data, increases the complexity of the database and risk for missing data, etc.</p>
-</li>
-</ul>
+<p>Microbiome data offer a window into the complex world of microbial communities and their interactions with their environment. This can be in the human or animal body, soil, or other ecosystems. By measuring and analyzing this data, we can gain insights into a lot of processes: in humans and animals, it can illuminate aspects of health, disease, and nutrition; in agriculture, it can enhance our understanding of soil health, plant growth, and crop resilience.</p>
 </div>
 <div class="paragraph">
-<p>The trial protocol describes which data items need to be collected, based on which a Case Report Form (CRF) is developed. The CRF is the official clinical data-recording document used in a clinical study which stores all relevant patient info that is obtained in a clinical trial. It should be of high quality as a poor design can lead to unreliable data and possibly wrong conclusions of the study.</p>
+<p>Microbiome data typically consist of OTU (operational taxonomic unit) or ASV (amplicon sequence variant) tables, which can be considered large tables where the columns represent the OTUs/ASVs, the rows represent different samples, and the cells indicate the amount of that OTU/ASV found in a particular sample.</p>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">sample</th>
+<th class="tableblock halign-left valign-top">SRS024625.570280</th>
+<th class="tableblock halign-left valign-top">SRS018102.573993</th>
+<th class="tableblock halign-left valign-top">SRS017304.575372</th>
+<th class="tableblock halign-left valign-top">SRS024151.575546</th>
+<th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">963239</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4431292</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4480529</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4345640</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
-<p>Items on a CRF are organised according to the following rationale:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>They should follow the time flow of the trial (when are the data collected?). For example, items collected at study entry (e.g., medical history,
-treatment allocation, etc.) are grouped together and as well as for all follow-up phases (e.g., primary endpoint measures, adverse effects at particular time point).</p>
-</li>
-<li>
-<p>The should reflect the logistics and practical organisation of the trial (where and by whom are the data collected?). For example: some data at study entry may be collected by the CRA, other data by the physician; some data at study entry may be gathered in the cardiology department, other data in the radiology department.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Separate sections/pages on the CRF are created for each logical division.</p>
-</div>
-<div class="paragraph">
-<p>Below are two annotated pages from a CRF. The red annotations are meant for the data management department and indicate which variable in the database each piece of information is stored in.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/CRF_1.png" alt="CRF 1"></span>
-<span class="image"><img src="assets/CRF_2.png" alt="CRF 2"></span></p>
+<p>Both samples and OTUs/ASVs themselves can contain metadata. For the samples, these can include the sampling device, the age of the subject, the location of the sample (e.g. skin vs gut vs &#8230;&#8203;), etc. For the OTUs, these are e.g. consensus sequences and taxonomy.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_epidemiological_studies">1.1.2. Epidemiological studies</h4>
-<div class="paragraph">
-<p>Epidemiology is described as "the study of the occurrence and distribution of health-related states or events in specified populations, including the study of determinants influencing such states, and the application of this knowledge to control the health problems" (Dictionary of Epidemiology, Porta 2008). It covers a very broad and diverse line of research:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>experimental vs observational studies</p>
-</li>
-<li>
-<p>within the observational studies:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>exploratory vs descriptive</p>
-</li>
-<li>
-<p>exposure vs outcome oriented</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The collected data can also be very diverse, and include questionnaires, forms, medical device outcomes, biological data, etc.</p>
-</div>
-<div class="paragraph">
-<p>Epidemiological studies are generally done in one of two settings: primary (based on newly collected data) or secondary (using existing databases).</p>
-</div>
-<div class="paragraph">
-<p>Generally a codebook or data dictionary that describes all data sources (collected, derived, transformed, &#8230;&#8203;). An example of a data dictionary is provided below (taken from Ahrens, W. et al. (2014): Handbook of epidemiology. Table 27.2).</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="assets/datadictionary.png" alt="datadictionary"></span></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_dna_sequencing_and_genotyping">1.1.3. DNA sequencing and genotyping</h4>
+<h4 id="_dna_sequencing_and_genotyping">1.1.2. DNA sequencing and genotyping</h4>
 <div class="paragraph">
 <p>The importance of DNA sequencing and genotyping is steadily increasing within research and health care. In genotyping, one reads the nucleotides at specific positions in the genome to check if the patient has an allele that for example constitutes a higher risk to certain diseases, or that indicates higher or lower sensitivity to certain medication.</p>
 </div>
@@ -627,6 +616,44 @@ treatment allocation, etc.) are grouped together and as well as for all follow-u
 <div class="paragraph">
 <p>This table contains the information for 3 polymorphisms (called rs12345, rs98765 and rs28465) for 2 individuals (individual_A and individual_B). Typically, thousands of polymorphisms are recorded for thousands of individuals.
 A particular type of polymorphism is the single nucleotide polymorphism (SNP), which will be why tables below will be called <code>snps</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_epidemiological_studies">1.1.3. Epidemiological studies</h4>
+<div class="paragraph">
+<p>Epidemiology is described as "the study of the occurrence and distribution of health-related states or events in specified populations, including the study of determinants influencing such states, and the application of this knowledge to control the health problems" (Dictionary of Epidemiology, Porta 2008). It covers a very broad and diverse line of research:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>experimental vs observational studies</p>
+</li>
+<li>
+<p>within the observational studies:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>exploratory vs descriptive</p>
+</li>
+<li>
+<p>exposure vs outcome oriented</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The collected data can also be very diverse, and include questionnaires, forms, medical device outcomes, biological data, etc.</p>
+</div>
+<div class="paragraph">
+<p>Epidemiological studies are generally done in one of two settings: primary (based on newly collected data) or secondary (using existing databases).</p>
+</div>
+<div class="paragraph">
+<p>Generally a codebook or data dictionary that describes all data sources (collected, derived, transformed, &#8230;&#8203;). An example of a data dictionary is provided below (taken from Ahrens, W. et al. (2014): Handbook of epidemiology. Table 27.2).</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="assets/datadictionary.png" alt="datadictionary"></span></p>
 </div>
 </div>
 </div>
@@ -680,7 +707,7 @@ A particular type of polymorphism is the single nucleotide polymorphism (SNP), w
 <div class="sect4">
 <h5 id="_using_db_browser_for_sqlite">Using DB Browser for SQLite</h5>
 <div class="paragraph">
-<p>If you like to use a graphical user interface (or don&#8217;t work on a linux or OSX computer), you can use the DB Browser for SQLite which you can download [here](<a href="https://sqlitebrowser.org/" class="bare">https://sqlitebrowser.org/</a>).</p>
+<p>If you like to use a graphical user interface (or don&#8217;t work on a linux or OSX computer), you can use the DB Browser for SQLite which you can download <a href="https://sqlitebrowser.org/">here</a>.</p>
 </div>
 <div class="paragraph">
 <p>Note: In all code snippets that follow below, the <code>sqlite&gt;</code> at the front represents the sqlite prompt, and should <strong>not</strong> be typed in&#8230;&#8203;</p>
@@ -691,14 +718,14 @@ A particular type of polymorphism is the single nucleotide polymorphism (SNP), w
 <div class="sect2">
 <h3 id="_database_schema_and_normalisation">1.3. Database schema and normalisation</h3>
 <div class="paragraph">
-<p>We’ll look into two examples to guide us through developing a good database schema. The database schema is basically the description of what the database looks like: what are the names of the tables, what are the columns in those tables, and how are these connected between tables?</p>
+<p>We&#8217;ll look into two examples to guide us through developing a good database schema. The database schema is basically the description of what the database looks like: what are the names of the tables, what are the columns in those tables, and how are these connected between tables?</p>
 </div>
 <div class="sect3">
 <h4 id="_a_student_database">1.3.1. A student database</h4>
 <div class="sect4">
 <h5 id="_the_simplest_version">The simplest version</h5>
 <div class="paragraph">
-<p>Let&#8217;s say we want to store which students follow the S&amp;DM course. We want to keep track of their first name, last name, student ID, and whether or not they follow the course. This should allow for some easy queries, such as listing all people who take the course, or returning the number of people who do so.
+<p>Let&#8217;s say we want to store which students follow the G0R72A course ("Data Visualisation in Data Science"). We want to keep track of their first name, last name, student ID, and whether or not they follow the course. This should allow for some easy queries, such as listing all people who take the course, or returning the number of people who do so.
 In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> table can hold all information.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -721,19 +748,19 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Van Deun</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">REG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I0U29A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Van Deun</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ANOVA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I0P18A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Van Deun</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bayesian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">H09B7A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
@@ -745,13 +772,13 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Van Deun</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">LDA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">E02N3A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sarah</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Smith</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0002</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">REG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I0U29A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
@@ -773,7 +800,7 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <p>first name, last name, student ID</p>
 </li>
 <li>
-<p>courses a student takes (CPS, LinMod, S&amp;DM, &#8230;&#8203;)</p>
+<p>courses a student takes (E02N3A, G0R72A, &#8230;&#8203;)</p>
 </li>
 </ul>
 </div>
@@ -785,25 +812,23 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 14.2858%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">first_name</th>
 <th class="tableblock halign-left valign-top">last_name</th>
 <th class="tableblock halign-left valign-top">student_id</th>
-<th class="tableblock halign-left valign-top">takes_GLM</th>
-<th class="tableblock halign-left valign-top">takes_SDM</th>
-<th class="tableblock halign-left valign-top">takes_CPS</th>
+<th class="tableblock halign-left valign-top">takes_I0U29A</th>
+<th class="tableblock halign-left valign-top">takes_G0R72A</th>
 <th class="tableblock halign-left valign-top">&#8230;&#8203;</th>
-<th class="tableblock halign-left valign-top">takes_LDA</th>
+<th class="tableblock halign-left valign-top">takes_E02N3A</th>
 </tr>
 </thead>
 <tbody>
@@ -813,7 +838,6 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0001</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">N</p></td>
 </tr>
@@ -821,7 +845,6 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sarah</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Smith</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0002</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">N</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
@@ -833,12 +856,10 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0003</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">N</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
@@ -885,19 +906,19 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Van Deun</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">REG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I0U29A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Van Deun</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ANOVA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I0P18A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Van Deun</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bayesian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">H09B7A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
@@ -909,13 +930,13 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Van Deun</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0001</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">LDA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">E02N3A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sarah</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Smith</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S0002</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">REG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I0U29A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
@@ -963,7 +984,7 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1234</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">MajorCity</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">REG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I0U29A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
@@ -973,7 +994,7 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1234</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">MajorCity</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ANOVA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I0P18A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Martin</p></td>
@@ -983,7 +1004,7 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1234</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">MajorCity</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bayesian</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">H09B7A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
@@ -1003,7 +1024,7 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1234</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SmallVillage</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">LDA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">E02N3A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Sarah</p></td>
@@ -1013,7 +1034,7 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1234</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SmallVillage</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">REG</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">I0U29A</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
@@ -2217,16 +2238,18 @@ When you have a <em>one-to-many relationship</em>, you&#8217;d add the foreign k
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-top">id</th>
 <th class="tableblock halign-left valign-top">name</th>
 <th class="tableblock halign-left valign-top">address</th>
+<th class="tableblock halign-left valign-top">city</th>
 <th class="tableblock halign-left valign-top">company_id</th>
 </tr>
 </thead>
@@ -2236,23 +2259,27 @@ When you have a <em>one-to-many relationship</em>, you&#8217;d add the foreign k
 <td class="tableblock halign-left valign-top"><p class="tableblock">John Jones</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">some_address</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">some_city</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Jim James</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">another_address</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">some_city</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fred Fredricks</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fred Fredricks</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">yet_another_address</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">another_city</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 </tr>
 </tbody>
@@ -2280,25 +2307,25 @@ When you have a <em>one-to-many relationship</em>, you&#8217;d add the foreign k
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Good Omens: The Nice and Accurate Prophecies of Agnes Nutter</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Witch</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9780060853983</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">9780060853983</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Going Postal (Discworld #33)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9780060502935</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">9780060502935</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Small Gods (Discworld #13)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9780552152976</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">9780552152976</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The Stupidest Angel: A Heartwarming Tale of Christmas Terror</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9780060842352</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">9780060842352</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">&#8230;&#8203;</p></td>
 </tr>
@@ -3556,7 +3583,7 @@ SELECT * FROM snps LIMIT 5;</code></pre>
 <div class="title">Tip</div>
 </td>
 <td class="content">
-First do a <code>SELECT</code> on your table with the <code>WHERE</code> clause that you&#8217;ll use for the update or deletion just to make sure that you&#8217;ll change the correct rows. When you&#8217;ve made changes to the wrong rows you won&#8217;t be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](<a href="https://vda-lab.github.io/2019/10/lambda-architecture)" class="bare">https://vda-lab.github.io/2019/10/lambda-architecture)</a>).
+First do a <code>SELECT</code> on your table with the <code>WHERE</code> clause that you&#8217;ll use for the update or deletion just to make sure that you&#8217;ll change the correct rows. When you&#8217;ve made changes to the wrong rows you won&#8217;t be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](<a href="https://vda-lab.github.io/2019/10/lambda-architecture" class="bare">https://vda-lab.github.io/2019/10/lambda-architecture</a>)).
 </td>
 </tr>
 </table>
@@ -4719,14 +4746,14 @@ WHERE knower IN (
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-02-08 13:42:51 +0100
+Last updated 2023-11-11 20:34:57 +0100
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
 <script>
 if (!hljs.initHighlighting.called) {
   hljs.initHighlighting.called = true
-  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code[data-lang]')).forEach(function (el) { hljs.highlightBlock(el) })
 }
 </script>
 <script type="text/x-mathjax-config">

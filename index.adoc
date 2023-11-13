@@ -1,19 +1,19 @@
 = Data Management
 :author: Jan Aerts
-:email: jan.aerts@vda-lab.io
+:email: jan.aerts@kuleuven.be
 :toc: left
 :sectnums: true
 :source-highlighter: highlight.js
 :imagesdir: assets
 :stem: latexmath
 
-This is the course material for the Software and Data Management course at UHasselt. The contents of this post is licensed as CC-BY: feel free to copy/remix/tweak/... it, but please credit your source.
+The contents of this post is licensed as CC-BY: feel free to copy/remix/tweak/... it in a non-commercial setting, but please credit your source.
 
-image:ccby.png[]
+image:ccbync.png[width=10%]
 
 _Part of the content of this lecture is taken from the database lectures from the yearly Programming for Biology course at CSHL, and the EasySoft tutorial at http://bit.ly/x2yNDb, as well as from course slides created by Leandro Garcia Barrado_
 
-Data management is critical in any science, including biology. In this course, we will focus on relational (SQL) databases (RDBMS) as these are the most common. If time permits we might venture into the world of NoSQL databases (_e.g._ MongoDB, ArangoDB, neo4j) to allow storing of huge datasets.
+Data management is critical in any science, including biology and agriculture. We will focus on relational (SQL) databases (RDBMS) as these are the most common. In addition, we will look at NoSQL databases (_e.g._ MongoDB, ArangoDB, neo4j) to allow storing of more complex datasets.
 
 For relational databases, we will discuss the basic concepts (tables, tuples, columns, queries) and explain the different normalisations for data. There will also be an introduction on writing SQL queries. Document-oriented and other NoSQL databases (such as MongoDB) can often also be accessed through either an interactive shell and/or APIs (application programming interfaces) in languages such as perl, ruby, java, clojure, ...
 

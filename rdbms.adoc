@@ -3,45 +3,25 @@ This is a _practical_ introduction to relational database management systems and
 
 Working with data almost invariably involves working with relational databases and SQL (Structured Query Language). They have a decades-old history and are very established. In this section, we go over the why and how of this type of database.
 
-Let’s look at some example life science fields where we collect data to make the rest of the session a bit more concrete.
+Let's look at some example life science fields where we collect data to make the rest of the session a bit more concrete.
 
 === Examples of data
-==== Clinical trials
-A clinical trial is a study involving the assessment of one or more regimens used in treating or preventing a specific illness or disease (McFadden, 2007). The design, aim, number of patients etc. depend on the phase of the clinical trial. Different types of data are collected:
+==== Microbiome data
+Microbiome data offer a window into the complex world of microbial communities and their interactions with their environment. This can be in the human or animal body, soil, or other ecosystems. By measuring and analyzing this data, we can gain insights into a lot of processes: in humans and animals, it can illuminate aspects of health, disease, and nutrition; in agriculture, it can enhance our understanding of soil health, plant growth, and crop resilience.
 
-- _Administrative data_ describes information to uniquely identify a patient and their contact details. Often, the name cannot be used due to the fact that multiple people can have the same name, but more importantly to ensure minimal identifiability (privacy); therefore a unique patient ID is generated at enrolment. In addition, information like the name of the trial and name of the center in large multicenter trials are recorded.
-- _Research data_ is all information needed to answer study objective(s) in the protocol, including measurements of endpoints, relevant dates (study entry, treatment administration), etc. The amount of research data to be collected varies widely. It is important to collect only relevant data, as not all clinically relevant data is relevant research data. For example, exact timing of intervention may be relevant for clinical care (record in medical file), but not to answer research questions. Collection of irrelevant data increases time and effort to collect, enter, and process this data, increases the complexity of the database and risk for missing data, etc.
+Microbiome data typically consist of OTU (operational taxonomic unit) or ASV (amplicon sequence variant) tables, which can be considered large tables where the columns represent the OTUs/ASVs, the rows represent different samples, and the cells indicate the amount of that OTU/ASV found in a particular sample.
 
-The trial protocol describes which data items need to be collected, based on which a Case Report Form (CRF) is developed. The CRF is the official clinical data-recording document used in a clinical study which stores all relevant patient info that is obtained in a clinical trial. It should be of high quality as a poor design can lead to unreliable data and possibly wrong conclusions of the study.
+[%header,format=csv]
+|===
+sample,SRS024625.570280,SRS018102.573993,SRS017304.575372,SRS024151.575546,...
+963239,12,2,0,15,...
+4431292,0,5,1,3,...
+4480529,7,0,0,0,...
+4345640,0,3,1,8,...
+...,...,...,...,...,...
+|===
 
-Items on a CRF are organised according to the following rationale:
-
-- They should follow the time flow of the trial (when are the data collected?). For example, items collected at study entry (e.g., medical history,
-treatment allocation, etc.) are grouped together and as well as for all follow-up phases (e.g., primary endpoint measures, adverse effects at particular time point).
-- The should reflect the logistics and practical organisation of the trial (where and by whom are the data collected?). For example: some data at study entry may be collected by the CRA, other data by the physician; some data at study entry may be gathered in the cardiology department, other data in the radiology department.
-
-Separate sections/pages on the CRF are created for each logical division.
-
-Below are two annotated pages from a CRF. The red annotations are meant for the data management department and indicate which variable in the database each piece of information is stored in.
-
-image:CRF_1.png[]
-image:CRF_2.png[]
-
-==== Epidemiological studies
-Epidemiology is described as "the study of the occurrence and distribution of health-related states or events in specified populations, including the study of determinants influencing such states, and the application of this knowledge to control the health problems" (Dictionary of Epidemiology, Porta 2008). It covers a very broad and diverse line of research:
-
-* experimental vs observational studies
-* within the observational studies:
-** exploratory vs descriptive
-** exposure vs outcome oriented
-
-The collected data can also be very diverse, and include questionnaires, forms, medical device outcomes, biological data, etc.
-
-Epidemiological studies are generally done in one of two settings: primary (based on newly collected data) or secondary (using existing databases).
-
-Generally a codebook or data dictionary that describes all data sources (collected, derived, transformed, ...). An example of a data dictionary is provided below (taken from Ahrens, W. et al. (2014): Handbook of epidemiology. Table 27.2).
-
-image:datadictionary.png[]
+Both samples and OTUs/ASVs themselves can contain metadata. For the samples, these can include the sampling device, the age of the subject, the location of the sample (e.g. skin vs gut vs ...), etc. For the OTUs, these are e.g. consensus sequences and taxonomy.
 
 ==== DNA sequencing and genotyping
 The importance of DNA sequencing and genotyping is steadily increasing within research and health care. In genotyping, one reads the nucleotides at specific positions in the genome to check if the patient has an allele that for example constitutes a higher risk to certain diseases, or that indicates higher or lower sensitivity to certain medication.
@@ -67,6 +47,44 @@ image:genotype_table.png[]
 
 This table contains the information for 3 polymorphisms (called rs12345, rs98765 and rs28465) for 2 individuals (individual_A and individual_B). Typically, thousands of polymorphisms are recorded for thousands of individuals.
 A particular type of polymorphism is the single nucleotide polymorphism (SNP), which will be why tables below will be called `snps`.
+
+
+// ==== Clinical trials
+// A clinical trial is a study involving the assessment of one or more regimens used in treating or preventing a specific illness or disease (McFadden, 2007). The design, aim, number of patients etc. depend on the phase of the clinical trial. Different types of data are collected:
+
+// - _Administrative data_ describes information to uniquely identify a patient and their contact details. Often, the name cannot be used due to the fact that multiple people can have the same name, but more importantly to ensure minimal identifiability (privacy); therefore a unique patient ID is generated at enrolment. In addition, information like the name of the trial and name of the center in large multicenter trials are recorded.
+// - _Research data_ is all information needed to answer study objective(s) in the protocol, including measurements of endpoints, relevant dates (study entry, treatment administration), etc. The amount of research data to be collected varies widely. It is important to collect only relevant data, as not all clinically relevant data is relevant research data. For example, exact timing of intervention may be relevant for clinical care (record in medical file), but not to answer research questions. Collection of irrelevant data increases time and effort to collect, enter, and process this data, increases the complexity of the database and risk for missing data, etc.
+
+// The trial protocol describes which data items need to be collected, based on which a Case Report Form (CRF) is developed. The CRF is the official clinical data-recording document used in a clinical study which stores all relevant patient info that is obtained in a clinical trial. It should be of high quality as a poor design can lead to unreliable data and possibly wrong conclusions of the study.
+
+// Items on a CRF are organised according to the following rationale:
+
+// - They should follow the time flow of the trial (when are the data collected?). For example, items collected at study entry (e.g., medical history,
+// treatment allocation, etc.) are grouped together and as well as for all follow-up phases (e.g., primary endpoint measures, adverse effects at particular time point).
+// - The should reflect the logistics and practical organisation of the trial (where and by whom are the data collected?). For example: some data at study entry may be collected by the CRA, other data by the physician; some data at study entry may be gathered in the cardiology department, other data in the radiology department.
+
+// Separate sections/pages on the CRF are created for each logical division.
+
+// Below are two annotated pages from a CRF. The red annotations are meant for the data management department and indicate which variable in the database each piece of information is stored in.
+
+// image:CRF_1.png[]
+// image:CRF_2.png[]
+
+==== Epidemiological studies
+Epidemiology is described as "the study of the occurrence and distribution of health-related states or events in specified populations, including the study of determinants influencing such states, and the application of this knowledge to control the health problems" (Dictionary of Epidemiology, Porta 2008). It covers a very broad and diverse line of research:
+
+* experimental vs observational studies
+* within the observational studies:
+** exploratory vs descriptive
+** exposure vs outcome oriented
+
+The collected data can also be very diverse, and include questionnaires, forms, medical device outcomes, biological data, etc.
+
+Epidemiological studies are generally done in one of two settings: primary (based on newly collected data) or secondary (using existing databases).
+
+Generally a codebook or data dictionary that describes all data sources (collected, derived, transformed, ...). An example of a data dictionary is provided below (taken from Ahrens, W. et al. (2014): Handbook of epidemiology. Table 27.2).
+
+image:datadictionary.png[]
 
 === Relational databases
 
@@ -94,29 +112,29 @@ Some useful commands:
 
 ===== Using DB Browser for SQLite
 
-If you like to use a graphical user interface (or don't work on a linux or OSX computer), you can use the DB Browser for SQLite which you can download [here](https://sqlitebrowser.org/).
+If you like to use a graphical user interface (or don't work on a linux or OSX computer), you can use the DB Browser for SQLite which you can download https://sqlitebrowser.org/[here].
 
 Note: In all code snippets that follow below, the `sqlite>` at the front represents the sqlite prompt, and should *not* be typed in...
 
 === Database schema and normalisation
 
-We’ll look into two examples to guide us through developing a good database schema. The database schema is basically the description of what the database looks like: what are the names of the tables, what are the columns in those tables, and how are these connected between tables?
+We'll look into two examples to guide us through developing a good database schema. The database schema is basically the description of what the database looks like: what are the names of the tables, what are the columns in those tables, and how are these connected between tables?
 
 ==== A student database
 ===== The simplest version
 
-Let's say we want to store which students follow the S&DM course. We want to keep track of their first name, last name, student ID, and whether or not they follow the course. This should allow for some easy queries, such as listing all people who take the course, or returning the number of people who do so.
+Let's say we want to store which students follow the G0R72A course ("Data Visualisation in Data Science"). We want to keep track of their first name, last name, student ID, and whether or not they follow the course. This should allow for some easy queries, such as listing all people who take the course, or returning the number of people who do so.
 In this case, a _flat database_ would suffice; i.e. a _single_ table can hold all information.
 
 [%header,format=csv]
 |===
 first_name, last_name, student_id, takes_course
-Martin, Van Deun, S0001, REG
-Martin, Van Deun, S0001, ANOVA
-Martin, Van Deun, S0001, Bayesian
+Martin, Van Deun, S0001, I0U29A
+Martin, Van Deun, S0001, I0P18A
+Martin, Van Deun, S0001, H09B7A
 ..., ..., ..., ...
-Martin, Van Deun, S0001, LDA
-Sarah, Smith, S0002, REG
+Martin, Van Deun, S0001, E02N3A
+Sarah, Smith, S0002, I0U29A
 ..., ..., ..., ...
 |===
 
@@ -124,7 +142,7 @@ Sarah, Smith, S0002, REG
 Consider that we want to store which students follow which courses in MSc Statistics. So we'd like to keep:
 
 - first name, last name, student ID
-- courses a student takes (CPS, LinMod, S&DM, ...)
+- courses a student takes (E02N3A, G0R72A, ...)
 
 This should allow for queries e.g. to find out which people follow a particular course, the average number of courses a student takes, etc.
 
@@ -132,11 +150,11 @@ Let's take the same approach as above, and we simply add a column for each cours
 
 [%header,format=csv]
 |===
-first_name, last_name, student_id, takes_GLM, takes_SDM, takes_CPS, ..., takes_LDA
-Martin, Van Deun, S0001, Y, Y, Y, ..., N
-Sarah, Smith, S0002, Y, Y, N, ..., Y
-Mary, Kopals, S0003, N, Y, Y, ..., Y
-..., ..., ..., ..., ..., ..., ..., ...
+first_name, last_name, student_id, takes_I0U29A, takes_G0R72A, ..., takes_E02N3A
+Martin, Van Deun, S0001, Y, Y, ..., N
+Sarah, Smith, S0002, Y, N, ..., Y
+Mary, Kopals, S0003, N, Y, ..., Y
+..., ..., ..., ..., ..., ..., ...
 |===
 
 This way of working (called the _wide format_) does present some issues, though.
@@ -149,12 +167,12 @@ An alternative is to use the _long format_:
 [%header,format=csv]
 |===
 first_name, last_name, student_id, takes_course
-Martin, Van Deun, S0001, REG
-Martin, Van Deun, S0001, ANOVA
-Martin, Van Deun, S0001, Bayesian
+Martin, Van Deun, S0001, I0U29A
+Martin, Van Deun, S0001, I0P18A
+Martin, Van Deun, S0001, H09B7A
 ..., ..., ..., ...
-Martin, Van Deun, S0001, LDA
-Sarah, Smith, S0002, REG
+Martin, Van Deun, S0001, E02N3A
+Sarah, Smith, S0002, I0U29A
 ..., ..., ..., ...
 |===
 
@@ -165,12 +183,12 @@ This is still not ideal though, as this design still suffers from a lot of redun
 [%header,format=csv]
 |===
 first_name, last_name, student_id, street, number, zip, city, takes_course
-Martin, Van Deun, S0001, Some Street, 1, 1234, MajorCity, REG
-Martin, Van Deun, S0001, Some Street, 1, 1234, MajorCity, ANOVA
-Martin, Van Deun, S0001, Some Street, 1, 1234, MajorCity, Bayesian
+Martin, Van Deun, S0001, Some Street, 1, 1234, MajorCity, I0U29A
+Martin, Van Deun, S0001, Some Street, 1, 1234, MajorCity, I0P18A
+Martin, Van Deun, S0001, Some Street, 1, 1234, MajorCity, H09B7A
 ..., ..., ..., ..., ..., ..., ..., ...
-Martin, Van Deun, S0001, Main Street, 1, 1234, SmallVillage, LDA
-Sarah, Smith, S0002, Main Street, 1, 1234, SmallVillage, REG
+Martin, Van Deun, S0001, Main Street, 1, 1234, SmallVillage, E02N3A
+Sarah, Smith, S0002, Main Street, 1, 1234, SmallVillage, I0U29A
 ..., ..., ..., ..., ..., ..., ..., ...
 |===
 
@@ -558,11 +576,11 @@ The `employees` table:
 
 [%header,format=csv]
 |===
-id, name, address, company_id
+id, name, address, city, company_id
 1, John Jones, some_address, some_city, 1
 2, Jim James, another_address, some_city, 1
 3, Fred Fredricks, yet_another_address, another_city, 1
-..., ..., ..., ...
+..., ..., ..., ..., ...
 |===
 
 When you have a _many-to-many relationship_ you'd typically extract that information into a new table. For the books/authors example, you'd have a single table for the books, a single table for the authors, and a separate table that links the two together. That "linking" table can also contain information that is specific for that relationship, but it does not have to. An example is the `genotypes` table above. There are many SNPs for a single individual, and a single SNP is measured for many individuals. That's why we created a separate table called `genotypes`, which in this case has additional columns that denote the value for a single individual for a single SNP. For the books/authors example, this would be:
@@ -572,7 +590,7 @@ The `books` table:
 [%header,format=csv]
 |===
 id, title, ISBN13
-1, Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, Witch, 9780060853983
+1, Good Omens: The Nice and Accurate Prophecies of Agnes Nutter, 9780060853983
 2, Going Postal (Discworld #33), 9780060502935
 3, Small Gods (Discworld #13), 9780552152976
 4, The Stupidest Angel: A Heartwarming Tale of Christmas Terror, 9780060842352
@@ -683,7 +701,6 @@ It's basically:
 
 [source,sql]
 ----
-
 INSERT INTO <table_name> (<column_1>, <column_2>, <column_3>)
                          VALUES (<value_1>, <value_2>, <value_3>);
 ----
