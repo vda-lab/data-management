@@ -876,7 +876,7 @@ In this case, a <em>flat database</em> would suffice; i.e. a <em>single</em> tab
 <div class="ulist">
 <ul>
 <li>
-<p>We will end up with a huge table. Imagine there are 20 courses at UHasselt and 80 at other universities in Flanders that the student can follow. In addition, suppose there are 50 students. This would mean that we need (3 + 100)*50 = 5,150 cells to store this data.</p>
+<p>We will end up with a huge table. Imagine there are 20 courses at KU Leuven and 80 at other universities in Flanders that the student can follow. In addition, suppose there are 50 students. This would mean that we need (3 + 100)*50 = 5,150 cells to store this data.</p>
 </li>
 <li>
 <p>There can be a lot of wasted space, for example courses that nobody takes.</p>
@@ -2197,8 +2197,10 @@ INSERT INTO genotypes (individual,
 <p>One-to-many is obviously the same as many-to-one but looking at it from the other direction&#8230;&#8203;</p>
 </div>
 <div class="paragraph">
-<p>When you have a <em>one-to-one relationship</em>, you can actually merge that information into the same table so in the end you won&#8217;t even need a foreign key. In the book example mentioned above, you&#8217;d just add the ISBN number to the books table.&lt;br/&gt;
-When you have a <em>one-to-many relationship</em>, you&#8217;d add the foreign key to the "many" table. In the example below a <em>single company</em> will have <em>many employees</em>, so you add the foreign key in the employees table.</p>
+<p>When you have a <em>one-to-one relationship</em>, you can actually merge that information into the same table so in the end you won&#8217;t even need a foreign key. In the book example mentioned above, you&#8217;d just add the ISBN number to the books table.</p>
+</div>
+<div class="paragraph">
+<p>When you have a <em>one-to-many relationship</em>, you&#8217;d add the foreign key to the "many" table. In the example below a <em>single company</em> will have <em>many employees</em>, so you add the foreign key in the employees table.</p>
 </div>
 <div class="paragraph">
 <p>The <code>companies</code> table:</p>
@@ -3583,7 +3585,7 @@ SELECT * FROM snps LIMIT 5;</code></pre>
 <div class="title">Tip</div>
 </td>
 <td class="content">
-First do a <code>SELECT</code> on your table with the <code>WHERE</code> clause that you&#8217;ll use for the update or deletion just to make sure that you&#8217;ll change the correct rows. When you&#8217;ve made changes to the wrong rows you won&#8217;t be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](<a href="https://vda-lab.github.io/2019/10/lambda-architecture" class="bare">https://vda-lab.github.io/2019/10/lambda-architecture</a>)).
+First do a <code>SELECT</code> on your table with the <code>WHERE</code> clause that you&#8217;ll use for the update or deletion just to make sure that you&#8217;ll change the correct rows. When you&#8217;ve made changes to the wrong rows you won&#8217;t be able to go back (unless you use the Lambda architecture principles as we will explain in the <a href="https://vda-lab.github.io/2019/10/lambda-architecture">third session</a>).
 </td>
 </tr>
 </table>
@@ -4373,7 +4375,7 @@ NM_017460, CYP3A4, chr7, -, 99756966, 99784184, 99758132, 99784081
 </div>
 </div>
 <div class="paragraph">
-<p><em>Note: Installing the complete mysql system will install the server and client, and it can be difficult to remove if necessary afterwards. An alternative is to install it using [docker](<a href="http://www.docker.com" class="bare">http://www.docker.com</a>). Run the server with <code>docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest</code> and connect to it using <code>docker exec -it some-mysql bash</code>. You can then access the Ensembl and UCSC databases as described above.</em></p>
+<p><em>Note: Installing the complete mysql system will install the server and client, and it can be difficult to remove if necessary afterwards. An alternative is to install it using <a href="http://www.docker.com">docker</a>. Run the server with <code>docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest</code> and connect to it using <code>docker exec -it some-mysql bash</code>. You can then access the Ensembl and UCSC databases as described above.</em></p>
 </div>
 </div>
 <div class="sect3">

@@ -159,7 +159,7 @@ Mary, Kopals, S0003, N, Y, ..., Y
 
 This way of working (called the _wide format_) does present some issues, though.
 
-- We will end up with a huge table. Imagine there are 20 courses at UHasselt and 80 at other universities in Flanders that the student can follow. In addition, suppose there are 50 students. This would mean that we need (3 + 100)*50 = 5,150 cells to store this data.
+- We will end up with a huge table. Imagine there are 20 courses at KU Leuven and 80 at other universities in Flanders that the student can follow. In addition, suppose there are 50 students. This would mean that we need (3 + 100)*50 = 5,150 cells to store this data.
 - There can be a lot of wasted space, for example courses that nobody takes.
 
 An alternative is to use the _long format_:
@@ -558,7 +558,8 @@ To come back to the one-to-many relationships... So how do you know in which tab
 
 One-to-many is obviously the same as many-to-one but looking at it from the other direction...
 
-When you have a _one-to-one relationship_, you can actually merge that information into the same table so in the end you won't even need a foreign key. In the book example mentioned above, you'd just add the ISBN number to the books table.<br/>
+When you have a _one-to-one relationship_, you can actually merge that information into the same table so in the end you won't even need a foreign key. In the book example mentioned above, you'd just add the ISBN number to the books table.
+
 When you have a _one-to-many relationship_, you'd add the foreign key to the "many" table. In the example below a _single company_ will have _many employees_, so you add the foreign key in the employees table.
 
 The `companies` table:
@@ -1091,7 +1092,7 @@ If you now exit the sqlite prompt (with `.quit`), you should see a file in the d
 ==== Updating and deleting data
 Sometimes you will want to update or delete data in a table. The SQL code to do this uses a `WHERE` clause that is exactly the same as for a regular `SELECT`.
 
-TIP: First do a `SELECT` on your table with the `WHERE` clause that you'll use for the update or deletion just to make sure that you'll change the correct rows. When you've made changes to the wrong rows you won't be able to go back (unless you use the Lambda architecture principles as we will explain in the [third session](https://vda-lab.github.io/2019/10/lambda-architecture)).
+TIP: First do a `SELECT` on your table with the `WHERE` clause that you'll use for the update or deletion just to make sure that you'll change the correct rows. When you've made changes to the wrong rows you won't be able to go back (unless you use the Lambda architecture principles as we will explain in the https://vda-lab.github.io/2019/10/lambda-architecture[third session]).
 
 ===== UPDATE
 Imagine that we've been storing the information on our individuals as above, but have not been consistent in capitalising the ethnicity. In some cases, a person can be of `asian` descent; in other cases he or she can be `Asian`. The same would go for the other ethnicities. To clean this up, let's put everything in lower case. For argument's sake we'll only look at `Asian` here. First let's check what we should get with a `SELECT`.
@@ -1512,7 +1513,7 @@ NM_017460, CYP3A4, chr7, -, 99756966, 99784184, 99758132, 99784081
 2 rows in set (0.16 sec)
 ```
 
-_Note: Installing the complete mysql system will install the server and client, and it can be difficult to remove if necessary afterwards. An alternative is to install it using [docker](http://www.docker.com). Run the server with `docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest` and connect to it using `docker exec -it some-mysql bash`. You can then access the Ensembl and UCSC databases as described above._
+_Note: Installing the complete mysql system will install the server and client, and it can be difficult to remove if necessary afterwards. An alternative is to install it using http://www.docker.com[docker]. Run the server with `docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:latest` and connect to it using `docker exec -it some-mysql bash`. You can then access the Ensembl and UCSC databases as described above._
 
 ==== Views
 By decomposing data into different tables as we described above (and using the different normal forms), we can significantly improve maintainability of our database and make sure that it does not contain inconsistencies. But at the other hand, this means it's a lot of hassle to look at the actual data: to know what the genotype is for SNP `rs12345` in `individual_A` we cannot just look it up in a single table, but have to write a complicated query which joins 3 tables together. The query would look like this:
